@@ -1,12 +1,12 @@
 ---
 title: 歡迎
-description: 公開技術學習筆記與 Blog 文章
+description: 查理的技術筆記與隨想
 template: splash
 hero:
-  title: Charley's site
-  tagline: 技術學習筆記與隨手記錄
+  title: 應無所住，而生其心
+  tagline: 查理的技術筆記與隨想
   actions:
-    - text: 閱讀 Blog
+    - text: 閱讀隨想
       link: /zh-tw/blog/
       icon: right-arrow
     - text: 瀏覽筆記

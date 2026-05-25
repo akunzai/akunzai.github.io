@@ -6,14 +6,15 @@ export default defineConfig({
   site: 'https://akunzai.github.io',
   integrations: [
     starlight({
-      title: "Charley's site",
+      title: 'Abiding nowhere, give rise to mind.',
+      description: '查理的技術筆記與隨想',
       defaultLocale: 'zh-tw',
       locales: {
         'zh-tw': { label: '繁體中文', lang: 'zh-TW' },
       },
       plugins: [
         starlightBlog({
-          title: { en: 'Blog', 'zh-TW': '部落格' },
+          title: { en: 'Blog', 'zh-TW': '隨想' },
           authors: {
             charley: {
               name: 'Charley Wu',
