@@ -13,7 +13,7 @@ export default defineConfig({
       },
       plugins: [
         starlightBlog({
-          title: 'Blog',
+          title: { en: 'Blog', 'zh-TW': '部落格' },
           authors: {
             charley: {
               name: 'Charley Wu',
@@ -25,7 +25,8 @@ export default defineConfig({
       sidebar: [
         {
           label: 'Notes',
-          items: [{ label: 'Overview', link: '/notes/' }],
+          translations: { 'zh-TW': '筆記' },
+          items: [{ label: 'Overview', link: '/notes/', translations: { 'zh-TW': '總覽' } }],
         },
       ],
       social: [
