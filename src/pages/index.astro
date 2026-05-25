@@ -1,0 +1,15 @@
+---
+---
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script is:inline>
+      const lang = (navigator.language || navigator.languages?.[0] || '').toLowerCase()
+      // future: add more locales here, e.g. lang.startsWith('en') ? '/en/' : '/zh-tw/'
+      location.replace(lang.startsWith('zh') ? '/zh-tw/' : '/zh-tw/')
+    </script>
+    <noscript>
+      <meta http-equiv="refresh" content="0;url=/zh-tw/" />
+    </noscript>
+  </head>
+</html>
