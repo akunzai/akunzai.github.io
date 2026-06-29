@@ -3,3 +3,8 @@ packages:
 allowBuilds:
   esbuild: true
   sharp: true
+overrides:
+  # Pin vulnerable transitive deps to patched versions (Dependabot alerts).
+  # Remove once upstream (@astrojs/markdown-remark, astro/vite) ships the fixes.
+  js-yaml@<=4.1.1: ^4.2.0
+  esbuild@>=0.27.3 <0.28.1: ^0.28.1
