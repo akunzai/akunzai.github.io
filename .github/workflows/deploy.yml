@@ -22,8 +22,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Set up mise (node + aube)
+        uses: jdx/mise-action@v4
+
+      - name: Install dependencies
+        run: aube ci
+
       - name: Build with Astro
-        uses: withastro/action@v6
+        run: aubr build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
 
   deploy:
     environment:

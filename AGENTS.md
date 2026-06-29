@@ -4,20 +4,24 @@
 
 - **Framework:** Astro + Starlight docs theme
 - **Blog plugin:** starlight-blog (tags, RSS, pagination)
-- **Package manager:** pnpm — NEVER use npm or yarn
+- **Toolchain:** [mise](https://mise.jdx.dev/) manages Node.js + [aube](https://aube.jdx.dev/) versions (`mise.toml`)
+- **Package manager:** [aube](https://aube.jdx.dev/) — NEVER use npm, pnpm, or yarn
 - **Language:** TypeScript
 
 ## Commands
 
+Run `mise install` once to set up the toolchain (Node.js + aube) from `mise.toml`.
+
 | Command | Action |
 |---------|--------|
-| `pnpm dev` | Start dev server at http://localhost:4321 |
-| `pnpm build` | Build to `dist/` |
-| `pnpm preview` | Preview production build |
+| `aubr dev` | Start dev server at http://localhost:4321 |
+| `aubr build` | Build to `dist/` |
+| `aubr preview` | Preview production build |
+| `aube ci` | Clean install from the frozen `pnpm-lock.yaml` (used in CI) |
 
 ## Package Manager Rules
 
-Always use `pnpm`. Never run `npm install`, `npm add`, `yarn add`, or `npx`. Use `pnpm add`, `pnpm install`, `pnpm dlx` instead.
+Always use `aube`. Never run `npm`, `pnpm`, or `yarn`. Use `aube add` to add a dependency, `aube install` to install, `aubr <script>` (shim for `aube run`) to run package scripts, and `aubx` (shim for `aube dlx`) for one-off tools.
 
 ## Content Directories
 
@@ -66,6 +70,7 @@ description: "Optional one-liner"
 
 ## Key Files
 
+- `mise.toml` — pins the Node.js + aube toolchain managed by mise
 - `astro.config.mjs` — Starlight + starlight-blog configuration
 - `src/content.config.ts` — extends docs schema with blogSchema
 - `.github/workflows/deploy.yml` — GitHub Actions CI/CD
