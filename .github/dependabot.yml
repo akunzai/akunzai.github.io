@@ -11,6 +11,9 @@ updates:
         patterns:
           - "*"
 
+  # Workflows pin major tags (e.g. actions/checkout@v7, jdx/mise-action@v4).
+  # Ignore minor/patch so Dependabot only opens PRs for major bumps — not
+  # noise like #11 (jdx/mise-action@v4 → @4.2.3).
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -19,3 +22,8 @@ updates:
       github-actions:
         patterns:
           - "*"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-minor"
+          - "version-update:semver-patch"
