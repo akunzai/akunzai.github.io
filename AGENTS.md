@@ -1,76 +1,37 @@
 # Coding Agents Guideline
 
-## Tech Stack
+## Quick Commands
 
-- **Framework:** Astro + Starlight docs theme
-- **Blog plugin:** starlight-blog (tags, RSS, pagination)
-- **Toolchain:** [mise](https://mise.jdx.dev/) manages Node.js + [aube](https://aube.jdx.dev/) versions (`mise.toml`)
-- **Package manager:** [aube](https://aube.jdx.dev/) — NEVER use npm, pnpm, or yarn
-- **Language:** TypeScript
+Run `mise install` once to set up Node.js + [aube](https://aube.jdx.dev/) from `mise.toml`. Always use `aube` / `aubr` / `aubx` — never npm, pnpm, or yarn.
 
-## Commands
+- Dev: `aubr dev` (http://localhost:4321)
+- Build: `aubr build` → `dist/`
+- Preview: `aubr preview`
+- CI install: `aube ci` (frozen `pnpm-lock.yaml`)
+- Add dep: `aube add <pkg>`
 
-Run `mise install` once to set up the toolchain (Node.js + aube) from `mise.toml`.
+## Rich References & Core Schemas
 
-| Command | Action |
-|---------|--------|
-| `aubr dev` | Start dev server at http://localhost:4321 |
-| `aubr build` | Build to `dist/` |
-| `aubr preview` | Preview production build |
-| `aube ci` | Clean install from the frozen `pnpm-lock.yaml` (used in CI) |
+- Site + Starlight / starlight-blog config: @astro.config.mjs
+- Content collections (docs + `blogSchema`): @src/content.config.ts
+- Blog post example: @src/content/docs/zh-tw/blog/hello-world.md
+- Notes example: @src/content/docs/zh-tw/notes/index.md
+- Deploy (GitHub Pages): @.github/workflows/deploy.yml
+- Toolchain pins: @mise.toml
 
-## Package Manager Rules
+## Architecture Overview
 
-Always use `aube`. Never run `npm`, `pnpm`, or `yarn`. Use `aube add` to add a dependency, `aube install` to install, `aubr <script>` (shim for `aube run`) to run package scripts, and `aubx` (shim for `aube dlx`) for one-off tools.
+- `src/content/docs/zh-tw/blog/` — blog posts (starlight-blog)
+- `src/content/docs/zh-tw/notes/` — public technical notes
+- `src/pages/` — Astro pages
+- `.github/workflows/` — CI/CD
 
-## Content Directories
+## Self-Reflection
 
-| Path | Content type |
-|------|-------------|
-| `src/content/docs/zh-tw/blog/` | Blog posts (managed by starlight-blog) |
-| `src/content/docs/zh-tw/notes/` | Public technical notes |
+- **Candidate**: Distill non-obvious gotchas, hidden configurations, or project patterns into concise, non-derivable rules (≤ 2 bullets, context-tagged, no drifting metrics). Propose the candidate to the user before writing anything.
+- **Promote**: On confirmation, write it to a dedicated file — never inline in `AGENTS.md` itself. Merge into an existing topic doc if one covers the subject, otherwise create `docs/<topic>.md`; fall back to `docs/lessons-learned.md` for miscellaneous items. Add or update a single `@path` reference line per file under Rich References.
+- **Prune**: Drop entries once stale (obsolete version, now enforced by a linter/type/test, duplicated elsewhere, or a debugging transcript) — not by a fixed entry count.
 
-## Blog Post Front Matter
+## Claude Code Compatibility
 
-```markdown
----
-title: "Post Title"
-date: YYYY-MM-DD
-tags: ["tag1", "tag2"]
-authors: ["charley"]
----
-```
-
-## Notes Front Matter
-
-```markdown
----
-title: "Topic Name"
-description: "Optional one-liner"
----
-```
-
-## Branch Strategy
-
-| Pattern | Purpose |
-|---------|---------|
-| `main` | Stable; GitHub Actions deploys from here |
-| `post/<slug>` | One branch per blog post |
-| `notes/<topic>` | One branch per public note |
-| `feat/<name>` | Config, theme, structure changes |
-
-## Commit Conventions
-
-- `content:` new blog post
-- `notes:` adding/updating a public note
-- `feat:` new feature or config change
-- `fix:` bug fix
-- `ci:` CI/CD workflow changes
-- `chore:` maintenance (deps, gitignore, etc.)
-
-## Key Files
-
-- `mise.toml` — pins the Node.js + aube toolchain managed by mise
-- `astro.config.mjs` — Starlight + starlight-blog configuration
-- `src/content.config.ts` — extends docs schema with blogSchema
-- `.github/workflows/deploy.yml` — GitHub Actions CI/CD
+`CLAUDE.md` is a symbolic link pointing to `AGENTS.md`. Edit `AGENTS.md` directly.
