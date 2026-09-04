@@ -1,8 +1,10 @@
-# Coding Agents Guideline
+# akunzai.github.io Developer Guidelines
 
-## Quick Commands
+Personal blog and technical notes for Charley Wu, built with Astro and Starlight.
 
-Run `mise install` once to set up Node.js + [aube](https://aube.jdx.dev/) from `mise.toml`. Always use `aube` / `aubr` / `aubx` — never npm, pnpm, or yarn.
+This project uses Node.js and [aube](https://aube.jdx.dev/) managed via `mise.toml`. Always use `aube` / `aubr` / `aubx` — never npm, pnpm, or yarn. Run `mise install` once to set up the toolchain.
+
+## Commands
 
 - Dev: `aubr dev` (http://localhost:4321)
 - Build: `aubr build` → `dist/`
@@ -10,27 +12,20 @@ Run `mise install` once to set up Node.js + [aube](https://aube.jdx.dev/) from `
 - CI install: `aube ci` (frozen `pnpm-lock.yaml`)
 - Add dep: `aube add <pkg>`
 
-## Rich References & Core Schemas
+## Pointers
 
-- Site + Starlight / starlight-blog config: @astro.config.mjs
-- Content collections (docs + `blogSchema`): @src/content.config.ts
-- Blog post example: @src/content/docs/zh-tw/blog/hello-world.md
-- Notes example: @src/content/docs/zh-tw/notes/index.md
-- Deploy (GitHub Pages): @.github/workflows/deploy.yml
-- Toolchain pins: @mise.toml
-
-## Architecture Overview
-
-- `src/content/docs/zh-tw/blog/` — blog posts (starlight-blog)
-- `src/content/docs/zh-tw/notes/` — public technical notes
-- `src/pages/` — Astro pages
-- `.github/workflows/` — CI/CD
+- Site & blog configuration: @astro.config.mjs
+- Content collections schema: @src/content.config.ts
+- Blog post sample: @src/content/docs/zh-tw/blog/hello-world.md
+- Notes sample: @src/content/docs/zh-tw/notes/index.md
+- Deployment workflow: @.github/workflows/deploy.yml
+- Toolchain configuration: @mise.toml
 
 ## Self-Reflection
 
-- **Candidate**: Distill non-obvious gotchas, hidden configurations, or project patterns into concise, non-derivable rules (≤ 2 bullets, context-tagged, no drifting metrics). Propose the candidate to the user before writing anything.
-- **Promote**: On confirmation, write it to a dedicated file — never inline in `AGENTS.md` itself. Merge into an existing topic doc if one covers the subject, otherwise create `docs/<topic>.md`; fall back to `docs/lessons-learned.md` for miscellaneous items. Add or update a single `@path` reference line per file under Rich References.
-- **Prune**: Drop entries once stale (obsolete version, now enforced by a linter/type/test, duplicated elsewhere, or a debugging transcript) — not by a fixed entry count.
+- **Candidate**: Distill a non-obvious gotcha into ≤ 2 context-tagged bullets. Propose it before writing.
+- **Promote**: On confirmation, put it where whoever would break it must already pass — enforce it (assert/type/test) when the fix is in hand, else a comment at that site, else an agent-facing doc (`docs/agents/<topic>.md`, else `docs/agents/lessons-learned.md`) with one `@path` line under Pointers. Never both.
+- **Prune**: Drop entries once stale (obsolete version, now enforced, duplicated, or a transcript) — not by a fixed count.
 
 ## Claude Code Compatibility
 
