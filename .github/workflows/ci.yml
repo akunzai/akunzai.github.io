@@ -51,5 +51,16 @@ jobs:
       - name: Type & syntax check
         run: aubr check
 
+      - name: Check zh-tw terminology (zhtw-mcp)
+        run: |
+          base=https://github.com/sysprog21/zhtw-mcp/releases/download/latest
+          asset=zhtw-mcp-x86_64-unknown-linux-gnu.tar.gz
+          curl -fsSLO "$base/$asset" -O "$base/SHA256SUMS"
+          sha256sum --ignore-missing -c SHA256SUMS
+          tar -xzf "$asset" zhtw-mcp
+          chmod +x zhtw-mcp
+          ./zhtw-mcp lint src/content/docs/zh-tw/ --content-type markdown \
+            --baseline .zhtw-mcp/baseline.json --max-errors 0 --max-warnings 0
+
       - name: Build static site
         run: aubr build
