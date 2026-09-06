@@ -43,12 +43,13 @@ Execute these steps in order when producing or editing content:
 7. **Validate Type Safety, Content & Build**
    - Run `aubr check` to diagnose Astro components, Markdown/MDX frontmatter, and TypeScript typing.
    - Run `aubr build` to ensure clean static page compilation, routing integrity, and Pagefind search index generation.
+   - For `zh-tw` content, run `mise run zhtw:lint` to catch Mainland-Chinese wording before opening a PR (CI enforces this too, but catching it locally saves a round-trip).
 
 ## In-File Reference
 
 ### Language & Typography
 
-- **Taiwanese IT Terminology**:
+- **Taiwanese IT Terminology** (a drafting starter list, not the full ruleset — `mise run zhtw:lint` is the authoritative check):
   - `文件` (never 文檔)
   - `儲存庫` or `存放庫` (never 倉庫)
   - `專案` (never 項目)
