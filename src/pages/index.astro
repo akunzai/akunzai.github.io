@@ -4,12 +4,12 @@
   <head>
     <meta charset="utf-8" />
     <script is:inline>
-      const lang = (navigator.language || navigator.languages?.[0] || '').toLowerCase()
-      // future: add more locales here, e.g. lang.startsWith('en') ? '/en/' : '/zh-tw/'
-      location.replace(lang.startsWith('zh') ? '/zh-tw/' : '/zh-tw/')
+      const preferred = (navigator.languages?.[0] || navigator.language || '').toLowerCase()
+      const target = preferred.startsWith('zh') ? '/zh-tw/' : '/en/'
+      location.replace(target)
     </script>
     <noscript>
-      <meta http-equiv="refresh" content="0;url=/zh-tw/" />
+      <meta http-equiv="refresh" content="0;url=/en/" />
     </noscript>
   </head>
 </html>

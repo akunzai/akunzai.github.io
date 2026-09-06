@@ -1,0 +1,61 @@
+/* Warm Book-Paper Theme for Starlight */
+
+/* Light Theme: Warm beige/cream book paper, gentle on eyes */
+:root[data-theme='light'] {
+	--sl-color-white: #1c1917;
+	--sl-color-gray-1: #292524;
+	--sl-color-gray-2: #44403c;
+	--sl-color-gray-3: #78716c;
+	--sl-color-gray-4: #a8a29e;
+	--sl-color-gray-5: #d8cfbe;
+	--sl-color-gray-6: #e9e2d3;
+	--sl-color-gray-7: #f1ebd9;
+	--sl-color-black: #faf6ec;
+
+	--sl-color-bg: #faf6ec;
+	--sl-color-bg-nav: #f2ecd9;
+	--sl-color-bg-sidebar: #f5eedf;
+	--sl-color-bg-inline-code: #ede5d3;
+
+	--sl-color-text: #2c2723;
+	--sl-color-hairline: #e3d9c6;
+	--sl-color-hairline-light: #eae1cf;
+	--sl-color-hairline-shade: #d9cfbc;
+
+	/* Warm Amber / Leather Accent */
+	--sl-color-accent-low: #edd9be;
+	--sl-color-accent: #9e531e;
+	--sl-color-accent-high: #72340b;
+	--sl-color-text-accent: #9e531e;
+	--sl-color-bg-accent: #9e531e;
+}
+
+/* Dark Theme: Warm Charcoal / Sepia Dark */
+:root[data-theme='dark'] {
+	--sl-color-white: #f5eedf;
+	--sl-color-gray-1: #e7ded0;
+	--sl-color-gray-2: #cfc5b4;
+	--sl-color-gray-3: #9b9080;
+	--sl-color-gray-4: #6b6255;
+	--sl-color-gray-5: #38332c;
+	--sl-color-gray-6: #27231e;
+	--sl-color-gray-7: #201d19;
+	--sl-color-black: #171513;
+
+	--sl-color-bg: #1a1917;
+	--sl-color-bg-nav: #22201d;
+	--sl-color-bg-sidebar: #1e1c19;
+	--sl-color-bg-inline-code: #2c2823;
+
+	--sl-color-text: #d8d0c2;
+	--sl-color-hairline: #35302a;
+	--sl-color-hairline-light: #3f3932;
+	--sl-color-hairline-shade: #141311;
+
+	/* Warm Ochre / Amber Accent */
+	--sl-color-accent-low: #3b2814;
+	--sl-color-accent: #d28c46;
+	--sl-color-accent-high: #f0be82;
+	--sl-color-text-accent: #f0be82;
+	--sl-color-bg-accent: #d28c46;
+}
