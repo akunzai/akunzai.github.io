@@ -31,7 +31,7 @@ This project uses Node.js and [aube](https://aube.jdx.dev/) managed via `mise.to
 
 - **Candidate**: Distill a non-obvious gotcha into ≤ 2 context-tagged bullets. Propose it before writing.
 - **Promote**: On confirmation, put it where whoever would break it must already pass — enforce it (assert/type/test) when the fix is in hand, else a comment at that site, else an agent-facing doc (`docs/agents/<topic>.md`, else `docs/agents/lessons-learned.md`) with one `@path` line under Pointers. Never both.
-- **Prune**: Drop entries once stale (obsolete version, now enforced, duplicated, or a transcript) — not by a fixed count.
+- **Prune**: When Promote reaches the doc tier, read that file in full and propose deletions alongside the addition. Drop entries once stale (obsolete version, now enforced, duplicated, or a transcript) — not by a fixed count or "periodically".
 
 ## Claude Code Compatibility
 
