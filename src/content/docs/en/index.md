@@ -10,7 +10,7 @@ hero:
       link: /en/blog/
       icon: right-arrow
     - text: Browse Notes
-      link: /en/notes/dev-environment/
+      link: /en/notes/
       icon: open-book
       variant: minimal
 ---

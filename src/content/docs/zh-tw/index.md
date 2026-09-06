@@ -10,7 +10,7 @@ hero:
       link: /zh-tw/blog/
       icon: right-arrow
     - text: 瀏覽筆記
-      link: /zh-tw/notes/dev-environment/
+      link: /zh-tw/notes/
       icon: open-book
       variant: minimal
 ---
