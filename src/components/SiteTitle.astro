@@ -1,0 +1,40 @@
+---
+import Default from '@astrojs/starlight/components/SiteTitle.astro'
+import StarlightBlogSiteTitle from 'starlight-blog/components/SiteTitle.astro'
+
+const { locale } = Astro.locals.starlightRoute
+const notesHref = `/${locale}/notes/`
+const notesLabel = locale === 'zh-tw' ? '筆記' : 'Notes'
+---
+
+<Default><slot /></Default>
+<StarlightBlogSiteTitle><slot /></StarlightBlogSiteTitle>
+<div class="sl-notes-header-links">
+  <a class="sl-notes-header-link" href={notesHref}>{notesLabel}</a>
+</div>
+
+<style>
+  .sl-notes-header-links {
+    display: none;
+    gap: 1rem;
+    margin-inline-start: 1rem;
+    min-inline-size: 0;
+  }
+
+  @media (min-width: 50rem) {
+    .sl-notes-header-links {
+      align-items: center;
+      display: flex;
+    }
+  }
+
+  .sl-notes-header-link {
+    color: var(--sl-color-text-accent);
+    font-weight: 600;
+    min-inline-size: 0;
+    overflow: hidden;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+</style>

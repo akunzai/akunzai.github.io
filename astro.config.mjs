@@ -23,9 +23,13 @@ export default defineConfig({
       plugins: [
         starlightBlog({
           title: { en: 'Blog', 'zh-TW': '隨想' },
+          navigation: 'header-start',
         }),
       ],
       customCss: ['./src/styles/custom.css'],
+      components: {
+        SiteTitle: './src/components/SiteTitle.astro',
+      },
       sidebar: [
         {
           label: 'Modern Dev Environment & Engineering Literacy',
