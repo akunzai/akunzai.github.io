@@ -9,6 +9,7 @@ This project uses Node.js and [aube](https://aube.jdx.dev/) managed via `mise.to
 - Dev: `aubr dev` (http://localhost:4321)
 - Build: `aubr build` → `dist/`
 - Preview: `aubr preview`
+- Check: `aubr check`
 - CI install: `aube ci` (frozen `pnpm-lock.yaml`)
 - Add dep: `aube add <pkg>`
 

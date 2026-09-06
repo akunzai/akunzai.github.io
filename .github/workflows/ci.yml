@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Check & Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up mise (node + aube)
+        uses: jdx/mise-action@v4
+
+      - name: Install dependencies
+        run: aube ci
+
+      - name: Type & syntax check
+        run: aubr check
+
+      - name: Build static site
+        run: aubr build
