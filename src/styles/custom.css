@@ -1,5 +1,11 @@
 /* Warm Book-Paper Theme for Starlight */
 
+/* JetBrains Mono for Latin text; LXGW WenKai TC (霞鶩文楷) for CJK glyphs it
+ * doesn't cover. Loaded via Google Fonts / jsDelivr in astro.config.mjs (head). */
+:root {
+	--sl-font: 'JetBrains Mono', 'LXGW WenKai TC', sans-serif;
+}
+
 /* Light Theme: Warm beige/cream book paper, gentle on eyes */
 :root[data-theme='light'] {
 	--sl-color-white: #1c1917;
