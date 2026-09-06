@@ -28,6 +28,23 @@ jobs:
         with:
           node-version: auto
 
+      - id: aube-paths
+        run: |
+          echo "store=$(aube store path)" >> "$GITHUB_OUTPUT"
+          echo "cache=$(aube cache path)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache aube store
+        uses: actions/cache@v6
+        with:
+          path: ${{ steps.aube-paths.outputs.store }}
+          key: ${{ runner.os }}-aube-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+      - name: Cache aube registry metadata
+        uses: actions/cache@v6
+        with:
+          path: ${{ steps.aube-paths.outputs.cache }}
+          key: ${{ runner.os }}-aube-cache-${{ hashFiles('**/pnpm-lock.yaml') }}
+
       - name: Install dependencies
         run: aube ci
 
