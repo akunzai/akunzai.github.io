@@ -12,12 +12,17 @@ This project uses Node.js and [aube](https://aube.jdx.dev/) managed via `mise.to
 - CI install: `aube ci` (frozen `pnpm-lock.yaml`)
 - Add dep: `aube add <pkg>`
 
+## Content & Localization Guidelines
+
+- **Bilingual Requirement**: All articles and notes must be written in both Traditional Chinese (`zh-tw`) and English (`en`), unless the user explicitly requests restricting the language.
+- **English Default for Repository Content**: Except for Traditional Chinese articles (`src/content/docs/zh-tw/...`) and language configurations (e.g. `src/content/i18n/zh-TW.json`, locale metadata in `astro.config.mjs`), all repository content—including code, CSS/configuration comments, agent instructions/skills, documentation, pull requests, and commit messages—must be written in English.
+
 ## Pointers
 
 - Site & blog configuration: @astro.config.mjs
 - Content collections schema: @src/content.config.ts
-- Blog post sample: @src/content/docs/zh-tw/blog/hello-world.md
-- Notes sample: @src/content/docs/zh-tw/notes/index.md
+- Blog post sample: @src/content/docs/zh-tw/blog/global-agents-architecture.md / @src/content/docs/en/blog/global-agents-architecture.md
+- Notes sample: @src/content/docs/zh-tw/notes/dev-environment/index.md / @src/content/docs/en/notes/dev-environment/index.md
 - Deployment workflow: @.github/workflows/deploy.yml
 - Toolchain configuration: @mise.toml
 
