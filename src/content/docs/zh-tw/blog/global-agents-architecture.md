@@ -24,8 +24,8 @@ tags: ["ai-agent", "workflow", "governance"]
    點出了「指令文件絕非垃圾桶」的關鍵盲點：規則必須精簡、不可自程式碼推導（Non-derivable），且應由誰會打破規範就留在哪裡的原則（Ownership）來決定存放層級，杜絕流水帳式的無效 Prompt。
 2. **官方 Session 治理：Anthropic 的 [Maximizing the Value of Your Claude Code Sessions](https://claude.com/blog/maximizing-the-value-of-your-claude-code-sessions)**  
    深入探討了 Session 生命週期治理與 Context 污染的代價：重視保持主對話脈絡輕盈、任務階段性交付、善用重置與適時委派，避免一次性重工泥淖淹沒長效核心準則。
-3. **前沿脈絡工程：[The New Rules of Context Engineering](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models)**  
-   確立了新一代前沿模型的脈絡工程哲學——**漸進式揭露（Progressive Disclosure）與動態情境掛載**：與其在開場一股腦塞入三千行規則造成注意力稀釋（Attention Dilution），不如打造常駐骨幹並按需動態喚醒情境規則。
+3. **前瞻脈絡工程：[The New Rules of Context Engineering](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models)**  
+   確立了新一代前瞻模型的脈絡工程哲學——**漸進式揭露（Progressive Disclosure）與動態情境掛載**：與其在開場一股腦塞入三千行規則造成注意力稀釋（Attention Dilution），不如打造常駐骨幹並按需動態喚醒情境規則。
 
 基於這些思維碰撞，我梳理出能跨工具、兼顧安全與極致脈絡效率的分層治理架構。
 
@@ -124,4 +124,4 @@ flowchart TD
 - [GitHub 專案：akunzai/skills-manager](https://akunzai.github.io/skills-manager/) — 跨平台 Agent 技能宣告式管理工具
 - [12 Rules for CLAUDE.md by @Mnilax](https://x.com/mnilax/status/2053116311132155938) — 社群啟發性的 CLAUDE.md 設計思考
 - [Anthropic: Maximizing the Value of Your Claude Code Sessions](https://claude.com/blog/maximizing-the-value-of-your-claude-code-sessions) — 官方關於 context 與 session 治理的最佳實踐
-- [Anthropic: The New Rules of Context Engineering](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models) — 前沿模型情境工程與注意力治理的核心準則
+- [Anthropic: The New Rules of Context Engineering](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models) — 前瞻模型情境工程與注意力治理的核心準則

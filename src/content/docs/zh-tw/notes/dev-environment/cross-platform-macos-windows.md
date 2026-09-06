@@ -36,9 +36,9 @@ brew install --cask ghostty font-jetbrains-mono-nerd-font
 ```text
 xterm-ghostty: unknown terminal type
 ```
-想像一下：你開著最新款、擁有 GPU 渲染極致流暢平滑的現代終端機，連線進公司一台運行了十多年從未重開機過的舊主機，結果遠端伺服器一臉茫然地抗議「我這輩子沒見過這種外星生物」——這種宛如拿著 iPhone 16 穿越回石器時代的尷尬，就是因為老舊伺服器的 terminfo 資料庫根本不認得新終端機。
+想像一下：你開著最新款、擁有 GPU 算繪極致流暢平滑的現代終端機，連線進公司一台運行了十多年從未重開機過的舊主機，結果遠端伺服器一臉茫然地抗議「我這輩子沒見過這種外星生物」——這種宛如拿著 iPhone 16 穿越回石器時代的尷尬，就是因為老舊伺服器的 terminfo 資料庫根本不認得新終端機。
 
-**最佳解法**：在本地 `~/.ssh/config` 中，預設將連線終端環境回退為最相容的 256 色定義：
+**最佳解法**：在本地 `~/.ssh/config` 中，預設將連線終端機環境回退為最相容的 256 色定義：
 
 ```ssh-config
 # ~/.ssh/config
@@ -89,7 +89,7 @@ Start-Service ssh-agent
 如果你選擇在 WSL 2（如 Ubuntu on Windows）下工作，請務必銘記以下兩條血淚經驗：
 
 #### 規則一：程式碼必須放在 Linux 檔案系統內！
-- ❌ **嚴重降速寫法**：把專案放在 `/mnt/c/Users/...` 下進行開發。跨作業系統的 9P 協議檔案系統轉換開銷極大，每次 `npm install` 或 `git status` 花的時間足以讓你悠閒手沖三次咖啡，硬生生把 NVMe SSD 性能折磨成 5400 轉老機械硬碟！
+- ❌ **嚴重降速寫法**：把專案放在 `/mnt/c/Users/...` 下進行開發。跨作業系統的 9P 協定檔案系統轉換開銷極大，每次 `npm install` 或 `git status` 花的時間足以讓你悠閒手沖三次咖啡，硬生生把 NVMe SSD 效能折磨成 5400 轉老機械硬碟！
 - ✅ **正確寫法**：一律把程式碼放置於 WSL 2 的原生路徑（如 `~/code/...` 或 `/home/username/code`）。若需要在 Windows 端用 VS Code 開啟，只需在 WSL 內輸入 `code .` 即可無縫遠端編輯。
 
 #### 規則二：在 WSL 內複用 Windows 的 Git Credential Manager
@@ -110,7 +110,7 @@ git config --global credential.helper "/mnt/c/Program\ Files/Git/mingw64/bin/git
 
 | 檢驗項目 | 驗證指令 / 確認方式 | 預期結果 |
 | :--- | :--- | :--- |
-| **SSH 演算法** | `ls ~/.ssh/` | 存在 `id_ed25519.pub`，無過時 RSA 弱密鑰 |
+| **SSH 演算法** | `ls ~/.ssh/` | 存在 `id_ed25519.pub`，無過時 RSA 弱金鑰 |
 | **Passphrase 保護** | `ssh-keygen -y -f ~/.ssh/id_ed25519` | 提示輸入 passphrase，非免密私鑰 |
 | **金鑰隔離** | 檢視 `~/.ssh/config` | 具備 `IdentitiesOnly yes` 與 `ForwardAgent no` |
 | **Git 核心配置** | `git config core.autocrlf` | macOS/Linux 為 `input`；Windows 為 `true` |
@@ -135,6 +135,6 @@ git config --global credential.helper "/mnt/c/Program\ Files/Git/mingw64/bin/git
 
 - [Homebrew 官方網站與文件](https://brew.sh/) — macOS 套件管理工具安裝、維護與 Cask 生態系統
 - [Microsoft Learn：WSL 安裝與最佳實踐](https://learn.microsoft.com/en-us/windows/wsl/setup/environment) — WSL 2 開發環境建置、Linux 發行版管理與遠端除錯
-- [Microsoft Learn：比較 WSL 1 與 WSL 2 架構差異](https://learn.microsoft.com/en-us/windows/wsl/compare-versions) — 跨作業系統 9P 檔案系統協議效能深入剖析
+- [Microsoft Learn：比較 WSL 1 與 WSL 2 架構差異](https://learn.microsoft.com/en-us/windows/wsl/compare-versions) — 跨作業系統 9P 檔案系統協定效能深入剖析
 - [Microsoft Learn：Windows 套件管理員 (winget)](https://learn.microsoft.com/en-us/windows/package-manager/winget/) — Windows 現代化指令列套件探索與安裝標準
 - [PowerShell 官方文件](https://learn.microsoft.com/en-us/powershell/) — PowerShell 7 跨平台命令列、模組與自動化環境指南
