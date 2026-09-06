@@ -5,7 +5,7 @@ sidebar:
   order: 4
 ---
 
-在團隊中，你是否曾看過有人送出 Commit 時，頭像與名字顯示為他人，或是由不知名的機器人帳號發出？
+在團隊中，你是否曾看過有人送出 Commit 時，大頭貼與名字顯示為他人，或是由不知名的機器人帳號發出？
 
 在 Git 的底層設計中，**Commit 的作者資訊（Author Name 與 Email）本質上只是毫無防護的純文字字串**。不信的話，你現在打開終端機輸入：
 ```bash
@@ -21,14 +21,14 @@ Git 會面不改色地把 Linux 之父的大名寫進你的專案歷史裡。要
 
 多年以來，Git 簽章的唯一主流是 **GPG（GNU Privacy Guard）**。但在實務上，90% 的工程團隊推行 GPG 時都會遭遇「集體抗拒」：
 
-- **工具鏈臃腫**：需要額外安裝 `gpg`、`pinentry`，且在 Windows 與 macOS 上的守護程序（`gpg-agent`）動不動就死鎖或休眠。
-- **密鑰管理繁瑣**：GPG 金鑰有過期時間、主密鑰/子密鑰結構複雜，其配置體驗宛如**蒙著雙眼、拿著缺損的六角扳手在狂風中組裝 IKEA 家具**。
+- **工具鏈臃腫**：需要額外安裝 `gpg`、`pinentry`，且在 Windows 與 macOS 上的守護程序（`gpg-agent`）動不動就死結或休眠。
+- **金鑰管理繁瑣**：GPG 金鑰有過期時間、主金鑰/子金鑰結構複雜，其配置體驗宛如**蒙著雙眼、拿著缺損的六角扳手在狂風中組裝 IKEA 家具**。
 - **維護成本過高**：新人進公司往往要花半天除錯令人生無可戀的 `error: gpg failed to sign the data`。
 
 ### 現代救星：Git 原生 SSH 簽名
 自 **Git 2.34**（2021 年底釋出）起，Git 正式支援直接使用 **SSH 金鑰** 進行簽章與驗證！
 
-這意味著：**你在先前的 [SSH 金鑰安全配置](./ssh-keys-security/) 中生成的 `id_ed25519` 金鑰，既可以用來做遠端驗證與 Push，也可以直接拿來為程式碼簽名！** 不需要額外安裝任何軟體、不需要管理兩套密鑰，完全無痛。
+這意味著：**你在先前的 [SSH 金鑰安全配置](./ssh-keys-security/) 中生成的 `id_ed25519` 金鑰，既可以用來做遠端驗證與 Push，也可以直接拿來為程式碼簽名！** 不需要額外安裝任何軟體、不需要管理兩套金鑰，完全無痛。
 
 ---
 
@@ -68,7 +68,7 @@ git config --global tag.gpgsign true
    cat ~/.ssh/id_ed25519.pub
    ```
 2. 進入 GitHub **Settings** → **SSH and GPG keys**。
-3. 點擊 **New SSH Key**：
+3. 點選 **New SSH Key**：
    - **Key type**：請務必下拉選擇 **Signing Key**（如果之前已經加過作為 Authentication Key，請在此處重新加一次並標註用途）。
    - 貼上公鑰內容並儲存。
 
@@ -76,7 +76,7 @@ git config --global tag.gpgsign true
 1. 進入 GitLab **Preferences** → **SSH Keys**。
 2. 貼上公鑰內容：
    - 在 **Usage type** 下拉選單中，選擇 **Authentication & Signing**（或專門選擇 Signing）。
-   - 點擊 **Add key**。
+   - 點選 **Add key**。
 
 設定完成後，你推送的每一次 Commit，在 GitHub / GitLab 的提交歷史上就會點亮耀眼的 **Verified** 徽章！
 
@@ -129,8 +129,8 @@ Verified that the code came from user@example.com
 
 > **簽名等同於你在法律合約上的親筆簽名。**
 
-- 當你使用你的密鑰簽署一個 Commit，代表你**對這份程式碼負起工程與法律責任**。
-- 如果這段程式碼是由 AI Agent 生成的，在你點擊提交、觸發簽章的那一瞬間，就代表你已經仔細審查（Review）過程式碼邏輯、確認無安全漏洞與敏感憑證洩漏，並以你的個人名譽對其結果背書。
+- 當你使用你的金鑰簽署一個 Commit，代表你**對這份程式碼負起工程與法律責任**。
+- 如果這段程式碼是由 AI Agent 生成的，在你點選提交、觸發簽章的那一瞬間，就代表你已經仔細審查（Review）過程式碼邏輯、確認無安全漏洞與敏感憑證洩漏，並以你的個人名譽對其結果背書。
 
 在下一篇中，我們將進入企業多環境實戰：[企業級多身分隔離與 GitLab CI / Agent Skills 整合實踐](./multi-identity-gitlab-agent-skills/)，探討如何利用 Git 的動態條件引入機制（`includeIf`）以及官方 Agent Skills，優雅隔離**個人開源身分**與**公司企業身分**。
 

@@ -17,6 +17,7 @@ This project uses Node.js and [aube](https://aube.jdx.dev/) managed via `mise.to
 
 - **Bilingual Requirement**: All articles and notes must be written in both Traditional Chinese (`zh-tw`) and English (`en`), unless the user explicitly requests restricting the language.
 - **English Default for Repository Content**: Except for Traditional Chinese articles (`src/content/docs/zh-tw/...`) and language configurations (e.g. `src/content/i18n/zh-TW.json`, locale metadata in `astro.config.mjs`), all repository content—including code, CSS/configuration comments, agent instructions/skills, documentation, pull requests, and commit messages—must be written in English.
+- **Taiwan Terminology**: CI runs [zhtw-mcp](https://github.com/sysprog21/zhtw-mcp) against `src/content/docs/zh-tw/` to catch Mainland-Chinese wording drift (e.g. 軟件/軟體, 回車/Enter); known pre-existing findings are suppressed via `.zhtw-mcp/baseline.json`, so it only fails on new occurrences. Run `mise run zhtw:lint` locally before committing zh-tw prose to avoid a CI surprise; after deliberately accepting a new term, run `mise run zhtw:baseline` to update the baseline.
 
 ## Pointers
 

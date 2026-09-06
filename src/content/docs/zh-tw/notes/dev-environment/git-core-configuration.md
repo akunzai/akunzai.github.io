@@ -12,7 +12,7 @@ git config --global user.email "user@example.com"
 ```
 然後就直接開始 `git add .` 與 `git commit`。
 
-然而，Git 誕生於 Linux 內核開發社群，許多歷史預設值建立在二十多年前的背景下。若沒有妥善配置，在現代團隊協作中很快就會遭遇：**Windows 與 macOS 開發者互相污染換行符號、檔名大小寫修改在 CI 上炸裂、頻繁 rebase 導致重複解衝突、以及模糊不清的 diff 比對**。
+然而，Git 誕生於 Linux 核心開發社群，許多歷史預設值建立在二十多年前的背景下。若沒有妥善配置，在現代團隊協作中很快就會遭遇：**Windows 與 macOS 開發者互相污染換行符號、檔名大小寫修改在 CI 上炸裂、頻繁 rebase 導致重複解衝突、以及模糊不清的 diff 比對**。
 
 本篇將帶你逐一盤點並配置現代 Git 的關鍵參數，將這些協作隱患在第一天就徹底消除。
 
@@ -138,7 +138,7 @@ git config --global commit.verbose true
 ```bash
 git config --global core.whitespace trailing-space,space-before-tab,cr-at-eol
 ```
-在執行 `git diff` 時，行尾多餘的空白字元（trailing space）或混雜的 tab/space 會被自動用醒目的紅色高亮標出。
+在執行 `git diff` 時，行尾多餘的空白字元（trailing space）或混雜的 tab/space 會被自動以醒目的紅色標示。
 
 ---
 

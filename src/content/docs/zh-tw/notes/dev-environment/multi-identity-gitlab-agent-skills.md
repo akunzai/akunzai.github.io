@@ -19,7 +19,7 @@ sidebar:
 
 ## 1. 神級配置：Git `includeIf` 自動切換身分
 
-自 Git 2.13 起，Git 支援了 `includeIf`；在 Git 2.26 之後，更支援直接**依據遠端倉庫的 Remote URL** 進行條件匹配。
+自 Git 2.13 起，Git 支援了 `includeIf`；在 Git 2.26 之後，更支援直接**依據遠端儲存庫的 Remote URL** 進行條件匹配。
 
 這意味著：無論你把專案 clone 在電腦的哪個目錄，**只要遠端連線指向公司的 Git 伺服器，Git 就會自動載入公司的公務設定！**
 
@@ -96,7 +96,7 @@ git config user.email
 
 當現代開發流程進入「人類工程師 + AI Coding Agents」協同作業時，新的挑戰出現了：**當你滿懷信任地對 AI 說『幫我看下 CI/CD 的狀況』，結果它以 120% 的自信心，在終端機裡瞎編出一句根本不存在的 `glab ci fire-missiles --force`**。
 
-又或者，AI 為了圖方便，直接用脆弱的 `curl` 寫了 80 行嵌套跳脫字元的腳本試圖去暴力轟炸 GitLab 的私有 REST API，結果在發布 Merge Request 說明時，因為 Markdown 內含反引號與 `$` 變數，觸發了未預期的 Shell 變數展開，把整個 MR 的版面炸得體無完膚。
+又或者，AI 為了圖方便，直接用脆弱的 `curl` 寫了 80 行巢狀跳脫字元的腳本試圖去暴力轟炸 GitLab 的私有 REST API，結果在發布 Merge Request 說明時，因為 Markdown 內含反引號與 `$` 變數，觸發了未預期的 Shell 變數展開，把整個 MR 的版面炸得體無完膚。
 
 ### 為什麼會這樣？
 主流大型語言模型（LLM）雖然訓練時吞進了海量程式碼，但對特定企業環境中 `glab` CLI 的最新子指令與安全邊界缺乏確鑿約束。換言之，**它在用無比篤定的語氣「認真地胡說八道」**。
@@ -115,7 +115,7 @@ glab skills install glab --global --force
 ```
 
 透過安裝此 Skill，AI Agent（如 Claude Code、Gemini CLI / Antigravity、Codex 等）將立即具備確鑿的行動依據：
-- **精確的 CI/CD 檢測**：學會使用 `glab ci status --output json` 與 `glab ci get --merge-request <iid> --with-job-details`，不再瞎猜。
+- **精確的 CI/CD 偵測**：學會使用 `glab ci status --output json` 與 `glab ci get --merge-request <iid> --with-job-details`，不再瞎猜。
 - **杜絕 Shell 跳脫陷阱**：在提交多行 Markdown 註解或 MR 內容時，嚴格遵循 Standard Input 管道（`glab mr note create <iid> < /tmp/body.md`）或引用 Heredoc（`<< 'EOF'`），徹底避免 `$` 與反引號引發的未預期執行。
 - **正規的跨專案參照**：要求所有引用必須使用完整 URL 展開，確保跨群組 Epic 與 Issue 均能正常渲染。
 
@@ -168,7 +168,7 @@ glab skills install glab --global --force
 
 ## 參考資料
 
-- [Git 官方文件：Conditional Includes (includeIf)](https://git-scm.com/docs/git-config#_conditional_includes) — 依據目錄與遠端倉庫 URL（`hasconfig:remote.*.url`）動態載入身分設定
+- [Git 官方文件：Conditional Includes (includeIf)](https://git-scm.com/docs/git-config#_conditional_includes) — 依據目錄與遠端儲存庫 URL（`hasconfig:remote.*.url`）動態載入身分設定
 - [GitHub CLI 官方手冊](https://cli.github.com/manual/) — `gh auth` 憑證隔離與 GitHub 企業端點管理
 - [GitLab CLI (glab) 官方文件](https://docs.gitlab.com/ee/editor_extensions/gitlab_cli/) — GitLab CLI 核心指令、MR 自動化與 CI Pipeline 操作
 - [Git Credential Manager 官方文件](https://github.com/git-ecosystem/git-credential-manager) — 跨平台 Git 憑證儲存、OAuth 認證與多身分路由
