@@ -1,3 +1,20 @@
 [tools]
 node = "lts"
 aube = "latest"
+
+# zhtw-mcp fingerprints findings by absolute path, so the mount destination
+# below must match CI's checkout path (.github/workflows/ci.yml) exactly for
+# the baseline to line up.
+[tasks."zhtw:build"]
+description = "Build the local zhtw-mcp image"
+run = "docker build -t zhtw-mcp -f .zhtw-mcp/Dockerfile ."
+
+[tasks."zhtw:lint"]
+description = "Lint zh-tw content for Mainland terminology (matches CI)"
+depends = ["zhtw:build"]
+run = "docker run --rm -v $PWD:/home/runner/work/akunzai.github.io/akunzai.github.io -w /home/runner/work/akunzai.github.io/akunzai.github.io zhtw-mcp lint src/content/docs/zh-tw/ --content-type markdown --baseline .zhtw-mcp/baseline.json --max-errors 0 --max-warnings 0"
+
+[tasks."zhtw:baseline"]
+description = "Regenerate .zhtw-mcp/baseline.json after accepting new findings"
+depends = ["zhtw:build"]
+run = "docker run --rm -v $PWD:/home/runner/work/akunzai.github.io/akunzai.github.io -w /home/runner/work/akunzai.github.io/akunzai.github.io zhtw-mcp lint src/content/docs/zh-tw/ --content-type markdown --baseline .zhtw-mcp/baseline.json --update-baseline"
