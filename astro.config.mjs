@@ -1,33 +1,36 @@
 import { defineConfig } from 'astro/config'
+import mermaid from 'astro-mermaid'
 import starlight from '@astrojs/starlight'
 import starlightBlog from 'starlight-blog'
 
 export default defineConfig({
   site: 'https://akunzai.github.io',
   integrations: [
+    mermaid({
+      autoTheme: true,
+    }),
     starlight({
-      title: 'Abiding nowhere, give rise to mind.',
+      title: {
+        'zh-TW': '應無所住，而生其心',
+        en: 'Abiding nowhere, give rise to mind.',
+      },
       description: '查理的技術筆記與隨想',
       defaultLocale: 'zh-tw',
       locales: {
         'zh-tw': { label: '繁體中文', lang: 'zh-TW' },
+        en: { label: 'English', lang: 'en' },
       },
       plugins: [
         starlightBlog({
           title: { en: 'Blog', 'zh-TW': '隨想' },
-          authors: {
-            charley: {
-              name: 'Charley Wu',
-              url: 'https://github.com/akunzai',
-            },
-          },
         }),
       ],
+      customCss: ['./src/styles/custom.css'],
       sidebar: [
         {
-          label: 'Notes',
-          translations: { 'zh-TW': '筆記' },
-          items: [{ label: 'Overview', link: '/notes/', translations: { 'zh-TW': '總覽' } }],
+          label: 'Modern Dev Environment & Engineering Literacy',
+          translations: { 'zh-TW': '現代開發環境與工程素養' },
+          items: [{ autogenerate: { directory: 'notes/dev-environment' } }],
         },
       ],
       social: [
