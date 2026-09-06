@@ -46,7 +46,7 @@ Host *
   SetEnv TERM=xterm-256color
 ```
 
-### 1.3 運行時版本管理：[mise](https://mise.jdx.dev/)
+### 1.3 執行環境版本管理：[mise](https://mise.jdx.dev/)
 避免全域安裝 Node.js、Python、Go 等特定版本導致不同專案打架。推薦採用現代高效的環境管理工具 **mise**（或透過 [akunzai/agent-skills](https://github.com/akunzai/agent-skills) 內的 `mise` 技能引導 AI 正確配置 `mise.toml`）。
 
 ```bash
