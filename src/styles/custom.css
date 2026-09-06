@@ -6,6 +6,13 @@
 	--sl-font: 'JetBrains Mono', 'LXGW WenKai TC', sans-serif;
 }
 
+/* JetBrains Mono is wider per character than Starlight's default font, so the
+ * language select's fixed 7em (calibrated for that default) truncates
+ * "English". Widen it; ThemeSelect's shorter labels still fit at 6.25em. */
+starlight-lang-select label {
+	--sl-select-width: 9em !important;
+}
+
 /* Light Theme: Warm beige/cream book paper, gentle on eyes */
 :root[data-theme='light'] {
 	--sl-color-white: #1c1917;
