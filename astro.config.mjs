@@ -25,10 +25,35 @@ export default defineConfig({
           title: { en: 'Blog', 'zh-TW': '隨想' },
           navigation: 'header-start',
         }),
+        {
+          name: 'fix-blog-rss-head-link',
+          hooks: {
+            'config:setup'({ config, updateConfig, astroConfig }) {
+              const site = astroConfig.site?.replace(/\/$/, '') ?? ''
+              const head = (config.head ?? []).filter(
+                (entry) =>
+                  !(entry.tag === 'link' && entry.attrs?.type === 'application/rss+xml'),
+              )
+              for (const locale of Object.keys(config.locales ?? {})) {
+                head.push({
+                  tag: 'link',
+                  attrs: {
+                    href: `${site}/${locale}/blog/rss.xml`,
+                    rel: 'alternate',
+                    title: 'Blog',
+                    type: 'application/rss+xml',
+                  },
+                })
+              }
+              updateConfig({ head })
+            },
+          },
+        },
       ],
       customCss: ['./src/styles/custom.css'],
       components: {
         SiteTitle: './src/components/SiteTitle.astro',
+        SocialIcons: './src/components/SocialIcons.astro',
       },
       sidebar: [
         {
