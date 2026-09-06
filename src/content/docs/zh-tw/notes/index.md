@@ -1,5 +1,5 @@
 ---
-title: Notes
+title: 筆記
 description: 技術學習筆記
 ---
 
