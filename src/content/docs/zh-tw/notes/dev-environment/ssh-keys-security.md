@@ -198,7 +198,7 @@ Host internal-db
 - [ ] `~/.ssh/config` 中是否已針對不同 Host 配置 `IdentitiesOnly yes`？
 - [ ] 是否確認全域 `ForwardAgent no`，避免憑證濫用風險？
 
-完成了身分認證的基石之後，下一篇我們將深入探討版本控制的核心——[現代 Git 必備全域配置與避坑指南](./git-core-configuration/)。
+完成了身分認證的基石之後，下一篇我們將深入探討版本控制的核心——[現代 Git 必備全域配置與避坑指南](../git-core-configuration/)。
 
 ---
 

@@ -28,7 +28,7 @@ Git 會面不改色地把 Linux 之父的大名寫進你的專案歷史裡。要
 ### 現代救星：Git 原生 SSH 簽名
 自 **Git 2.34**（2021 年底釋出）起，Git 正式支援直接使用 **SSH 金鑰** 進行簽章與驗證！
 
-這意味著：**你在先前的 [SSH 金鑰安全配置](./ssh-keys-security/) 中生成的 `id_ed25519` 金鑰，既可以用來做遠端驗證與 Push，也可以直接拿來為程式碼簽名！** 不需要額外安裝任何軟體、不需要管理兩套金鑰，完全無痛。
+這意味著：**你在先前的 [SSH 金鑰安全配置](../ssh-keys-security/) 中生成的 `id_ed25519` 金鑰，既可以用來做遠端驗證與 Push，也可以直接拿來為程式碼簽名！** 不需要額外安裝任何軟體、不需要管理兩套金鑰，完全無痛。
 
 ---
 
@@ -132,7 +132,7 @@ Verified that the code came from user@example.com
 - 當你使用你的金鑰簽署一個 Commit，代表你**對這份程式碼負起工程與法律責任**。
 - 如果這段程式碼是由 AI Agent 生成的，在你點選提交、觸發簽章的那一瞬間，就代表你已經仔細審查（Review）過程式碼邏輯、確認無安全漏洞與敏感憑證洩漏，並以你的個人名譽對其結果背書。
 
-在下一篇中，我們將進入企業多環境實戰：[企業級多身分隔離與 GitLab CI / Agent Skills 整合實踐](./multi-identity-gitlab-agent-skills/)，探討如何利用 Git 的動態條件引入機制（`includeIf`）以及官方 Agent Skills，優雅隔離**個人開源身分**與**公司企業身分**。
+在下一篇中，我們將進入企業多環境實戰：[企業級多身分隔離與 GitLab CI / Agent Skills 整合實踐](../multi-identity-gitlab-agent-skills/)，探討如何利用 Git 的動態條件引入機制（`includeIf`）以及官方 Agent Skills，優雅隔離**個人開源身分**與**公司企業身分**。
 
 ---
 

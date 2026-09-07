@@ -162,7 +162,7 @@ glab skills install glab --global --force
 2. **憑證專用隔離**：讓 `gh` 與 `glab` 各自守護對應的網域憑證。
 3. **消除 AI 幻覺**：透過 [Skills Manager](https://github.com/akunzai/skills-manager) 安裝官方 `glab` 技能與 [agent-skills](https://github.com/akunzai/agent-skills)，確保 AI 在操作企業內部 CI/CD 時每一次都精準合規。
 
-在最後一篇中，我們將跨越作業系統平台，進入[雙平台落地指南：macOS 與 Windows 開發環境最佳實踐](./cross-platform-macos-windows/)，探討 macOS 與 Windows（WSL2 / Native）雙平臺的落地配置。
+在最後一篇中，我們將跨越作業系統平台，進入[雙平台落地指南：macOS 與 Windows 開發環境最佳實踐](../cross-platform-macos-windows/)，探討 macOS 與 Windows（WSL2 / Native）雙平臺的落地配置。
 
 ---
 

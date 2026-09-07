@@ -221,7 +221,7 @@ Here is a consolidated modern configuration (`~/.gitconfig`):
 	ui = true
 ```
 
-With your core Git workflow secured, proceed to [Cryptographic Non-Repudiation: SSH-Based Git Commit Signing](./ssh-commit-signing/).
+With your core Git workflow secured, proceed to [Cryptographic Non-Repudiation: SSH-Based Git Commit Signing](../ssh-commit-signing/).
 
 ---
 

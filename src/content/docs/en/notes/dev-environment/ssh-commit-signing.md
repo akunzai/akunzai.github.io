@@ -28,7 +28,7 @@ For years, GPG (GNU Privacy Guard) was the undisputed standard for commit signin
 ### The Modern Breakthrough: Native SSH Signing in Git
 Starting with **Git 2.34** (late 2021), Git introduced native support for **signing commits with standard SSH keys**!
 
-This means: **The exact same `id_ed25519` key you configured in [SSH Key Generation and Hardening](./ssh-keys-security/) can sign your Git commits directly.** No extra software, no secondary keyrings, and zero daemon friction.
+This means: **The exact same `id_ed25519` key you configured in [SSH Key Generation and Hardening](../ssh-keys-security/) can sign your Git commits directly.** No extra software, no secondary keyrings, and zero daemon friction.
 
 ---
 
@@ -125,7 +125,7 @@ Adopting commit signing requires a conscious mindset shift:
 - Signing a commit indicates that you **assume engineering and architectural responsibility** for the code.
 - If an AI agent generated the implementation, signing the commit affirms that you have thoroughly audited the logic, checked for security flaws and credential leaks, and endorsed the change under your professional reputation.
 
-Proceed to [Multi-Identity Governance with GitHub/GitLab & Agent Skills](./multi-identity-gitlab-agent-skills/) to explore automated identity switching and AI agent CLI governance.
+Proceed to [Multi-Identity Governance with GitHub/GitLab & Agent Skills](../multi-identity-gitlab-agent-skills/) to explore automated identity switching and AI agent CLI governance.
 
 ---
 

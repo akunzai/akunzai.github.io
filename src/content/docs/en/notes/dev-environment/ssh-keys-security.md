@@ -183,7 +183,7 @@ Verify your setup against this checklist:
 - [ ] `~/.ssh/config` configured with `IdentitiesOnly yes` for each remote host
 - [ ] Global `ForwardAgent no` enforced to minimize credential exposure
 
-With identity and network transport secured, proceed to [Essential Global Git Configurations & Pitfall Prevention](./git-core-configuration/).
+With identity and network transport secured, proceed to [Essential Global Git Configurations & Pitfall Prevention](../git-core-configuration/).
 
 ---
 
