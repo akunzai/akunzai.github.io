@@ -156,7 +156,7 @@ Modern engineering literacy extends beyond manual configuration—it includes **
 2. **Dedicated Credential Routing**: Delegate host credentials cleanly between `gh` and `glab`.
 3. **Eliminate Agent Hallucinations**: Standardize AI agent skills via [Skills Manager](https://github.com/akunzai/skills-manager), official `glab` skills, and curated workflows from [agent-skills](https://github.com/akunzai/agent-skills).
 
-Proceed to [Cross-Platform Implementation Guide: macOS & Windows Best Practices](./cross-platform-macos-windows/).
+Proceed to [Cross-Platform Implementation Guide: macOS & Windows Best Practices](../cross-platform-macos-windows/).
 
 ---
 

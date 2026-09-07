@@ -77,7 +77,7 @@ Execute these steps in order when producing or editing content:
 
 - **Native Sidebar Sequence**: Let Starlight's sidebar handle reading flow and navigation ordering. Set sequence cleanly via `sidebar.order` in frontmatter instead of embedding manual numbers in headings or filenames.
 - **Clean Slugs & Titles**: Keep filenames and titles clean, concise, and descriptive. Avoid `01-`, `Part 01:`, or numerical prefixes.
-- **Semantic Cross-Links**: Link between companion articles using clean relative paths (`./<slug>/`) and descriptive titles.
+- **Semantic Cross-Links**: Link between companion articles using clean relative paths (`../<slug>/` from sibling articles, or `./<slug>/` from directory index) and descriptive titles. Starlight URLs use trailing slashes, so `./<slug>/` on an article page resolves as a non-existent child route.
 
 ### Diagrams & Visual Discipline
 
