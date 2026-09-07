@@ -28,11 +28,11 @@ This project uses Node.js and [aube](https://aube.jdx.dev/) managed via `mise.to
 - Deployment workflow: @.github/workflows/deploy.yml
 - Toolchain configuration: @mise.toml
 
-## Self-Reflection
+## Prevent Recurrence
 
-- **Candidate**: Distill a non-obvious gotcha into ≤ 2 context-tagged bullets. Propose it before writing.
-- **Promote**: On confirmation, put it where whoever would break it must already pass — enforce it (assert/type/test) when the fix is in hand, else a comment at that site, else an agent-facing doc (`docs/agents/<topic>.md`, else `docs/agents/lessons-learned.md`) with one `@path` line under Pointers. Never both.
-- **Prune**: When Promote reaches the doc tier, read that file in full and propose deletions alongside the addition. Drop entries once stale (obsolete version, now enforced, duplicated, or a transcript) — not by a fixed count or "periodically".
+- **Candidate**: Name who hits this again, in which file, on what change. No such scenario, nothing to propose.
+- **Promote**: Offer the first tier that reaches them and only that one, pending confirmation — enforce it (assert/type/test) with its size quoted so one word can authorize it, else a comment at that site, else an agent-facing doc (`docs/agents/<topic>.md`, else `docs/agents/lessons-learned.md`) with one `@path` line under Pointers and one sentence on why the tiers above cannot hold it. Never two places at once.
+- **Prune**: When adding to a file, audit the rest of it in the same pass. Drop entries once stale (obsolete version, now enforced, duplicated, or a transcript) — not by a fixed count.
 
 ## Claude Code Compatibility
 
