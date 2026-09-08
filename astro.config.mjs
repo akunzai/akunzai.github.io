@@ -56,14 +56,21 @@ export default defineConfig({
       customCss: ['./src/styles/custom.css'],
       components: {
         Head: './src/components/Head.astro',
+        Header: './src/components/Header.astro',
         SiteTitle: './src/components/SiteTitle.astro',
         SocialIcons: './src/components/SocialIcons.astro',
       },
       sidebar: [
         {
-          label: 'Modern Dev Environment & Engineering Literacy',
-          translations: { 'zh-TW': '現代開發環境與工程素養' },
-          items: [{ autogenerate: { directory: 'notes/dev-environment' } }],
+          label: 'Notes',
+          translations: { 'zh-TW': '筆記' },
+          items: [
+            {
+              label: 'Modern Dev Environment & Engineering Literacy',
+              translations: { 'zh-TW': '現代開發環境與工程素養' },
+              items: [{ autogenerate: { directory: 'notes/dev-environment' } }],
+            },
+          ],
         },
       ],
       social: [

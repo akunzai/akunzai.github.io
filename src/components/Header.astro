@@ -1,0 +1,130 @@
+---
+import LanguageSelect from '@astrojs/starlight/components/LanguageSelect.astro'
+import Search from '@astrojs/starlight/components/Search.astro'
+import ThemeSelect from '@astrojs/starlight/components/ThemeSelect.astro'
+import SiteTitle from './SiteTitle.astro'
+import SocialIcons from './SocialIcons.astro'
+
+const { locale } = Astro.locals.starlightRoute
+const path = Astro.url.pathname
+const blogHref = `/${locale}/blog/`
+const notesHref = `/${locale}/notes/`
+const blogLabel = locale === 'zh-tw' ? '隨想' : 'Blog'
+const notesLabel = locale === 'zh-tw' ? '筆記' : 'Notes'
+const onBlog = path.includes('/blog')
+const onNotes = path.includes('/notes')
+---
+
+<div class="header">
+	<div class="header-row">
+		<div class="title-wrapper sl-flex">
+			<SiteTitle />
+		</div>
+		<div class="sl-flex print:hidden">
+			<Search />
+		</div>
+		<div class="sl-hidden md:sl-flex print:hidden right-group">
+			<div class="sl-flex social-icons">
+				<SocialIcons />
+			</div>
+			<ThemeSelect />
+			<LanguageSelect />
+		</div>
+	</div>
+	<nav class="section-nav print:hidden" aria-label={locale === 'zh-tw' ? '站內分類' : 'Site sections'}>
+		<a href={blogHref} aria-current={onBlog ? 'page' : undefined}>{blogLabel}</a>
+		<a href={notesHref} aria-current={onNotes ? 'page' : undefined}>{notesLabel}</a>
+	</nav>
+</div>
+
+<style>
+	@layer starlight.core {
+		.header {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			height: 100%;
+		}
+
+		.header-row {
+			display: flex;
+			gap: var(--sl-nav-gap);
+			justify-content: space-between;
+			align-items: center;
+			min-height: 0;
+			flex: 1;
+		}
+
+		.title-wrapper {
+			overflow: clip;
+			padding: 0.25rem;
+			margin: -0.25rem;
+			min-width: 0;
+		}
+
+		.right-group,
+		.social-icons {
+			gap: 1rem;
+			align-items: center;
+		}
+		.social-icons::after {
+			content: '';
+			height: 2rem;
+			border-inline-end: 1px solid var(--sl-color-gray-5);
+		}
+
+		.section-nav {
+			display: flex;
+			gap: 1.25rem;
+			align-items: center;
+			min-height: 2rem;
+			padding-bottom: 0.15rem;
+			font-size: var(--sl-text-sm);
+			font-weight: 600;
+		}
+
+		.section-nav a {
+			color: var(--sl-color-text-accent);
+			text-decoration: none;
+		}
+
+		.section-nav a[aria-current='page'] {
+			color: var(--sl-color-white);
+			box-shadow: inset 0 -2px 0 var(--sl-color-accent);
+		}
+
+		@media (min-width: 50rem) {
+			.section-nav {
+				display: none;
+			}
+
+			:global(:root[data-has-sidebar]) {
+				--__sidebar-pad: calc(2 * var(--sl-nav-pad-x));
+			}
+			:global(:root:not([data-has-toc])) {
+				--__toc-width: 0rem;
+			}
+			.header-row {
+				--__sidebar-width: max(0rem, var(--sl-content-inline-start, 0rem) - var(--sl-nav-pad-x));
+				--__main-column-fr: calc(
+					(
+							100% + var(--__sidebar-pad, 0rem) - var(--__toc-width, var(--sl-sidebar-width)) -
+								(2 * var(--__toc-width, var(--sl-nav-pad-x))) - var(--sl-content-inline-start, 0rem) -
+								var(--sl-content-width)
+						) / 2
+				);
+				display: grid;
+				grid-template-columns:
+					minmax(
+						calc(var(--__sidebar-width) + max(0rem, var(--__main-column-fr) - var(--sl-nav-gap))),
+						auto
+					)
+					1fr
+					auto;
+				align-content: center;
+				flex: none;
+				height: 100%;
+			}
+		}
+	}
+</style>
