@@ -43,6 +43,18 @@ starlight-lang-select label {
 	--sl-select-width: 9em !important;
 }
 
+/* Two-row header on small screens: site title + 隨想/筆記. Keep the menu
+ * button aligned to the first row (Starlight centers it on --sl-nav-height). */
+@media (max-width: 49.99rem) {
+	:root {
+		--sl-nav-height: 5.75rem;
+	}
+
+	.sl-menu-button {
+		top: calc((3.5rem - var(--sl-menu-button-size)) / 2);
+	}
+}
+
 /* Light Theme: Warm beige/cream book paper, gentle on eyes */
 :root[data-theme='light'] {
 	--sl-color-white: #1c1917;

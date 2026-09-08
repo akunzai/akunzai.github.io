@@ -1,10 +1,10 @@
 ---
 title: Home
-description: Charley's technical notes and thoughts on modern dev environments, AI agent governance, and engineering literacy.
+description: Charley's technical notes and thoughts. Essays for judgment; notes for steps you can repeat.
 template: splash
 hero:
   title: Charley's Technical Notes and Thoughts
-  tagline: Modern dev environments, AI agent governance, and engineering literacy.
+  tagline: Essays for judgment; notes for steps you can repeat.
   actions:
     - text: Read Blog
       link: /en/blog/
