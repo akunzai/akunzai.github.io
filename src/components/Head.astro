@@ -1,0 +1,9 @@
+---
+import Default from '@astrojs/starlight/components/Head.astro'
+import jetbrainsMono400 from '@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2?url'
+import jetbrainsMono700 from '@fontsource/jetbrains-mono/files/jetbrains-mono-latin-700-normal.woff2?url'
+---
+
+<Default><slot /></Default>
+<link rel="preload" href={jetbrainsMono400} as="font" type="font/woff2" crossorigin />
+<link rel="preload" href={jetbrainsMono700} as="font" type="font/woff2" crossorigin />
