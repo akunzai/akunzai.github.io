@@ -73,7 +73,7 @@ To show the green "Verified" badge, hosting platforms must associate your signin
    - Paste the public key and save.
 
 ### GitLab Setup
-1. Navigate to **Preferences** → **SSH Keys**.
+1. Navigate to the avatar menu **Edit profile** → **SSH Keys**.
 2. Paste the public key:
    - In **Usage type**, select **Authentication & Signing** (or Signing).
    - Click **Add key**.
@@ -99,13 +99,13 @@ git config --global gpg.ssh.allowedSignersFile ~/.config/git/allowed_signers
 ```
 
 ### Adding Trusted Keys
-The format follows OpenSSH specification (`<identity> <key-type> <base64-key>`):
+The format follows OpenSSH. Include `namespaces="git"` to prevent cross-protocol signature acceptance ([GitLab: Sign commits with SSH keys](https://docs.gitlab.com/user/project/repository/signed_commits/ssh/)):
 
 ```text
 # ~/.config/git/allowed_signers
-user@example.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...
-alice@company.example.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...
-bob@company.example.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...
+user@example.com namespaces="git" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...
+alice@company.example.com namespaces="git" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...
+bob@company.example.com namespaces="git" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...
 ```
 
 Now, running `git log --show-signature` confirms signature authenticity:

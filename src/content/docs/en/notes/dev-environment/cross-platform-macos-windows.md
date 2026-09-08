@@ -38,13 +38,15 @@ xterm-ghostty: unknown terminal type
 ```
 Picture this: you connect using your sleek, GPU-accelerated, butter-smooth modern terminal into an enterprise Linux box that has not rebooted since 2012, and the remote server looks back in utter confusion, protesting that it has never encountered such an alien species. It feels like bringing an iPhone 16 into the Stone Age—all because the remote terminfo database has never heard of modern terminals.
 
-**Best Practice Solution**: In `~/.ssh/config`, normalize terminal emulation to standard 256-color fallback:
+**Best Practice Solution**: In `~/.ssh/config`, lock `TERM` to a widely compatible 256-color fallback. This value is meant to apply everywhere, so put it in an **early** `Host *` (first obtained value wins). `SetEnv` requires OpenSSH 8.7+.
 
 ```ssh-config
-# ~/.ssh/config
+# ~/.ssh/config — early Host * locks TERM for every host
 Host *
   SetEnv TERM=xterm-256color
 ```
+
+Overridable security defaults (`ForwardAgent no` and similar) still belong at the **end** of the file; see [SSH Keys & Security Practices](../ssh-keys-security/).
 
 ### 1.3 Runtime Version Management: [mise](https://mise.jdx.dev/)
 Avoid global installations of Node.js, Python, or Go that cause version conflicts between repositories. Use **mise** for fast polyglot toolchain management (optionally paired with the `mise` skill from [akunzai/agent-skills](https://github.com/akunzai/agent-skills)):
@@ -69,7 +71,7 @@ Windows 10/11 includes `winget` as its official package manager:
 # Install Git, GitHub CLI, and GitLab CLI
 winget install --id Git.Git -e --source winget
 winget install --id GitHub.cli -e --source winget
-winget install --id GitLab.glab -e --source winget
+winget install --id GLab.GLab -e --source winget
 
 # Install Windows Terminal and PowerShell 7
 winget install --id Microsoft.WindowsTerminal -e --source winget

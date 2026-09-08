@@ -18,7 +18,7 @@ sidebar:
 過去二十年間，RSA 一直是 SSH 的代名詞。然而在現代軟體工程中，**RSA 已經不再是首選**：
 
 - **安全性評級**：小於 2048 位的 RSA 已經被視為不安全；即便使用 RSA 3072 或 4096 位，其抗暴力破解演算法的價效比也遠不如現代橢圓曲線密碼學。
-- **效能與體積**：RSA 4096 位的金鑰長度龐大，加解密運算開銷顯著；而 **Ed25519**（基於 Edwards-curve 25519）金鑰僅有 68 個字元長，計算速度極快且天生免疫旁路攻擊（Side-channel attacks）。
+- **效能與體積**：RSA 4096 位的金鑰長度龐大，加解密運算開銷顯著；而 **Ed25519**（基於 Edwards-curve 25519）金鑰僅有 68 個字元長，計算速度極快，實作上亦針對 timing side-channel 做了防護。
 - **廣泛支援**：自 OpenSSH 6.5（2014 年）起即獲得原生支援，如今 GitHub、GitLab、主流 Linux 發行版與 macOS 均預設完美相容。
 
 > 💡 **判斷準則**：除非需要連線至 10 年以上無人維護的老舊嵌入式系統或 Legacy 伺服器，否則**所有新環境一律只生成 Ed25519 金鑰**。
@@ -30,14 +30,13 @@ sidebar:
 打開終端機，執行以下指令生成 Ed25519 金鑰對：
 
 ```bash
-ssh-keygen -o -a 100 -t ed25519 -C "your_email@example.com"
+ssh-keygen -a 100 -t ed25519 -C "your_email@example.com"
 ```
 
 ### 關鍵參數解析
 - `-t ed25519`：指定使用 Ed25519 演算法。
 - `-C "your_email@example.com"`：為公鑰加上註解（Comment）。強烈建議填寫個人或公司公務信箱，方便日後在伺服器 `authorized_keys` 或 GitHub/GitLab 介面上辨識金鑰歸屬。
-- `-o`：強制使用 OpenSSH 新式金鑰格式（相較於舊式 PEM 格式，更具備抗暴力破解機制）。
-- `-a 100`：指定金鑰導出函數（KDF，基於 bcrypt）迭代計算 100 次。這會大幅增加攻擊者在私鑰被盜取時使用暴力窮舉密碼的運算成本，而對你日常登入幾乎感覺不到延遲。
+- `-a 100`：指定 KDF（bcrypt）迭代 100 次。Ed25519 私鑰本來就使用 OpenSSH 新格式，不必再加已無作用的 `-o`。提高 KDF rounds 會大幅增加攻擊者在私鑰被盜時暴力窮舉 Passphrase 的成本，對日常登入幾乎感覺不到延遲。
 
 ### 為什麼私鑰「必須」設定 Passphrase？
 在執行過程中，`ssh-keygen` 會提示輸入密碼（Passphrase）：
@@ -49,7 +48,7 @@ Enter passphrase (empty for no passphrase):
 很多新手看到 `empty for no passphrase`，就像看到免死金牌一樣毫不猶豫地連按兩次 Enter 留空。心裡想著：*「反正我這只是本機開發，等之後正式上線我再來補密碼」*——這句軟體開發界名言的可靠程度，大概就跟「我下週一開始一定會早起去健身房」差不多。
 
 **不設密碼的私鑰，本質上就像是一張貼在筆電背面的明信片，上面寫滿了你的帳號權限**：
-- 一旦你的筆電在咖啡廳被順手牽羊、硬碟備份意外上傳至公開 S3、或是被某個假冒 npm 套件植入了資訊竊取木馬（InfoStealer），任何人只要拿到你的 `~/.ssh/id_ed25519`，就能瞬間以你的名義登入伺服器或篡改整個公司的程式庫。
+- 一旦你的筆電在咖啡廳被順手牽羊、硬碟備份意外上傳至公開 S3、或是被某個假冒 npm 套件植入了資訊竊取木馬（InfoStealer），任何人只要拿到你的 `~/.ssh/id_ed25519`，就能瞬間以你的名義登入伺服器或篡改整個公司的程式碼庫。
 - 加了 Passphrase 的私鑰是一份透過 bcrypt 高強度加密的加密容器；即便檔案實體外洩，在缺乏密碼的情況下，攻擊者用超級電腦算到天荒地老也只能乾瞪眼。
 
 ---
@@ -58,7 +57,7 @@ Enter passphrase (empty for no passphrase):
 
 「每次 `git push` 都要輸入一串長密碼，不是很反人類嗎？」
 
-現代作業系統提供了金鑰代理（`ssh-agent`），能將解密後的私鑰暫存在記憶體中。配合系統原生密碼庫，你可以做到：**僅在開機或首次連線時解鎖一次，後續完全靜默免密**。
+現代作業系統提供 `ssh-agent`，能將解密後的私鑰暫存在記憶體中。配合系統原生密碼庫，你可以做到：**僅在開機或首次連線時解鎖一次，後續完全靜默免密**。
 
 ### macOS：整合系統 Keychain
 在 macOS 上，OpenSSH 深度整合了系統鑰匙圈（Keychain）。
@@ -66,10 +65,12 @@ Enter passphrase (empty for no passphrase):
 建立或編輯 `~/.ssh/config`，加入以下配置：
 
 ```ssh-config
+# Place Host * defaults at the end of ~/.ssh/config (first obtained value wins).
+# Do not put IdentityFile here: it is additive and would leak into later IdentitiesOnly hosts.
 Host *
   AddKeysToAgent yes
   UseKeychain yes
-  IdentityFile ~/.ssh/id_ed25519
+  IgnoreUnknown UseKeychain
 ```
 
 執行以下指令將私鑰 Passphrase 一次性寫入 macOS 鑰匙圈：
@@ -115,14 +116,11 @@ Received disconnect from ... port 22: 2: Too many authentication failures
 SSH 用戶端連線時，預設會將 `ssh-agent` 內所有的金鑰**按順序一把一把嘗試登入**。這就像你帶著一串掛了十幾支鑰匙的龐大鑰匙圈在高級私人會所門口逐一試插，門口嚴格的保全（SSH 伺服器）在你看起來像個可疑闖入者之前，直接一腳把你踹出門（通常累積 5~6 次失敗就會無情中斷連線）。
 
 ### 必學良方：`IdentitiesOnly yes`
-在 `~/.ssh/config` 中，透過 `Host` 規則搭配 `IdentitiesOnly yes`，強制用戶端**只使用指定的金鑰**進行認證：
+在 `~/.ssh/config` 中，透過 `Host` 規則搭配 `IdentitiesOnly yes`，強制用戶端**只使用指定的金鑰**進行認證。
+
+OpenSSH 對每個指令採**先讀到的值勝出**（[ssh_config(5)](https://man.openbsd.org/ssh_config.5)）：具體 `Host` 放前面；可被覆寫的全域預設放在檔案**最末**。只有你要全域鎖定、不允許後續覆寫的值（例如 `SetEnv TERM`）才適合寫在前面的 `Host *`。
 
 ```ssh-config
-# 全域預設安全基線
-Host *
-  ForwardAgent no
-  StrictHostKeyChecking ask
-
 # GitHub 個人帳號
 Host github.com
   HostName github.com
@@ -137,12 +135,17 @@ Host git.company.example.com
   IdentityFile ~/.ssh/id_ed25519_company
   IdentitiesOnly yes
 
-# 開發跳板主機 (Jump Host)
+# 開發跳板主機（Jump Host）
 Host bastion-dev
   HostName 10.0.1.10
   User alice
   IdentityFile ~/.ssh/id_ed25519_company
   IdentitiesOnly yes
+
+# 全域預設安全基線（必須放在檔案最末）
+Host *
+  ForwardAgent no
+  StrictHostKeyChecking ask
 ```
 
 有了上述配置：
@@ -166,23 +169,23 @@ Host bastion-dev
 如果轉發的目標伺服器遭到入侵，或該伺服器的 `root` 管理員不可信，惡意人士可以直接透過該伺服器上的轉發 Unix Socket，以你的名義向你的本地 `ssh-agent` 發起認證請求，進而橫向滲透你在其他內部系統上的所有資源——這就像允許陌生伺服器把手直接伸進你的口袋裡翻鑰匙一樣危險。
 
 ### 最佳實踐：最小權限與精確授權
-僅在真正需要轉發的中繼主機上單獨開啟：
+僅在真正需要轉發的中繼主機上單獨開啟，而且這段必須寫在尾端 `Host *` **之前**，否則 `ForwardAgent no` 會先勝出、後面的 `yes` 等於沒寫：
 
 ```ssh-config
-# 僅對信任且必要的遠端主機開啟轉發
-Host bastion.company.example.com
+# 僅對信任且必要的遠端主機開啟轉發（放在 Host * 之前）
+Host bastion-dev
   ForwardAgent yes
   IdentityFile ~/.ssh/id_ed25519_company
 ```
 
-更好且更現代的做法是使用 OpenSSH 的 **`ProxyJump`**（跳板代理），它在傳輸層直接轉發流量，兩端主機維持端對端（End-to-End）加密，連 Agent Forwarding 的風險都不復存在：
+更好且更現代的做法是使用 OpenSSH 的 **`ProxyJump`**：它在傳輸層直接轉發流量，兩端維持端對端加密，連 Agent Forwarding 的風險都不復存在：
 
 ```ssh-config
-# 透過 bastion 直接連線至內網私有伺服器
+# 透過 bastion-dev 直接連線至內網私有伺服器
 Host internal-db
   HostName 192.168.10.50
   User dbadmin
-  ProxyJump bastion.company.example.com
+  ProxyJump bastion-dev
   IdentityFile ~/.ssh/id_ed25519_company
 ```
 
@@ -196,7 +199,7 @@ Host internal-db
 - [ ] 私鑰是否有設定高強度 Passphrase，而非空白？
 - [ ] 是否已設定作業系統 Agent（macOS Keychain / Windows Service）達成免密使用？
 - [ ] `~/.ssh/config` 中是否已針對不同 Host 配置 `IdentitiesOnly yes`？
-- [ ] 是否確認全域 `ForwardAgent no`，避免憑證濫用風險？
+- [ ] 是否確認 `ForwardAgent no` 寫在檔案最末的 `Host *`，且沒有被前面的全域區塊鎖死？
 
 完成了身分認證的基石之後，下一篇我們將深入探討版本控制的核心——[現代 Git 必備全域配置與避坑指南](../git-core-configuration/)。
 

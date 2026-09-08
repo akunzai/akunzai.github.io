@@ -38,12 +38,13 @@ Building a resilient agent governance system requires balancing three fundamenta
 > **Non-Negotiable Safety (Safe) ✕ Minimal Context Footprint (Context-Efficient) ✕ Explicit Ownership (Ownership)**
 
 1. **Single Source of Truth (SSOT)**: Maintain `~/.agents/AGENTS.md` as the supreme baseline across your entire machine, ensuring every agent reads the identical playbook.
-2. **Symlinks Across Multi-Tool Ecosystems**: Avoid duplicating instructions across competing vendor folders. While Copilot CLI reads `~/.agents/AGENTS.md` natively, other tools bridge via clean symlinks:
+2. **Symlinks Across Multi-Tool Ecosystems**: Avoid duplicating instructions across competing vendor folders. Keep `~/.agents/AGENTS.md` as the single source of truth, then symlink into each tool's native path (Copilot CLI reads `~/.copilot/copilot-instructions.md`, not `~/.agents/AGENTS.md`):
    ```bash
-   mkdir -p ~/.claude ~/.codex ~/.gemini
+   mkdir -p ~/.claude ~/.codex ~/.gemini ~/.copilot
    ln -s ~/.agents/AGENTS.md ~/.claude/CLAUDE.md
    ln -s ~/.agents/AGENTS.md ~/.codex/AGENTS.md
    ln -s ~/.agents/AGENTS.md ~/.gemini/GEMINI.md
+   ln -s ~/.agents/AGENTS.md ~/.copilot/copilot-instructions.md
    ```
 3. **Vendor-Agnostic Syntax**: Keep the root instruction file free of vendor-specific XML tags or tool-bound syntax sugars to guarantee predictable parsing across LLM providers.
 
@@ -78,7 +79,7 @@ flowchart TD
 
 ### Precedence Rules
 - **Project rules** override global defaults.
-- **Personal preferences** (`USER.md`) can override general advice and suggestions.
+- **Personal preferences** (`USER.md`, loaded because `AGENTS.md` points at it—not vendor-native discovery) can override general advice and suggestions.
 - **The Constitutional Red Line**: Neither project rules nor personal preferences may **weaken or compromise the Security rules**. When rules conflict, agents must **abort the assumption, fall back to the Security baseline, and ask the human for clarification**.
 
 ---

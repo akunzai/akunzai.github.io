@@ -67,16 +67,26 @@ Not a single byte of logic changed, but a Windows editor quietly appended invisi
 > *.jpg binary
 > ```
 
-### The Case-Sensitivity Blindspot: `core.ignorecase`
+### The Case-Sensitivity Blindspot: do not globally flip `core.ignoreCase`
 The default file systems on macOS (APFS) and Windows (NTFS) are **case-insensitive but case-preserving**, whereas Linux production servers and CI runners are **strictly case-sensitive**.
 
 This is the breeding ground for that eternal, hollow engineering plea: **"Well, it worked on my machine!"**
 
-If you rename `utils.js` to `Utils.js`, your local tests on macOS pass with flying colors. But if Git ignores casing, it will look you in the eye and pretend nothing changed. The moment you push to Linux CI, the build immediately detonates with `Module not found`.
+If you rename `utils.js` to `Utils.js` in Finder or Explorer, local tests may still pass while Git records no change. Linux CI then detonates with `Module not found`.
+
+**Do not** "fix" this with `git config --global core.ignoreCase false`. [Git's documentation](https://git-scm.com/docs/git-config#Documentation/git-config.txt-coreignoreCase) calls this an internal workaround for case-insensitive filesystems: `git clone` / `git init` probe and set it, and **modifying this value may result in unexpected behavior**.
+
+Rename through Git instead:
 
 ```bash
-# Disable case-insensitivity to accurately track file casing renames
-git config --global core.ignorecase false
+git mv utils.js Utils.js
+```
+
+On a case-insensitive filesystem a single `git mv` can fail; use two steps:
+
+```bash
+git mv utils.js utils.js.tmp
+git mv utils.js.tmp Utils.js
 ```
 
 ---
@@ -198,7 +208,6 @@ Here is a consolidated modern configuration (`~/.gitconfig`):
 [core]
 	autocrlf = input          # Set to true on Windows
 	safecrlf = true
-	ignorecase = false
 	excludesfile = ~/.config/git/ignore
 	whitespace = trailing-space,space-before-tab,cr-at-eol
 

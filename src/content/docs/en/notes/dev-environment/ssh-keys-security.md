@@ -18,7 +18,7 @@ This article starts with modern cryptography and guides you through setting up a
 For two decades, RSA was synonymous with SSH. In modern software engineering, however, **RSA is no longer the recommended choice**:
 
 - **Security Rating**: RSA keys under 2048 bits are considered insecure. Even at 3072 or 4096 bits, their resistance to brute-force attacks is far less cost-effective than modern elliptic-curve cryptography.
-- **Performance & Key Size**: A 4096-bit RSA key is bulky and computationally heavier. By contrast, **Ed25519** (based on Edwards-curve 25519) produces compact 68-character public keys, provides ultra-fast signature operations, and is inherently resilient to side-channel timing attacks.
+- **Performance & Key Size**: A 4096-bit RSA key is bulky and computationally heavier. By contrast, **Ed25519** (based on Edwards-curve 25519) produces compact 68-character public keys, provides ultra-fast signature operations, and is designed to resist timing side-channel attacks.
 - **Universal Support**: OpenSSH has supported Ed25519 since version 6.5 (2014). Today, GitHub, GitLab, modern Linux distributions, and macOS support it natively.
 
 > 💡 **Rule of Thumb**: Unless you are connecting to a decade-old legacy server or unmaintained embedded device, **generate only Ed25519 keys for new environments**.
@@ -30,14 +30,13 @@ For two decades, RSA was synonymous with SSH. In modern software engineering, ho
 Open your terminal and run the following command:
 
 ```bash
-ssh-keygen -o -a 100 -t ed25519 -C "your_email@example.com"
+ssh-keygen -a 100 -t ed25519 -C "your_email@example.com"
 ```
 
 ### Parameter Breakdown
 - `-t ed25519`: Specifies the Ed25519 signature algorithm.
 - `-C "your_email@example.com"`: Attaches a comment to the public key. Use your personal or corporate email so key ownership can be easily identified in `authorized_keys` or platform web UIs.
-- `-o`: Forces the use of the new OpenSSH private key format (which applies bcrypt-based key derivation instead of legacy PEM formats).
-- `-a 100`: Specifies 100 rounds of key derivation (KDF). This drastically increases the computational cost for an attacker attempting to brute-force a stolen private key file, while remaining imperceptible during daily logins.
+- `-a 100`: Specifies 100 rounds of bcrypt KDF. Ed25519 private keys already use the new OpenSSH format, so the legacy `-o` flag is a no-op. Extra KDF rounds raise the cost of brute-forcing a stolen passphrase while remaining imperceptible during daily logins.
 
 ### Why You Must Set a Passphrase
 During execution, `ssh-keygen` prompts for a passphrase:
@@ -66,10 +65,12 @@ On macOS, OpenSSH integrates directly with the macOS Keychain.
 Add the following to `~/.ssh/config`:
 
 ```ssh-config
+# Place Host * defaults at the end of ~/.ssh/config (first obtained value wins).
+# Do not put IdentityFile here: it is additive and would leak into later IdentitiesOnly hosts.
 Host *
   AddKeysToAgent yes
   UseKeychain yes
-  IdentityFile ~/.ssh/id_ed25519
+  IgnoreUnknown UseKeychain
 ```
 
 Run this command once to store your passphrase in the Keychain:
@@ -109,14 +110,11 @@ Received disconnect from ... port 22: 2: Too many authentication failures
 ```
 
 ### The Fix: `IdentitiesOnly yes`
-In `~/.ssh/config`, use `Host` blocks combined with `IdentitiesOnly yes` to force the client to offer **only the designated key**:
+In `~/.ssh/config`, use `Host` blocks combined with `IdentitiesOnly yes` to force the client to offer **only the designated key**.
+
+OpenSSH uses **first obtained value wins** ([ssh_config(5)](https://man.openbsd.org/ssh_config.5)): put host-specific blocks first, and overridable defaults at the **end** of the file. An early `Host *` is appropriate only when you intend to lock a value globally (for example `SetEnv TERM`).
 
 ```ssh-config
-# Global secure baseline
-Host *
-  ForwardAgent no
-  StrictHostKeyChecking ask
-
 # Personal GitHub
 Host github.com
   HostName github.com
@@ -137,6 +135,11 @@ Host bastion-dev
   User alice
   IdentityFile ~/.ssh/id_ed25519_company
   IdentitiesOnly yes
+
+# Global secure baseline (must be last)
+Host *
+  ForwardAgent no
+  StrictHostKeyChecking ask
 ```
 
 With this configuration:
@@ -159,11 +162,20 @@ Ever since the 2024 xz-utils backdoor sent shockwaves across the software supply
 
 If an intermediate server you connect to is compromised, an attacker with root privileges on that machine can hijack your forwarded Unix domain socket. They can prompt your local `ssh-agent` to sign authentication challenges on your behalf, pivoting across your internal networks—equivalent to letting a stranger reach into your pockets and take your car keys.
 
-### The Modern Alternative: `ProxyJump`
-For connecting through jump hosts to internal networks, modern OpenSSH provides **`ProxyJump`**. It establishes an end-to-end encrypted TCP connection through the proxy, avoiding the risks of agent forwarding altogether:
+### Least Privilege, Then `ProxyJump`
+If you still need forwarding, opt in on that host only, and keep the block **above** the trailing `Host *` so `ForwardAgent no` does not win first:
 
 ```ssh-config
-# Connect directly to internal database server through bastion
+# Opt in only on a trusted jump host (must appear before Host *)
+Host bastion-dev
+  ForwardAgent yes
+  IdentityFile ~/.ssh/id_ed25519_company
+```
+
+The modern alternative is OpenSSH **`ProxyJump`**. It forwards TCP through the jump host with end-to-end encryption, so Agent Forwarding is unnecessary:
+
+```ssh-config
+# Connect to an internal host through bastion-dev
 Host internal-db
   HostName 192.168.10.50
   User dbadmin
@@ -181,7 +193,7 @@ Verify your setup against this checklist:
 - [ ] Private key protected with a strong passphrase
 - [ ] Operating system agent configured for automated in-memory key loading
 - [ ] `~/.ssh/config` configured with `IdentitiesOnly yes` for each remote host
-- [ ] Global `ForwardAgent no` enforced to minimize credential exposure
+- [ ] `ForwardAgent no` lives in a trailing `Host *` block, not an early global lock
 
 With identity and network transport secured, proceed to [Essential Global Git Configurations & Pitfall Prevention](../git-core-configuration/).
 

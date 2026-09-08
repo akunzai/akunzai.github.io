@@ -1,6 +1,6 @@
 ---
 name: write-article
-description: Author, edit, or translate technical articles and notes in akunzai.github.io. Triggers on creating new posts, translating between zh-tw and en, applying Taiwanese typography and Pangu spacing, or structuring architectural narratives.
+description: Author, edit, or translate technical articles and notes in akunzai.github.io. Triggers on creating new posts, translating between zh-tw and en, applying Taiwanese typography and Pangu spacing, keeping contested technical terms in original English, or structuring architectural narratives.
 ---
 
 # Write Article & Tech Note Skill
@@ -38,7 +38,7 @@ Execute these steps in order when producing or editing content:
 6. **Localize & Mirror (Bilingual Parity)**
    - Maintain full parity across `src/content/docs/zh-tw/...` and `src/content/docs/en/...`.
    - Preserve identical heading structures, code blocks, and technical accuracy across both locales.
-   - Ensure the English edition reads with natural senior peer clarity, while the Traditional Chinese edition strictly follows Taiwanese technical terminology and Pangu spacing.
+   - Ensure the English edition reads with natural senior peer clarity, while the Traditional Chinese edition follows Taiwanese technical terminology, Pangu spacing, and the keep-English rule below.
 
 7. **Validate Type Safety, Content & Build**
    - Run `aubr check` to diagnose Astro components, Markdown/MDX frontmatter, and TypeScript typing.
@@ -62,6 +62,9 @@ Execute these steps in order when producing or editing content:
   - `資訊` (never 信息)
   - `介面` (never 接口)
   - `伺服器` (never 服務器)
+- **Keep original English when translation would drift or misread**: If two competent Taiwanese engineers might pick different Chinese words for the same term of art, or the Chinese word maps to more than one English concept, keep the original English (Pangu-spaced). Stable Taiwan IT vocabulary still uses Chinese (`軟體`, `伺服器`, `專案`, `指令`, `檔案`, `目錄`). A single first-use gloss is optional (`Token`（存取憑證）); after that, stick to English.
+  - Decision test: would a later editor reasonably substitute a different Chinese rendering, or could a reader map the Chinese word to the wrong English concept? If either is yes, keep English.
+  - Typical class (not a closed list): terms of art such as `Runtime`, `Token`, `Prompt`, `Context`, `Session`, `Hook`, `Skill`, `Workflow`; `Agent` when it means the AI/SSH agent rather than 代理 as proxy; collisions such as `Credential` vs `Certificate` both becoming 憑證.
 - **Pangu Space (盤古之白)**: Maintain a single half-width space between CJK characters and alphanumeric words, numbers, or inline code (e.g., `採用 Ed25519 演算法，提升 50% 效能`).
 - **Punctuation**: Use full-width punctuation marks (，、。？！：；「」『』) in Chinese prose; use half-width in code blocks and English prose.
 - **Idiomatic English**: Write active-voice, professional engineering prose. Avoid translationese, buzzword stuffing, or passive padding.
@@ -113,7 +116,7 @@ Work is complete when all of the following conditions are satisfied:
 - [ ] **Navigation & Slugs**: No numerical prefixes in filenames or titles; sequence defined via `sidebar.order`.
 - [ ] **Diagram Standards**: Diagrams use native Mermaid syntax with tasteful Unicode typographic symbols (`◆`, `◈`, `§`) if applicable; zero ASCII art, zero clunky bracket tags, zero emojis.
 - [ ] **Authoritative References**: Article concludes with official documentation and primary source links in `## 參考資料` / `## References`.
-- [ ] **Terminology Audit**: Traditional Chinese files pass Taiwanese terminology check.
+- [ ] **Terminology Audit**: Traditional Chinese files pass Taiwanese terminology check, and contested terms of art stay in original English.
 - [ ] **Typography Audit**: Pangu spacing is present across all CJK / alphanumeric boundaries; full-width punctuation in Chinese prose.
 - [ ] **Syntax & Types**: `aubr check` runs with 0 errors.
 - [ ] **Clean Build**: `aubr build` exits with code 0 and indexes all pages.

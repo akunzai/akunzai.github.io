@@ -73,7 +73,7 @@ git config --global tag.gpgsign true
    - 貼上公鑰內容並儲存。
 
 ### GitLab 設定步驟
-1. 進入 GitLab **Preferences** → **SSH Keys**。
+1. 進入 GitLab 頭像選單 **Edit profile** → **SSH Keys**。
 2. 貼上公鑰內容：
    - 在 **Usage type** 下拉選單中，選擇 **Authentication & Signing**（或專門選擇 Signing）。
    - 點選 **Add key**。
@@ -102,13 +102,13 @@ git config --global gpg.ssh.allowedSignersFile ~/.config/git/allowed_signers
 ```
 
 ### 加入信任公鑰
-`allowed_signers` 的格式遵循 OpenSSH 規範（`<身分識別> <金鑰類型> <Base64金鑰本體>`）：
+`allowed_signers` 的格式遵循 OpenSSH 規範。加上 `namespaces="git"` 可避免跨協定接受簽名（[GitLab：Sign commits with SSH keys](https://docs.gitlab.com/user/project/repository/signed_commits/ssh/)）：
 
 ```text
 # ~/.config/git/allowed_signers
-user@example.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...
-alice@company.example.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...
-bob@company.example.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...
+user@example.com namespaces="git" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...
+alice@company.example.com namespaces="git" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...
+bob@company.example.com namespaces="git" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...
 ```
 
 設定完成後，再次執行：
@@ -130,7 +130,7 @@ Verified that the code came from user@example.com
 > **簽名等同於你在法律合約上的親筆簽名。**
 
 - 當你使用你的金鑰簽署一個 Commit，代表你**對這份程式碼負起工程與法律責任**。
-- 如果這段程式碼是由 AI Agent 生成的，在你點選提交、觸發簽章的那一瞬間，就代表你已經仔細審查（Review）過程式碼邏輯、確認無安全漏洞與敏感憑證洩漏，並以你的個人名譽對其結果背書。
+- 如果這段程式碼是由 AI Agent 生成的，在你點選提交、觸發簽章的那一瞬間，就代表你已經仔細 Review 過程式碼邏輯、確認無安全漏洞與敏感 Credential 洩漏，並以你的個人名譽對其結果背書。
 
 在下一篇中，我們將進入企業多環境實戰：[企業級多身分隔離與 GitLab CI / Agent Skills 整合實踐](../multi-identity-gitlab-agent-skills/)，探討如何利用 Git 的動態條件引入機制（`includeIf`）以及官方 Agent Skills，優雅隔離**個人開源身分**與**公司企業身分**。
 
