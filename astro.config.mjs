@@ -50,26 +50,12 @@ export default defineConfig({
           },
         },
       ],
+      // Fonts are self-hosted / system (see src/styles/custom.css). Do not add a
+      // third-party CJK @font-face stylesheet here: the previous jsDelivr LXGW
+      // sheet had 1317 faces and blocked first paint on iPhone.
       customCss: ['./src/styles/custom.css'],
-      head: [
-        { tag: 'link', attrs: { rel: 'preconnect', href: 'https://fonts.googleapis.com' } },
-        { tag: 'link', attrs: { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: true } },
-        {
-          tag: 'link',
-          attrs: {
-            rel: 'stylesheet',
-            href: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap',
-          },
-        },
-        {
-          tag: 'link',
-          attrs: {
-            rel: 'stylesheet',
-            href: 'https://cdn.jsdelivr.net/npm/@free-fonts/lxgw-wenkai-tc@1/lxgw-wenkai-tc.min.css',
-          },
-        },
-      ],
       components: {
+        Head: './src/components/Head.astro',
         SiteTitle: './src/components/SiteTitle.astro',
         SocialIcons: './src/components/SocialIcons.astro',
       },

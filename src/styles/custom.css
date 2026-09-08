@@ -1,9 +1,39 @@
 /* Warm Book-Paper Theme for Starlight */
 
-/* JetBrains Mono for Latin text; LXGW WenKai TC (霞鶩文楷) for CJK glyphs it
- * doesn't cover. Loaded via Google Fonts / jsDelivr in astro.config.mjs (head). */
+/* Latin-only JetBrains Mono, same-origin (~21 KB + ~22 KB). unicode-range keeps
+ * CJK from waiting on this face. woff omitted: every target browser speaks woff2. */
+@font-face {
+	font-family: 'JetBrains Mono';
+	font-style: normal;
+	font-display: swap;
+	font-weight: 400;
+	src: url('@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+	font-family: 'JetBrains Mono';
+	font-style: normal;
+	font-display: swap;
+	font-weight: 700;
+	src: url('@fontsource/jetbrains-mono/files/jetbrains-mono-latin-700-normal.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Use a locally installed 霞鶩文楷 when present; never fetch the jsDelivr sheet
+ * (1317 @font-face rules, blocks iPhone first paint). Otherwise PingFang TC /
+ * Hiragino / JhengHei. ui-monospace covers Latin during font-display: swap. */
+@font-face {
+	font-family: 'LXGW WenKai TC';
+	font-style: normal;
+	font-display: swap;
+	font-weight: 400;
+	src: local(LXGWWenKaiTC-Regular), local(LXGWWenKaiTC), local(霞鶩文楷TC);
+}
+
 :root {
-	--sl-font: 'JetBrains Mono', 'LXGW WenKai TC', sans-serif;
+	--sl-font: 'JetBrains Mono', ui-monospace, 'LXGW WenKai TC', 'PingFang TC', 'Hiragino Sans CNS',
+		'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
 }
 
 /* JetBrains Mono is wider per character than Starlight's default font, so the
