@@ -99,9 +99,9 @@ In Stephen Chow's *King of Comedy*, the protagonist famously reminds everyone, "
 
 Many teams dump 3,000 lines of prose directly into their system prompt, exhausting precious context window space and degrading the model's reasoning capabilities through attention dilution.
 
-Our solution is **a minimal resident framework paired with on-demand dynamic mounting**:
+My solution is **a minimal resident framework paired with on-demand dynamic mounting**:
 
-- **Resident Core (`~/.agents/AGENTS.md`)**: Houses only lean, universal directives—Precedence, the Security red line, explicit memory persistence (only remember when explicitly instructed), and external verification (never hallucinate time-sensitive version numbers).
+- **Resident Core (`~/.agents/AGENTS.md`)**: Houses only lean, universal directives—Precedence, the Security red line, explicit memory persistence (only remember when explicitly instructed), Prevent Recurrence (block it if you can; write it down once if you cannot), and external verification (never hallucinate time-sensitive version numbers).
 - **Topic-Scoped Rules (`~/.agents/rules/*.md`)**: Remain out of context by default. Mounted only when specific condition triggers fire:
   - `sensitive-data.md`: Awakens when touching credentials or customer records.
   - `coding.md`: Activated when authoring software, establishing arbitration priorities: Safety/Correctness → Codebase Conformance → Simplicity → Taste.
