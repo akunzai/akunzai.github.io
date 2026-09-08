@@ -19,7 +19,7 @@ This guide demonstrates how to achieve automatic identity isolation using Git's 
 
 ## 1. Dynamic Identity Switching with Git `includeIf`
 
-Introduced in Git 2.13 and expanded in Git 2.26, `includeIf` can conditionally load configuration files **based on the remote repository URL**.
+`includeIf` arrived in Git 2.13; **Git 2.36** added matching **on the remote repository URL** via `hasconfig:remote.*.url`.
 
 Regardless of where a repository is located on your disk, **if its remote URL points to your company's Git server, Git automatically overrides your identity configuration**.
 
@@ -35,6 +35,8 @@ Use your personal or default identity in your global configuration:
 
 # Automatically load corporate config when remote URL matches company domain
 [includeIf "hasconfig:remote.*.url:https://git.company.example.com/**"]
+	path = ~/.config/git/company.ini
+[includeIf "hasconfig:remote.*.url:git@git.company.example.com:*/**"]
 	path = ~/.config/git/company.ini
 
 # Alternatively: Match by directory path (e.g. all repos under ~/work/)
@@ -73,7 +75,7 @@ Git allows scoped credential helper definitions per domain:
 # Global default: Microsoft Git Credential Manager (GCM)
 [credential]
 	helper = 
-	helper = /usr/local/share/gcm-core/git-credential-manager
+	helper = git-credential-manager
 
 # GitHub: Handled by GitHub CLI (gh)
 [credential "https://github.com"]
@@ -86,7 +88,7 @@ Git allows scoped credential helper definitions per domain:
 	helper = !glab auth git-credential
 ```
 
-> 💡 **Tip**: The empty `helper =` line resets any previously registered helpers for that scope, ensuring the custom helper takes precedence without credential cache poisoning.
+> 💡 **Tip**: The empty `helper =` line clears the accumulated `credential.helper` list for that scope, then registers only the helper you want. Keep `git-credential-manager` on `PATH` rather than hard-coding a Homebrew path.
 
 ---
 
@@ -102,7 +104,7 @@ While frontier LLMs have absorbed trillions of tokens of source code, they posse
 ### The Solution: Bundled Agent Skills
 The cure for AI hallucinations is not writing an 800-word prompt begging the agent "please do not guess CLI commands." The cure is giving the agent **an official, verified instruction manual**.
 
-GitLab now includes official **Agent Skills** directly in the `glab` CLI:
+GitLab now includes official **Agent Skills** directly in the `glab` CLI (documented as experimental; commands and stability may still change):
 
 ```bash
 # List available bundled agent skills

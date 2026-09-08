@@ -9,7 +9,7 @@ Welcome to the golden age of "Vibe Coding"! In an era where generative AI and au
 
 Yet reality remains undefeated: **"Automation cannot replace responsibility, and agents cannot exercise sovereignty."**
 
-When production gets ransomed at 2 AM on a Sunday, or your cloud budget evaporates because an agent accidentally committed your root AWS secret, **the entity attending the incident post-mortem will not be the polite LLM that promised "I have fixed that for you." It will be you.**
+When a database Credential leaks at 2 AM on a Sunday, or an agent commits a cloud root secret into the repository, **the entity attending the incident post-mortem will not be the polite LLM that promised "I have fixed that for you." It will be you.**
 
 In a world where anyone can prompt, true senior engineering is defined by architectural vigilance, defensive system design, and the discipline to build an unbreachable development fortress before a single token is generated:
 
@@ -31,7 +31,7 @@ This series is engineered for new teammates (and weary seniors cleaning up unatt
 
 ### [Sharpening the Tools: Essential Global Git Configurations & Pitfall Prevention](./git-core-configuration/)
 - Global Git hygiene: Default branch naming, `pull.rebase`, and `rerere`
-- Cross-platform pitfalls: CRLF/LF line endings and case sensitivity (`ignorecase = false`)
+- Cross-platform pitfalls: CRLF/LF line endings and case-sensitive renames (`git mv`; do not globally flip `core.ignoreCase`)
 - Efficient diffing: Histogram Diff and verbose commit messages
 - Global `.gitignore` and `.gitattributes` best practices
 
@@ -50,4 +50,4 @@ This series is engineered for new teammates (and weary seniors cleaning up unatt
 ### [Cross-Platform Implementation Guide: macOS & Windows Best Practices](./cross-platform-macos-windows/)
 - macOS: Homebrew package management, Ghostty/Terminal terminfo, Zsh tooling
 - Windows: Winget / Scoop, OpenSSH Agent service automation, PowerShell 7, and WSL 2
-- Cross-platform file attributes, line ending harmony, and the Final Onboarding Checklist
+- Cross-platform file attributes, line endings, Credential hygiene, and the onboarding checklist

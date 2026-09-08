@@ -1,6 +1,6 @@
 ---
 title: "雙平台落地指南：macOS 與 Windows 開發環境最佳實踐"
-description: 從套件管理、終端機調校到憑證穿透，全面梳理 macOS 與 Windows（PowerShell / WSL 2）的現代工程配置。
+description: 從套件管理、終端機調校到 Credential 穿透，全面梳理 macOS 與 Windows（PowerShell / WSL 2）的現代工程配置。
 sidebar:
   order: 6
 ---
@@ -9,7 +9,7 @@ sidebar:
 
 雖然兩種作業系統底層核心不同，但在現代工具鏈的支撐下，我們完全可以做到**在雙平台上享有高度一致、乾淨且高效的開發體驗**。
 
-本篇作為系列的收官之作，將為兩大平台分別梳理最精準的環境落地清單，並解決跨平台開發中最常見的效能與憑證穿透問題。
+本篇作為系列的收官之作，將為兩大平台分別梳理最精準的環境落地清單，並解決跨平台開發中最常見的效能與 Credential 穿透問題。
 
 ---
 
@@ -38,15 +38,17 @@ xterm-ghostty: unknown terminal type
 ```
 想像一下：你開著最新款、擁有 GPU 算繪極致流暢平滑的現代終端機，連線進公司一台運行了十多年從未重開機過的舊主機，結果遠端伺服器一臉茫然地抗議「我這輩子沒見過這種外星生物」——這種宛如拿著 iPhone 16 穿越回石器時代的尷尬，就是因為老舊伺服器的 terminfo 資料庫根本不認得新終端機。
 
-**最佳解法**：在本地 `~/.ssh/config` 中，預設將連線終端機環境回退為最相容的 256 色定義：
+**最佳解法**：在本地 `~/.ssh/config` 把 `TERM` 回退為最相容的 256 色定義。這是**要全域鎖定**的值，所以寫在靠前的 `Host *`（先讀到的值勝出，後面無法覆寫）。需要 OpenSSH 8.7+ 才支援 `SetEnv`。
 
 ```ssh-config
-# ~/.ssh/config
+# ~/.ssh/config — early Host * locks TERM for every host
 Host *
   SetEnv TERM=xterm-256color
 ```
 
-### 1.3 執行環境版本管理：[mise](https://mise.jdx.dev/)
+可被覆寫的安全預設（`ForwardAgent no` 等）仍應放在檔案最末，見 [SSH 金鑰與安全實務](../ssh-keys-security/)。
+
+### 1.3 Runtime 版本管理：[mise](https://mise.jdx.dev/)
 避免全域安裝 Node.js、Python、Go 等特定版本導致不同專案打架。推薦採用現代高效的環境管理工具 **mise**（或透過 [akunzai/agent-skills](https://github.com/akunzai/agent-skills) 內的 `mise` 技能引導 AI 正確配置 `mise.toml`）。
 
 ```bash
@@ -58,7 +60,7 @@ mise use --global node@lts
 
 ## 2. Windows 環境最佳實踐（Native & WSL 2）
 
-Modern Windows 開發環境在過去幾年有了翻天覆地的演進。現代 Windows 開發者有兩種主流工作流：
+現代 Windows 開發環境在過去幾年有了翻天覆地的演進。現代 Windows 開發者有兩種主流 Workflow：
 1. **Windows 原生環境（Native PowerShell 7）**：適合 .NET、跨平台 CLI 或桌面應用開發。
 2. **WSL 2（Windows Subsystem for Linux）**：適合深度依賴 Linux 容器、Docker 或原生 Unix 建置工具鏈的專案。
 
@@ -69,7 +71,7 @@ Windows 10/11 內建的 `winget` 是最標準的套件管理器：
 # 安裝 Git、GitHub CLI 與 GitLab CLI
 winget install --id Git.Git -e --source winget
 winget install --id GitHub.cli -e --source winget
-winget install --id GitLab.glab -e --source winget
+winget install --id GLab.GLab -e --source winget
 
 # 安裝現代 Windows Terminal 與 PowerShell 7
 winget install --id Microsoft.WindowsTerminal -e --source winget
@@ -114,7 +116,7 @@ git config --global credential.helper "/mnt/c/Program\ Files/Git/mingw64/bin/git
 | **Passphrase 保護** | `ssh-keygen -y -f ~/.ssh/id_ed25519` | 提示輸入 passphrase，非免密私鑰 |
 | **金鑰隔離** | 檢視 `~/.ssh/config` | 具備 `IdentitiesOnly yes` 與 `ForwardAgent no` |
 | **Git 核心配置** | `git config core.autocrlf` | macOS/Linux 為 `input`；Windows 為 `true` |
-| **衝突重現** | `git config rerere.enabled` | 輸出 `true` |
+| **rerere（衝突記憶）** | `git config rerere.enabled` | 輸出 `true` |
 | **Commit 簽章** | `git config commit.gpgsign` | 輸出 `true`，且 `gpg.format` 為 `ssh` |
 | **身分切換** | `git config user.email`（在公司目錄） | 自動解析為公司公務信箱，無須手動指定 |
 | **Agent 防護** | `glab skills list` 或 `skills ls` | 已安裝官方 `glab` 技能，AI 具備確鑿 CI 指令 |
@@ -125,7 +127,7 @@ git config --global credential.helper "/mnt/c/Program\ Files/Git/mingw64/bin/git
 
 軟體工程的世界正在發生歷史性的轉變。未來的開發日常，將會是人與數十個自主 AI Agent 協同建構大型系統的時代。
 
-程式碼編寫的門檻被大幅降低，但這絕不代表工程素養變得廉價——**相反地，懂得如何劃定安全界限、如何管理憑證與主權、如何讓協同工具與代理人在明確的規範下穩定運轉，正是現代優秀工程師最無可替代的核心價值**。
+程式碼編寫的門檻被大幅降低，但這絕不代表工程素養變得廉價——**相反地，懂得如何劃定安全界限、如何管理 Credential 與主權、如何讓協同工具與 AI Agent 在明確的規範下穩定運轉，正是現代優秀工程師最無可替代的核心價值**。
 
 願這套指南，能成為你邁向卓越工程師之路的堅實基石。
 

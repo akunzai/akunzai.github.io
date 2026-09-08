@@ -9,17 +9,17 @@ sidebar:
 
 - 在公司機密專案的生產環境歷史中，不小心用國高中時期申請的熱血中二信箱（例如 `xx_dark_dragon_xx@gmail.com`）提交了幾十個 Commit，讓整個 Code Review 會議都在熱烈討論這位「暗黑龍尊」究竟是何方神聖。
 - 在個人的公開開源專案中，不小心留下了公司內部的企業信箱甚至私有跳板機 IP，直接觸發資安事件。
-- 在推送程式碼時，因為拿錯金鑰或憑證衝突，在終端機前反覆面對 `Permission denied (publickey)` 抓狂。
+- 在推送程式碼時，因為拿錯金鑰或金鑰衝突，在終端機前反覆面對 `Permission denied (publickey)` 抓狂。
 
 傳統作法是要求工程師「每次 clone 專案後，一定要記得手動下 `git config user.email ...`」。但人類工程師只要趕著下班，就有一萬個理由忘記。
 
-本篇將示範如何運用現代 Git 的 **條件式引入機制（`includeIf`）** 與 **憑證助手分流** 徹底實現全自動隔離，並進一步探討在人機協作環境下，如何為 AI Agents 裝載官方技能包，杜絕指令幻覺。
+本篇將示範如何運用現代 Git 的 **條件式引入機制（`includeIf`）** 與 **Credential Helper 分流** 徹底實現全自動隔離，並進一步探討在人機協作環境下，如何為 AI Agents 裝載官方技能包，杜絕指令幻覺。
 
 ---
 
 ## 1. 神級配置：Git `includeIf` 自動切換身分
 
-自 Git 2.13 起，Git 支援了 `includeIf`；在 Git 2.26 之後，更支援直接**依據遠端儲存庫的 Remote URL** 進行條件匹配。
+自 Git 2.13 起，Git 支援了 `includeIf`；自 **Git 2.36** 起，更支援直接**依據遠端儲存庫的 Remote URL**（`hasconfig:remote.*.url`）進行條件匹配。
 
 這意味著：無論你把專案 clone 在電腦的哪個目錄，**只要遠端連線指向公司的 Git 伺服器，Git 就會自動載入公司的公務設定！**
 
@@ -35,6 +35,8 @@ sidebar:
 
 # 當專案的 remote URL 指向公司 GitLab 網域時，自動套用覆蓋設定
 [includeIf "hasconfig:remote.*.url:https://git.company.example.com/**"]
+	path = ~/.config/git/company.ini
+[includeIf "hasconfig:remote.*.url:git@git.company.example.com:*/**"]
 	path = ~/.config/git/company.ini
 
 # 或者：依據本機目錄劃分（例如所有放在 ~/work/ 下的專案）
@@ -63,11 +65,11 @@ git config user.email
 
 ---
 
-## 2. 憑證助手（Credential Helper）精確分流
+## 2. Credential Helper 精確分流
 
-如果你透過 HTTPS 協定存取儲存庫，在不同平台（GitHub、自建 GitLab、Azure DevOps）之間，憑證管理往往容易打架。
+如果你透過 HTTPS 協定存取儲存庫，在不同平台（GitHub、自建 GitLab、Azure DevOps）之間，Credential 管理往往容易打架。
 
-現代 Git 支援針對不同 Host 獨立配置憑證小幫手（Credential Helper）：
+現代 Git 支援針對不同 Host 獨立配置 Credential Helper：
 
 ```ini
 # ~/.gitconfig
@@ -75,7 +77,7 @@ git config user.email
 # 全域預設：採用微軟跨平台 Git Credential Manager (GCM)
 [credential]
 	helper = 
-	helper = /usr/local/share/gcm-core/git-credential-manager
+	helper = git-credential-manager
 
 # GitHub 專用：交由 GitHub CLI 原生處理 Token 與驗證
 [credential "https://github.com"]
@@ -88,7 +90,7 @@ git config user.email
 	helper = !glab auth git-credential
 ```
 
-> 💡 **注意事項**：在指定自訂 helper 前先放一行空白的 `helper =`，是為了清空 Git 預設的快取設定，避免舊憑證優先度過高產生衝突。
+> 💡 **注意事項**：在指定自訂 helper 前先放一行空白的 `helper =`，是為了清空該 scope 先前累積的 `credential.helper` 清單，再只註冊指定 helper。GCM 請確保 `git-credential-manager` 已在 `PATH` 中（各平台安裝路徑不同，不要寫死 `/usr/local/share/...`）。
 
 ---
 
@@ -104,7 +106,7 @@ git config user.email
 ### 解決方案：官方 Agent Skills
 治好 AI「幻覺併發症」的唯一解藥，不是在 Prompt 裡寫八百字咒語哀求它「千萬不要猜指令」，而是直接**給它一本由 GitLab 官方認證的『操作說明書』**。
 
-GitLab 官方在最新版 `glab` CLI 中，正式推出了符合 **Agent Skills** 規範的內建技能包：
+GitLab 官方在 `glab` CLI 中提供符合 **Agent Skills** 規範的內建技能包（文件標為 experimental，指令與穩定性仍可能變動）：
 
 ```bash
 # 檢視 glab 內建技能
@@ -123,7 +125,7 @@ glab skills install glab --global --force
 
 ## 4. 企業環境的技能治理：Skills Manager 與 agent-skills
 
-在團隊多人協同環境中，如何讓所有同仁以及其各自使用的 AI Agents 擁有一致、可受控的技能與工作流程？
+在團隊多人協同環境中，如何讓所有同仁以及其各自使用的 AI Agents 擁有一致、可受控的技能與 Workflow？
 
 推薦採用以下開源工具鏈進行標準化管理：
 
@@ -145,7 +147,7 @@ glab skills install glab --global --force
 透過 `skills ls` 與 `skills add`，團隊可以將包括 `glab`、`playwright-cli` 在內的工具鏈以聲明式（Declarative）的方式固化下來，新進人員只要一行指令就能將所有必備 Agent 技能部署完成。
 
 ### 2. 引進精選工程技能庫：[akunzai/agent-skills](https://github.com/akunzai/agent-skills)
-除了官方 CLI 技能外，團隊的特定工作流程（如 Epic 規劃、PR 規範、Commit 整理）往往也需要給 AI 明確的指引。
+除了官方 CLI 技能外，團隊的特定 Workflow（如 Epic 規劃、PR 規範、Commit 整理）往往也需要給 AI 明確的指引。
 
 [akunzai/agent-skills](https://github.com/akunzai/agent-skills) 提供了多套實用的工程技能：
 - `gitlab-epic`：協助 AI 嚴格遵循 GitLab Epic 與 Work Items 的層級關係進行規劃與拆解。
@@ -159,7 +161,7 @@ glab skills install glab --global --force
 真正的工程素養，不僅止於手動配置好自己的開發機，更包含了**為與你協同作戰的 AI Agents 劃定清晰的邊界與提供精確的工具**。
 
 1. **對內對外分明**：利用 `includeIf` 實現身分與金鑰的零摩擦切換。
-2. **憑證專用隔離**：讓 `gh` 與 `glab` 各自守護對應的網域憑證。
+2. **Credential 專用隔離**：讓 `gh` 與 `glab` 各自守護對應網域的 Credential。
 3. **消除 AI 幻覺**：透過 [Skills Manager](https://github.com/akunzai/skills-manager) 安裝官方 `glab` 技能與 [agent-skills](https://github.com/akunzai/agent-skills)，確保 AI 在操作企業內部 CI/CD 時每一次都精準合規。
 
 在最後一篇中，我們將跨越作業系統平台，進入[雙平台落地指南：macOS 與 Windows 開發環境最佳實踐](../cross-platform-macos-windows/)，探討 macOS 與 Windows（WSL2 / Native）雙平臺的落地配置。
@@ -169,8 +171,8 @@ glab skills install glab --global --force
 ## 參考資料
 
 - [Git 官方文件：Conditional Includes (includeIf)](https://git-scm.com/docs/git-config#_conditional_includes) — 依據目錄與遠端儲存庫 URL（`hasconfig:remote.*.url`）動態載入身分設定
-- [GitHub CLI 官方手冊](https://cli.github.com/manual/) — `gh auth` 憑證隔離與 GitHub 企業端點管理
+- [GitHub CLI 官方手冊](https://cli.github.com/manual/) — `gh auth` Credential 隔離與 GitHub 企業端點管理
 - [GitLab CLI (glab) 官方文件](https://docs.gitlab.com/ee/editor_extensions/gitlab_cli/) — GitLab CLI 核心指令、MR 自動化與 CI Pipeline 操作
-- [Git Credential Manager 官方文件](https://github.com/git-ecosystem/git-credential-manager) — 跨平台 Git 憑證儲存、OAuth 認證與多身分路由
+- [Git Credential Manager 官方文件](https://github.com/git-ecosystem/git-credential-manager) — 跨平台 Git Credential 儲存、OAuth 認證與多身分路由
 - [GitHub 專案：akunzai/skills-manager](https://github.com/akunzai/skills-manager) — 跨 AI Agents 平台的技能宣告式安裝與管理工具
-- [GitHub 專案：akunzai/agent-skills](https://github.com/akunzai/agent-skills) — 提供給 AI 助手的精選工程工作流程技能包 (`gitlab-epic`、`pr-workflow`、`tidy-commits`)
+- [GitHub 專案：akunzai/agent-skills](https://github.com/akunzai/agent-skills) — 提供給 AI 助手的精選工程 Workflow 技能包 (`gitlab-epic`、`pr-workflow`、`tidy-commits`)

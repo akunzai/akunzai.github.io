@@ -67,16 +67,26 @@ git config --global user.email "user@example.com"
 > *.jpg binary
 > ```
 
-### 檔名大小寫陷阱：`core.ignorecase`
+### 檔名大小寫陷阱：不要全域改 `core.ignoreCase`
 macOS（APFS）與 Windows（NTFS）的檔案系統預設都是**大小寫不敏感（Case-Insensitive, Case-Preserving）**，而 Linux 與 CI 伺服器則是**大小寫嚴格敏感（Case-Sensitive）**。
 
 這孕育了另一個著名的工程迷因：**「明明在我電腦上可以跑！」（It works on my machine）**。
 
-如果你將 `utils.js` 重構改名為大寫的 `Utils.js`，在 macOS 本機開發與單元測試一路綠燈。但若未關閉 Git 的大小寫忽略，Git 會一臉無辜地認為檔名根本沒有任何變化！直到推送到 Linux CI 建置時，因找不到大小寫匹配的模組而當場噴紅燈爆炸。
+如果你把 `utils.js` 在 Finder 或 Explorer 裡改名成 `Utils.js`，本機測試可能一路綠燈，Git 卻認為檔名沒變；推到 Linux CI 才會因為找不到模組而爆炸。
+
+**不要**為此把 `core.ignoreCase` 設成全域 `false`。[Git 官方文件](https://git-scm.com/docs/git-config#Documentation/git-config.txt-coreignoreCase)寫明：這是給大小寫不敏感檔案系統用的內部 workaround，`git clone` / `git init` 會探測並寫入正確值；擅自修改可能導致非預期行為。
+
+正確做法是讓 Git 參與改名：
 
 ```bash
-# 關閉大小寫忽略，精確捕捉檔名大小寫變更
-git config --global core.ignorecase false
+git mv utils.js Utils.js
+```
+
+若檔案系統不區分大小寫，一步 `git mv` 會失敗，改走兩步：
+
+```bash
+git mv utils.js utils.js.tmp
+git mv utils.js.tmp Utils.js
 ```
 
 ---
@@ -202,7 +212,6 @@ Desktop.ini
 [core]
 	autocrlf = input          # Windows 請改為 true
 	safecrlf = true
-	ignorecase = false
 	excludesfile = ~/.config/git/ignore
 	whitespace = trailing-space,space-before-tab,cr-at-eol
 
