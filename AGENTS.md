@@ -24,6 +24,9 @@ This project uses Node.js and [aube](https://aube.jdx.dev/) managed via `mise.to
 - Notes sample: @src/content/docs/zh-tw/notes/dev-environment/index.md / @src/content/docs/en/notes/dev-environment/index.md
 - Deployment workflow: @.github/workflows/deploy.yml
 - Toolchain configuration: @mise.toml
+- Issue tracker: @docs/agents/issue-tracker.md
+- Pull requests: @docs/agents/pull-request.md
+- Verification: @docs/agents/verification.md
 
 ## Prevent Recurrence
 
