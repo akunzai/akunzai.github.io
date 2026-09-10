@@ -41,8 +41,7 @@ Execute these steps in order when producing or editing content:
    - Ensure the English edition reads with natural senior peer clarity, while the Traditional Chinese edition follows Taiwanese technical terminology, Pangu spacing, and the keep-English rule below.
 
 7. **Validate Type Safety, Content & Build**
-   - Run `aubr check` to diagnose Astro components, Markdown/MDX frontmatter, and TypeScript typing.
-   - Run `aubr build` to ensure clean static page compilation, routing integrity, and Pagefind search index generation.
+   - Run `mise run verify` (type-check plus build) to diagnose Astro components, Markdown/MDX frontmatter, TypeScript typing, static page compilation, routing integrity, and Pagefind search index generation. See @docs/agents/verification.md.
    - For `zh-tw` content, run `mise run zhtw:lint` to catch Mainland-Chinese wording before opening a PR (CI enforces this too, but catching it locally saves a round-trip).
 
 ## In-File Reference
@@ -118,5 +117,4 @@ Work is complete when all of the following conditions are satisfied:
 - [ ] **Authoritative References**: Article concludes with official documentation and primary source links in `## 參考資料` / `## References`.
 - [ ] **Terminology Audit**: Traditional Chinese files pass Taiwanese terminology check, and contested terms of art stay in original English.
 - [ ] **Typography Audit**: Pangu spacing is present across all CJK / alphanumeric boundaries; full-width punctuation in Chinese prose.
-- [ ] **Syntax & Types**: `aubr check` runs with 0 errors.
-- [ ] **Clean Build**: `aubr build` exits with code 0 and indexes all pages.
+- [ ] **Gate**: `mise run verify` exits with code 0, reporting no check errors and indexing all pages.

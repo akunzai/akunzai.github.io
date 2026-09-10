@@ -2,6 +2,10 @@
 node = "lts"
 aube = "latest"
 
+[tasks.verify]
+description = "Type-check and build the site (matches CI's Check & Build job)"
+run = ["aube run check", "aube run build"]
+
 # zhtw-mcp fingerprints findings by absolute path, so the mount destination
 # below must match CI's checkout path (.github/workflows/ci.yml) exactly for
 # the baseline to line up.

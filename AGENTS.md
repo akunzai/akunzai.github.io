@@ -2,16 +2,13 @@
 
 Personal blog and technical notes for Charley Wu, built with Astro and Starlight.
 
-This project uses Node.js and [aube](https://aube.jdx.dev/) managed via `mise.toml`. Always use `aube` / `aubr` / `aubx` — never npm, pnpm, or yarn. Run `mise install` once to set up the toolchain.
+This project uses Node.js and [aube](https://aube.jdx.dev/) managed via `mise.toml`. Always use `aube` — never npm, pnpm, or yarn. Run `mise install` once to set up the toolchain, and reach `aube` through `mise` (`mise run <task>`, `mise exec -- aube <args>`): the bare `aubr` shim fails in a shell where mise is not activated.
 
 ## Commands
 
-- Dev: `aubr dev` (http://localhost:4321)
-- Build: `aubr build` → `dist/`
-- Preview: `aubr preview`
-- Check: `aubr check`
-- CI install: `aube ci` (frozen `pnpm-lock.yaml`)
-- Add dep: `aube add <pkg>`
+- Gate before review: `mise run verify` (type-check plus build; see the Verification pointer for the servers, ports, and evidence rules)
+- Add dep: `mise exec -- aube add <pkg>`
+- Task list: `mise tasks`
 
 ## Content & Localization Guidelines
 
@@ -27,6 +24,9 @@ This project uses Node.js and [aube](https://aube.jdx.dev/) managed via `mise.to
 - Notes sample: @src/content/docs/zh-tw/notes/dev-environment/index.md / @src/content/docs/en/notes/dev-environment/index.md
 - Deployment workflow: @.github/workflows/deploy.yml
 - Toolchain configuration: @mise.toml
+- Issue tracker: @docs/agents/issue-tracker.md
+- Pull requests: @docs/agents/pull-request.md
+- Verification: @docs/agents/verification.md
 
 ## Prevent Recurrence
 
