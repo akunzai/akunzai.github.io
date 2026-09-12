@@ -18,20 +18,20 @@ This project uses Node.js and [aube](https://aube.jdx.dev/) managed via `mise.to
 
 ## Pointers
 
-- Site & blog configuration: @astro.config.mjs
-- Content collections schema: @src/content.config.ts
-- Blog post sample: @src/content/docs/zh-tw/blog/global-agents-architecture.md / @src/content/docs/en/blog/global-agents-architecture.md
-- Notes sample: @src/content/docs/zh-tw/notes/dev-environment/index.md / @src/content/docs/en/notes/dev-environment/index.md
-- Deployment workflow: @.github/workflows/deploy.yml
-- Toolchain configuration: @mise.toml
-- Issue tracker: @docs/agents/issue-tracker.md
-- Pull requests: @docs/agents/pull-request.md
-- Verification: @docs/agents/verification.md
+- Site & blog configuration: `astro.config.mjs`
+- Content collections schema: `src/content.config.ts`
+- Blog post sample: `src/content/docs/zh-tw/blog/global-agents-architecture.md` / `src/content/docs/en/blog/global-agents-architecture.md`
+- Notes sample: `src/content/docs/zh-tw/notes/dev-environment/index.md` / `src/content/docs/en/notes/dev-environment/index.md`
+- Deployment workflow: `.github/workflows/deploy.yml`
+- Toolchain configuration: `mise.toml`
+- When filing or triaging an issue, read `docs/agents/issue-tracker.md`
+- When opening a pull or merge request, read `docs/agents/pull-request.md`
+- Before running or reporting verification, read `docs/agents/verification.md`
 
 ## Prevent Recurrence
 
 - **Candidate**: Name who hits this again, in which file, on what change. No such scenario, nothing to propose.
-- **Promote**: Offer the first tier that reaches them and only that one, pending confirmation — enforce it (assert/type/test) with its size quoted so one word can authorize it, else a comment at that site, else an agent-facing doc (`docs/agents/<topic>.md`, else `docs/agents/lessons-learned.md`) with one `@path` line under Pointers and one sentence on why the tiers above cannot hold it. Never two places at once.
+- **Promote**: Offer the first tier that reaches them and only that one, pending confirmation — enforce it (assert/type/test) with its size quoted so one word can authorize it, else a comment at that site, else an agent-facing doc (`docs/agents/<topic>.md`, else `docs/agents/lessons-learned.md`) with one backtick-path line under Pointers and one sentence on why the tiers above cannot hold it. Never two places at once.
 - **Prune**: When adding to a file, audit the rest of it in the same pass. Drop entries once stale (obsolete version, now enforced, duplicated, or a transcript) — not by a fixed count.
 
 ## Claude Code Compatibility
