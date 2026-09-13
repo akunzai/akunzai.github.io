@@ -16,6 +16,9 @@ whole convention.
 - Use a concise descriptive title with no Conventional Commit prefix,
   because one request may carry more than one kind of change. The prefix
   belongs on the commit subjects inside the request, not on the request.
+- Link a tracked issue with `Closes #<n>` only when merge should auto-close
+  it. If there is no tracked issue, never leave an unlinked `Closes #` or an
+  empty Related Issue heading in the description.
 - **Do not open a request, draft included, without the developer asking.**
 
 ## Description shape
@@ -43,8 +46,9 @@ whole convention.
    `![alt](./after.png)` is rewritten to point at the uploaded asset.
    Only when capture is genuinely impossible, leave a named placeholder
    comment such as `<!-- screenshot pending: after -->`.
-3. A collapsed technical trailer holding affected paths, implementation
-   notes, verification commands, and log excerpts.
+3. A collapsed technical trailer holding implementation notes, verification,
+   and lessons learned. Skip affected paths — the forge's own diff view
+   already shows those.
 
 **No personally identifiable information in any attachment**, whatever
 you end up attaching. `verification.md`'s capture rules say what that

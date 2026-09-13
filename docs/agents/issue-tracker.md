@@ -45,7 +45,8 @@ prefix belongs on pull request titles and commit subjects instead.
 <details>
 <summary>Technical details</summary>
 
-suspected cause, related code paths, repro commands, log excerpts
+<everything an implementer needs — for example, suspected cause, related
+code paths, repro commands, log excerpts>
 
 </details>
 ```
@@ -82,7 +83,8 @@ above the fold; only background goes into `<details>`.
 <details>
 <summary>Technical details</summary>
 
-related code paths, prior art, log excerpts, open questions
+<only background — for example, related code paths, prior art, log
+excerpts, open questions>
 
 </details>
 ```
