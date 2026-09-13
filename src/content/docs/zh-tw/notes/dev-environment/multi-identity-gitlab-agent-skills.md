@@ -67,7 +67,39 @@ git config user.email
 
 ## 2. Credential Helper 精確分流
 
-如果你透過 HTTPS 協定存取儲存庫，在不同平台（GitHub、自建 GitLab、Azure DevOps）之間，Credential 管理往往容易打架。
+### 前置作業：`glab` 認證企業自架 GitLab (Self-Managed)
+
+在設定 Credential Helper 分流之前，得先讓 `glab` 對企業自架的 GitLab 主機完成認證，`glab auth git-credential` 才有憑證可用：
+
+```sh
+# 互動式登入企業自架主機（預設 glab auth login 只會登入 gitlab.com）
+glab auth login --hostname git.company.example.com
+
+# 檢查各主機的認證狀態與 Token 儲存方式（OS Keyring 或明文）
+glab auth status
+```
+
+> 💡 若自架主機使用自簽憑證或內部私有 CA，連線時會出現 `x509: certificate signed by unknown authority`；請以 `glab config set ca_cert /path/to/ca.pem --host git.company.example.com` 指定信任的 CA 憑證路徑，切勿在正式環境使用 `skip_tls_verify` 略過驗證。
+
+若團隊主要都在存取這台企業自架主機，可以進一步將其設為預設主機，之後執行指令就不必每次加 `--hostname`；用 `glab config get host` 隨時確認目前的預設值：
+
+```sh
+# 將預設主機設為企業自架 GitLab
+glab config set host git.company.example.com
+
+# 確認目前設定的預設主機
+glab config get host
+```
+
+> 💡 `host` 只是「找不到其他線索時」的最後備援。`glab` 判斷指令要打向哪個主機的順序是：
+> 1. 指令上明確帶的 `--hostname` / `--repo`
+> 2. 位於 Git 儲存庫內時，從當前目錄的 git remote 自動偵測到的 GitLab 主機
+> 3. 環境變數 `GITLAB_HOST` → `GITLAB_URI` → `GL_HOST`（依序檢查，第一個有設定的生效；三者皆不分主機，會套用到所有連線，多主機情境建議改用設定檔）
+> 4. `config.yml` 裡的 `host` 設定值（未設定時預設為 `gitlab.com`）
+>
+> 換言之，只要在公司 GitLab 專案目錄內執行 `glab`，它會優先認得 git remote 指向的自架主機；`config set host` 主要是在專案目錄外（例如純粹查詢 API）才會派上用場。
+
+完成認證後，如果你透過 HTTPS 協定存取儲存庫，在不同平台（GitHub、自建 GitLab、Azure DevOps）之間，Credential 管理往往容易打架。
 
 現代 Git 支援針對不同 Host 獨立配置 Credential Helper：
 
