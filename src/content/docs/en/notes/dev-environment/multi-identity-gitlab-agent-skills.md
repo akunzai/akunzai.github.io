@@ -65,7 +65,41 @@ It will output `employee@company.example.com`. In personal or open-source reposi
 
 ## 2. Multi-Host Credential Helper Routing
 
-When accessing repositories over HTTPS, credentials for different hosts can conflict if managed by a single default helper.
+### Prerequisite: Authenticating `glab` Against a Self-Managed GitLab
+
+Before wiring up credential helper routing, `glab` must first be authenticated against your self-managed GitLab host — otherwise `glab auth git-credential` has no token to hand back.
+
+Many self-managed environments disable OAuth/SSO integration and only accept a **Personal Access Token (PAT)** — during interactive login, choose to paste an existing token. If you don't have one yet, create it per [GitLab's official Personal Access Tokens documentation](https://docs.gitlab.com/user/profile/personal_access_tokens/) at `https://git.company.example.com/-/user_settings/personal_access_tokens` on your self-managed host, selecting at least the `api` and `write_repository` scopes (`write_repository` already includes `read_repository` for `git push`/`git fetch`; `api` covers `glab`'s REST calls for MRs, issues, and the like).
+
+```sh
+# Interactive login against a self-managed host (plain `glab auth login` only targets gitlab.com)
+glab auth login --hostname git.company.example.com
+
+# Check authentication status and token storage (OS keyring vs. plaintext) per host
+glab auth status
+```
+
+> 💡 A self-managed instance with a self-signed certificate or internal private CA raises `x509: certificate signed by unknown authority`. Point `glab` at the trusted CA with `glab config set ca_cert /path/to/ca.pem --host git.company.example.com` — never disable verification with `skip_tls_verify` in production.
+
+If your team mostly works against this one self-managed instance, set it as the default host so you don't need `--hostname` on every command; check the current default anytime with `glab config get host`:
+
+```sh
+# Set the default host to the self-managed GitLab instance
+glab config set host git.company.example.com
+
+# Check the currently configured default host
+glab config get host
+```
+
+> 💡 `host` is only the last-resort fallback. `glab` resolves which host a command targets in this order:
+> 1. An explicit `--hostname` / `--repo` flag on the command
+> 2. Inside a Git repository, the GitLab host auto-detected from the current directory's git remote
+> 3. The environment variables `GITLAB_HOST` → `GITLAB_URI` → `GL_HOST`, checked in that order — the first one set wins (none of them are host-scoped, so they apply to every connection; prefer the config file when juggling multiple instances)
+> 4. The `host` value in `config.yml` (defaults to `gitlab.com` when unset)
+>
+> In practice, running `glab` inside a company GitLab project directory already picks up the self-managed host from its git remote — `config set host` mainly matters outside a repo directory (e.g. plain API queries).
+
+Once authenticated, credentials for different hosts can still conflict if you access repositories over HTTPS and rely on a single default helper.
 
 Git allows scoped credential helper definitions per domain:
 
