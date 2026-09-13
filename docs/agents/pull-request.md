@@ -16,6 +16,9 @@ whole convention.
 - Use a concise descriptive title with no Conventional Commit prefix,
   because one request may carry more than one kind of change. The prefix
   belongs on the commit subjects inside the request, not on the request.
+- Link a tracked issue with `Closes #<n>` only when merge should auto-close
+  it. If there is no tracked issue, never leave an unlinked `Closes #` or an
+  empty Related Issue heading in the description.
 - **Do not open a request, draft included, without the developer asking.**
 
 ## Description shape
