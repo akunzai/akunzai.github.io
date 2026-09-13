@@ -67,7 +67,9 @@ It will output `employee@company.example.com`. In personal or open-source reposi
 
 ### Prerequisite: Authenticating `glab` Against a Self-Managed GitLab
 
-Before wiring up credential helper routing, `glab` must first be authenticated against your self-managed GitLab host — otherwise `glab auth git-credential` has no token to hand back:
+Before wiring up credential helper routing, `glab` must first be authenticated against your self-managed GitLab host — otherwise `glab auth git-credential` has no token to hand back.
+
+Many self-managed environments disable OAuth/SSO integration and only accept a **Personal Access Token (PAT)** — during interactive login, choose to paste an existing token. If you don't have one yet, create it per [GitLab's official Personal Access Tokens documentation](https://docs.gitlab.com/user/profile/personal_access_tokens/) at `https://git.company.example.com/-/user_settings/personal_access_tokens` on your self-managed host, selecting at least the `api` and `write_repository` scopes (`write_repository` already includes `read_repository` for `git push`/`git fetch`; `api` covers `glab`'s REST calls for MRs, issues, and the like).
 
 ```sh
 # Interactive login against a self-managed host (plain `glab auth login` only targets gitlab.com)

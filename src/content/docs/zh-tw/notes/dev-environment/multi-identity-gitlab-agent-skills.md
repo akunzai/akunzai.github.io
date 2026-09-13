@@ -69,7 +69,9 @@ git config user.email
 
 ### 前置作業：`glab` 認證企業自架 GitLab (Self-Managed)
 
-在設定 Credential Helper 分流之前，得先讓 `glab` 對企業自架的 GitLab 主機完成認證，`glab auth git-credential` 才有憑證可用：
+在設定 Credential Helper 分流之前，得先讓 `glab` 對企業自架的 GitLab 主機完成認證，`glab auth git-credential` 才有憑證可用。
+
+許多企業自架環境會關閉 OAuth／SSO 整合，只允許以 **Personal Access Token（PAT）** 登入，互動式登入時選擇貼上既有 Token 即可。若尚未申請，可依 [GitLab 官方文件：Personal Access Tokens](https://docs.gitlab.com/user/profile/personal_access_tokens/) 到自架主機的 `https://git.company.example.com/-/user_settings/personal_access_tokens` 頁面建立，至少勾選 `api` 與 `write_repository` 兩個 Scope（`write_repository` 已內含 `read_repository`，供 `git push`／`git fetch` 使用；`api` 則供 `glab` 呼叫 MR、Issue 等 REST API）。
 
 ```sh
 # 互動式登入企業自架主機（預設 glab auth login 只會登入 gitlab.com）
