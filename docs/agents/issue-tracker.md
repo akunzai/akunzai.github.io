@@ -31,7 +31,9 @@ prefix belongs on pull request titles and commit subjects instead.
    unless the reader cannot otherwise locate the issue.
 2. Add a visual GitHub renders inline — a screenshot for a layout,
    typography, or navigation bug, a Mermaid diagram for a build or
-   content pipeline problem. Skip formats the description editor cannot
+   content pipeline problem. In a Mermaid label, write a path parameter
+   as `:id`, not `{id}`, and break lines with `<br/>`, not `\n`. Skip
+   formats the description editor cannot
    render, such as a link to an external artifact or a raw HTML or SVG
    file. Upload it with the repeatable `--attach` flag
    (`gh issue create --attach './bug.png#The broken sidebar'`); alt text

@@ -37,6 +37,11 @@ whole convention.
    | Config, build, or CI only | None; command output instead |
 
    Pair before and after. At most one diagram unless it is such a pair.
+
+   In a Mermaid label, write a path parameter as `:id`, not `{id}` — `{}`
+   opens a rhombus node and fails the parse — and break lines with `<br/>`,
+   not `\n`, which is not a line break inside a quoted label.
+
    An appearance change on this site is checked at both breakpoints and
    in both themes, so a before/after pair covers desktop and phone width.
 
