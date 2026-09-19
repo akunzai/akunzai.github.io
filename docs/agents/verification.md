@@ -93,6 +93,11 @@ triggered by a merge to `main`.
 - Screenshots: the `playwright-cli` or `terminal-browser` skill against
   the preview server, so the frame holds the page and not the developer's
   browser chrome.
+- UI locale: **`zh-TW`**. Starlight's `defaultLocale` is `zh-tw`; English
+  lives under the `/en/` prefix. The app picks locale from the URL, not
+  the browser. Browser automation defaults to `en-US`; open `/zh-tw/...`
+  so the capture matches. A leftover visit to `/en/` outranks that.
+  Captions follow Traditional Chinese (`"captionLocale"`).
 
 **This document is where the capture rules live**, and `pull-request.md`
 points here rather than restating them. A capture taken on the
