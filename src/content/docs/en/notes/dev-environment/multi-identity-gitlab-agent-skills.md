@@ -81,11 +81,11 @@ glab auth status
 
 > 💡 A self-managed instance with a self-signed certificate or internal private CA raises `x509: certificate signed by unknown authority`. Point `glab` at the trusted CA with `glab config set ca_cert /path/to/ca.pem --host git.company.example.com` — never disable verification with `skip_tls_verify` in production.
 
-If your team mostly works against this one self-managed instance, set it as the default host so you don't need `--hostname` on every command; check the current default anytime with `glab config get host`:
+If your team mostly works against this one self-managed instance, set it as the global default host with `--global` (otherwise `glab config set` writes only to the current repository's `.git/glab-cli/config.yml`), so you don't need `--hostname` on every command; check the current default anytime with `glab config get host`:
 
 ```sh
-# Set the default host to the self-managed GitLab instance
-glab config set host git.company.example.com
+# Set the global default host to the self-managed GitLab instance (add --global to write to the global config)
+glab config set host git.company.example.com --global
 
 # Check the currently configured default host
 glab config get host
@@ -97,7 +97,7 @@ glab config get host
 > 3. The environment variables `GITLAB_HOST` → `GITLAB_URI` → `GL_HOST`, checked in that order — the first one set wins (none of them are host-scoped, so they apply to every connection; prefer the config file when juggling multiple instances)
 > 4. The `host` value in `config.yml` (defaults to `gitlab.com` when unset)
 >
-> In practice, running `glab` inside a company GitLab project directory already picks up the self-managed host from its git remote — `config set host` mainly matters outside a repo directory (e.g. plain API queries).
+> In practice, running `glab` inside a company GitLab project directory already picks up the self-managed host from its git remote — `glab config set host ... --global` mainly matters outside a repo directory (e.g. plain API queries).
 
 Once authenticated, credentials for different hosts can still conflict if you access repositories over HTTPS and rely on a single default helper.
 

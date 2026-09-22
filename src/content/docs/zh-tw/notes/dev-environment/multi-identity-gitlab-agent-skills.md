@@ -83,11 +83,11 @@ glab auth status
 
 > 💡 若自架主機使用自簽憑證或內部私有 CA，連線時會出現 `x509: certificate signed by unknown authority`；請以 `glab config set ca_cert /path/to/ca.pem --host git.company.example.com` 指定信任的 CA 憑證路徑，切勿在正式環境使用 `skip_tls_verify` 略過驗證。
 
-若團隊主要都在存取這台企業自架主機，可以進一步將其設為預設主機，之後執行指令就不必每次加 `--hostname`；用 `glab config get host` 隨時確認目前的預設值：
+若團隊主要都在存取這台企業自架主機，可以進一步將其設為全域預設主機（加上 `--global` 寫入全域設定檔，否則只會寫入當前儲存庫的 `.git/glab-cli/config.yml`），之後執行指令就不必每次加 `--hostname`；用 `glab config get host` 隨時確認目前的預設值：
 
 ```sh
-# 將預設主機設為企業自架 GitLab
-glab config set host git.company.example.com
+# 將全域預設主機設為企業自架 GitLab（加上 --global 寫入全域設定檔）
+glab config set host git.company.example.com --global
 
 # 確認目前設定的預設主機
 glab config get host
@@ -99,7 +99,7 @@ glab config get host
 > 3. 環境變數 `GITLAB_HOST` → `GITLAB_URI` → `GL_HOST`（依序檢查，第一個有設定的生效；三者皆不分主機，會套用到所有連線，多主機情境建議改用設定檔）
 > 4. `config.yml` 裡的 `host` 設定值（未設定時預設為 `gitlab.com`）
 >
-> 換言之，只要在公司 GitLab 專案目錄內執行 `glab`，它會優先認得 git remote 指向的自架主機；`config set host` 主要是在專案目錄外（例如純粹查詢 API）才會派上用場。
+> 換言之，只要在公司 GitLab 專案目錄內執行 `glab`，它會優先認得 git remote 指向的自架主機；`glab config set host ... --global` 主要是在專案目錄外（例如純粹查詢 API）才會派上用場。
 
 完成認證後，如果你透過 HTTPS 協定存取儲存庫，在不同平台（GitHub、自建 GitLab、Azure DevOps）之間，Credential 管理往往容易打架。
 
