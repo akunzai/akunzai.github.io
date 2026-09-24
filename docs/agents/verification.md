@@ -88,7 +88,7 @@ triggered by a merge to `main`.
 
 ## Capturing evidence
 
-- Recording: the `to-walkthrough-video` skill for a browser flow; `tcut`
+- Recording: the `record-walkthrough` skill for a browser flow; `tcut`
   for terminal output.
 - Screenshots: the `playwright-cli` or `terminal-browser` skill against
   the preview server, so the frame holds the page and not the developer's
