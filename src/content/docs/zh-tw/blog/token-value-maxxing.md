@@ -10,7 +10,7 @@ description: "「多用 Token」不是 KPI，產出才是。用我自己 120 天
 1. [INPUT：知識翻倍、常駐少四分之三，遵守率卻沒變](/zh-tw/blog/agents-md-instruction-budget/)
 2. [CACHE：隔一小時再回來，那一回合貴了 80 倍](/zh-tw/blog/cache-session-habits/)
 3. [MODEL：規則寫了，卻不在做決定的那一刻](/zh-tw/blog/subagent-model-selection/)
-4. REWORK：少做重工（撰寫中）
+4. [REWORK：別再問「要怎麼避免再發生」](/zh-tw/blog/prevent-recurrence/)
 5. 分發：把 skills 沉澱下來（撰寫中）
 
 延伸閱讀：[拒當失憶鹹魚：我的全域 AGENTS.md 分層治理架構](/zh-tw/blog/global-agents-architecture/)
@@ -116,7 +116,7 @@ description: "「多用 Token」不是 KPI，產出才是。用我自己 120 天
 
 agent 交付後才由人工發現問題，退回重做的那一輪，才是最貴的 token。同一個坑踩第二次，更是純粹的浪費。讓 agent 能用單一指令在本地驗證、坑寫成測試而不是寫進常駐指令、截圖錄影交給便宜的 worker，主對話只看結果做判斷。
 
-→ 詳見第 4 篇〈REWORK〉：Prevent Recurrence 與 agent-ready repo。
+→ 詳見第 4 篇〈[REWORK：別再問「要怎麼避免再發生」](/zh-tw/blog/prevent-recurrence/)〉：Prevent Recurrence 與 agent-ready repo。
 
 ---
 

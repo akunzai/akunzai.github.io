@@ -10,7 +10,7 @@ description: "I analyzed 120 days and more than thirty thousand conversation tur
 1. [INPUT: Twice the Knowledge, a Quarter of the Resident Load, Same Compliance](/en/blog/agents-md-instruction-budget/)
 2. **CACHE: hit the cache more** (this post)
 3. [MODEL: The Rule Was Written, but Absent When the Decision Was Made](/en/blog/subagent-model-selection/)
-4. REWORK: redo less (coming soon)
+4. [REWORK: Stop Asking "How Do We Keep This From Happening Again?"](/en/blog/prevent-recurrence/)
 5. Distribution: turning practices into skills (coming soon)
 
 Further reading: [Beyond the Amnesiac Salted Fish: My Hierarchical Global AGENTS.md Architecture](/en/blog/global-agents-architecture/)

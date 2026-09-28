@@ -10,7 +10,7 @@ description: "Burning more tokens is not a KPI; output is. Using 120 days of my 
 1. [INPUT: Twice the Knowledge, a Quarter of the Resident Load, Same Compliance](/en/blog/agents-md-instruction-budget/)
 2. [CACHE: Come Back After an Hour and That Turn Costs 80×](/en/blog/cache-session-habits/)
 3. [MODEL: The Rule Was Written, but Absent When the Decision Was Made](/en/blog/subagent-model-selection/)
-4. REWORK: redo less (coming soon)
+4. [REWORK: Stop Asking "How Do We Keep This From Happening Again?"](/en/blog/prevent-recurrence/)
 5. Distribution: turning practices into skills (coming soon)
 
 Further reading: [Beyond the Amnesiac Salted Fish: My Hierarchical Global AGENTS.md Architecture](/en/blog/global-agents-architecture/)
@@ -116,7 +116,7 @@ It doesn't. Most harnesses let the main model do everything by default, and a su
 
 When a human finds the problem only after the agent delivers, the round of rework that follows is the most expensive token of all. Stepping into the same pitfall twice is pure waste. Let the agent verify locally with a single command, turn pitfalls into tests rather than resident instructions, and hand screenshots and recordings to a cheap worker, so the main conversation only reviews results and makes judgments.
 
-→ More in part 4 (REWORK): Prevent Recurrence and agent-ready repositories.
+→ More in part 4: [REWORK: Stop Asking "How Do We Keep This From Happening Again?"](/en/blog/prevent-recurrence/): Prevent Recurrence and agent-ready repositories.
 
 ---
 

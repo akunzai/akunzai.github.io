@@ -10,7 +10,7 @@ description: "I slimmed the AGENTS.md of a large project and ran a controlled ex
 1. **INPUT: send less** (this post)
 2. [CACHE: Come Back After an Hour and That Turn Costs 80×](/en/blog/cache-session-habits/)
 3. [MODEL: The Rule Was Written, but Absent When the Decision Was Made](/en/blog/subagent-model-selection/)
-4. REWORK: redo less (coming soon)
+4. [REWORK: Stop Asking "How Do We Keep This From Happening Again?"](/en/blog/prevent-recurrence/)
 5. Distribution: turning practices into skills (coming soon)
 
 Further reading: [Beyond the Amnesiac Salted Fish: My Hierarchical Global AGENTS.md Architecture](/en/blog/global-agents-architecture/)

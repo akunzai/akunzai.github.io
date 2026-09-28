@@ -10,7 +10,7 @@ description: "我寫了 tech-lead 與 cheap-dev-workers，要求派工前先挑�
 1. [INPUT：知識翻倍、常駐少四分之三，遵守率卻沒變](/zh-tw/blog/agents-md-instruction-budget/)
 2. [CACHE：隔一小時再回來，那一回合貴了 80 倍](/zh-tw/blog/cache-session-habits/)
 3. **MODEL：用對模型**（本篇）
-4. REWORK：少做重工（撰寫中）
+4. [REWORK：別再問「要怎麼避免再發生」](/zh-tw/blog/prevent-recurrence/)
 5. 分發：把 skills 沉澱下來（撰寫中）
 
 延伸閱讀：[拒當失憶鹹魚：我的全域 AGENTS.md 分層治理架構](/zh-tw/blog/global-agents-architecture/)

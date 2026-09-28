@@ -10,7 +10,7 @@ description: "I wrote tech-lead and cheap-dev-workers to make the main model pic
 1. [INPUT: Twice the Knowledge, a Quarter of the Resident Load, Same Compliance](/en/blog/agents-md-instruction-budget/)
 2. [CACHE: Come Back After an Hour and That Turn Costs 80×](/en/blog/cache-session-habits/)
 3. **MODEL: use the right model** (this post)
-4. REWORK: redo less (coming soon)
+4. [REWORK: Stop Asking "How Do We Keep This From Happening Again?"](/en/blog/prevent-recurrence/)
 5. Distribution: turning practices into skills (coming soon)
 
 Further reading: [Beyond the Amnesiac Salted Fish: My Hierarchical Global AGENTS.md Architecture](/en/blog/global-agents-architecture/)

@@ -10,7 +10,7 @@ description: "我分析了 120 天、三萬多個對話回合：一般回合的�
 1. [INPUT：知識翻倍、常駐少四分之三，遵守率卻沒變](/zh-tw/blog/agents-md-instruction-budget/)
 2. **CACHE：多命中快取**（本篇）
 3. [MODEL：規則寫了，卻不在做決定的那一刻](/zh-tw/blog/subagent-model-selection/)
-4. REWORK：少做重工（撰寫中）
+4. [REWORK：別再問「要怎麼避免再發生」](/zh-tw/blog/prevent-recurrence/)
 5. 分發：把 skills 沉澱下來（撰寫中）
 
 延伸閱讀：[拒當失憶鹹魚：我的全域 AGENTS.md 分層治理架構](/zh-tw/blog/global-agents-architecture/)
