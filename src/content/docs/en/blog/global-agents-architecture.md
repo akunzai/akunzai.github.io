@@ -4,6 +4,17 @@ date: 2026-09-06
 tags: ["ai-agent", "workflow", "governance"]
 ---
 
+:::note[Token Value Maxxing series]
+This post is further reading for the series, covering layered governance of global instructions. The series:
+
+0. [Overview: five misconceptions and four levers](/en/blog/token-value-maxxing/)
+1. [INPUT: Twice the Knowledge, a Quarter of the Resident Load, Same Compliance](/en/blog/agents-md-instruction-budget/)
+2. [CACHE: Come Back After an Hour and That Turn Costs 80×](/en/blog/cache-session-habits/)
+3. [MODEL: The Rule Was Written, but Absent When the Decision Was Made](/en/blog/subagent-model-selection/)
+4. [REWORK: Stop Asking "How Do We Keep This From Happening Again?"](/en/blog/prevent-recurrence/)
+5. [Distribution: An SOP Not Written as a Skill Makes Every Agent Hit the Wall](/en/blog/skills-distribution/)
+:::
+
 In Stephen Chow’s classic martial-arts comedy *Shaolin Soccer*, there is an unforgettable line: **"Without dreams in life, how are you any different from a salted fish?"**
 
 In modern software development where human engineers pair program with AI agents, uncalibrated agents often behave exactly like **amnesiac salted fishes**:
