@@ -11,7 +11,7 @@ description: "我寫了 tech-lead 與 cheap-dev-workers，要求派工前先挑�
 2. [CACHE：隔一小時再回來，那一回合貴了 80 倍](/zh-tw/blog/cache-session-habits/)
 3. **MODEL：用對模型**（本篇）
 4. [REWORK：別再問「要怎麼避免再發生」](/zh-tw/blog/prevent-recurrence/)
-5. 分發：把 skills 沉澱下來（撰寫中）
+5. [分發：沒寫成 skill 的 SOP，每個 agent 都要撞一次牆](/zh-tw/blog/skills-distribution/)
 
 延伸閱讀：[拒當失憶鹹魚：我的全域 AGENTS.md 分層治理架構](/zh-tw/blog/global-agents-architecture/)
 :::

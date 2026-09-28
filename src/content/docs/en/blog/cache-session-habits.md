@@ -11,7 +11,7 @@ description: "I analyzed 120 days and more than thirty thousand conversation tur
 2. **CACHE: hit the cache more** (this post)
 3. [MODEL: The Rule Was Written, but Absent When the Decision Was Made](/en/blog/subagent-model-selection/)
 4. [REWORK: Stop Asking "How Do We Keep This From Happening Again?"](/en/blog/prevent-recurrence/)
-5. Distribution: turning practices into skills (coming soon)
+5. [Distribution: An SOP Not Written as a Skill Makes Every Agent Hit the Wall](/en/blog/skills-distribution/)
 
 Further reading: [Beyond the Amnesiac Salted Fish: My Hierarchical Global AGENTS.md Architecture](/en/blog/global-agents-architecture/)
 :::

@@ -11,7 +11,7 @@ description: "我花了四個月才想通：要求 agent 記下教訓不夠，�
 2. [CACHE：隔一小時再回來，那一回合貴了 80 倍](/zh-tw/blog/cache-session-habits/)
 3. [MODEL：規則寫了，卻不在做決定的那一刻](/zh-tw/blog/subagent-model-selection/)
 4. **REWORK：少做重工**（本篇）
-5. 分發：把 skills 沉澱下來（撰寫中）
+5. [分發：沒寫成 skill 的 SOP，每個 agent 都要撞一次牆](/zh-tw/blog/skills-distribution/)
 
 延伸閱讀：[拒當失憶鹹魚：我的全域 AGENTS.md 分層治理架構](/zh-tw/blog/global-agents-architecture/)
 :::

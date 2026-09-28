@@ -11,7 +11,7 @@ description: "「多用 Token」不是 KPI，產出才是。用我自己 120 天
 2. [CACHE：隔一小時再回來，那一回合貴了 80 倍](/zh-tw/blog/cache-session-habits/)
 3. [MODEL：規則寫了，卻不在做決定的那一刻](/zh-tw/blog/subagent-model-selection/)
 4. [REWORK：別再問「要怎麼避免再發生」](/zh-tw/blog/prevent-recurrence/)
-5. 分發：把 skills 沉澱下來（撰寫中）
+5. [分發：沒寫成 skill 的 SOP，每個 agent 都要撞一次牆](/zh-tw/blog/skills-distribution/)
 
 延伸閱讀：[拒當失憶鹹魚：我的全域 AGENTS.md 分層治理架構](/zh-tw/blog/global-agents-architecture/)
 :::
@@ -131,7 +131,7 @@ agent 交付後才由人工發現問題，退回重做的那一輪，才是最�
 | **MODEL** | 用對模型 | 明確指定委派模型、主對話只做判斷 | 第 3 篇 |
 | **REWORK** | 少做重工 | 坑寫成測試、本地驗證再交付、附證據一次過審 | 第 4 篇 |
 
-最後一篇會講怎麼把這些重複的做法沉澱成 skills，並用 [skills-manager](https://github.com/akunzai/skills-manager) 在不同 agent 之間同步。
+最後一篇〈[分發：沒寫成 skill 的 SOP，每個 agent 都要撞一次牆](/zh-tw/blog/skills-distribution/)〉會講怎麼把這些重複的做法沉澱成 skills，並用 [skills-manager](https://github.com/akunzai/skills-manager) 在不同 agent 之間同步。
 
 ---
 

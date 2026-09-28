@@ -11,7 +11,7 @@ description: "Burning more tokens is not a KPI; output is. Using 120 days of my 
 2. [CACHE: Come Back After an Hour and That Turn Costs 80×](/en/blog/cache-session-habits/)
 3. [MODEL: The Rule Was Written, but Absent When the Decision Was Made](/en/blog/subagent-model-selection/)
 4. [REWORK: Stop Asking "How Do We Keep This From Happening Again?"](/en/blog/prevent-recurrence/)
-5. Distribution: turning practices into skills (coming soon)
+5. [Distribution: An SOP Not Written as a Skill Makes Every Agent Hit the Wall](/en/blog/skills-distribution/)
 
 Further reading: [Beyond the Amnesiac Salted Fish: My Hierarchical Global AGENTS.md Architecture](/en/blog/global-agents-architecture/)
 :::
@@ -131,7 +131,7 @@ Flip the five misconceptions around and you get four levers for saving tokens, w
 | **MODEL** | Use the right model | Explicit models for delegation; the main conversation only judges | Part 3 |
 | **REWORK** | Redo less | Pitfalls become tests; verify locally before delivery; attach evidence to pass review first time | Part 4 |
 
-The final part covers turning these repeated practices into skills and syncing them across agents with [skills-manager](https://github.com/akunzai/skills-manager).
+The final part, [Distribution: An SOP Not Written as a Skill Makes Every Agent Hit the Wall](/en/blog/skills-distribution/), covers turning these repeated practices into skills and syncing them across agents with [skills-manager](https://github.com/akunzai/skills-manager).
 
 ---
 

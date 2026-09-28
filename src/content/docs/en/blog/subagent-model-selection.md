@@ -11,7 +11,7 @@ description: "I wrote tech-lead and cheap-dev-workers to make the main model pic
 2. [CACHE: Come Back After an Hour and That Turn Costs 80×](/en/blog/cache-session-habits/)
 3. **MODEL: use the right model** (this post)
 4. [REWORK: Stop Asking "How Do We Keep This From Happening Again?"](/en/blog/prevent-recurrence/)
-5. Distribution: turning practices into skills (coming soon)
+5. [Distribution: An SOP Not Written as a Skill Makes Every Agent Hit the Wall](/en/blog/skills-distribution/)
 
 Further reading: [Beyond the Amnesiac Salted Fish: My Hierarchical Global AGENTS.md Architecture](/en/blog/global-agents-architecture/)
 :::
