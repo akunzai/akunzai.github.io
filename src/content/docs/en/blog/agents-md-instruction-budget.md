@@ -55,10 +55,10 @@ So what did slimming actually save?
 
 As the overview noted, a cache read costs at most 10% of input. So resending resident instructions every turn is actually cheap on a cache hit. The real bill sits in two places:
 
-1. **Every new session writes them to the cache again.** In my measurements Claude Code writes to the 1-hour cache, priced at **2×** base input ($4 per million tokens for Sonnet 5, $8 for Opus 5.5, per the [official pricing](https://platform.claude.com/docs/en/about-claude/pricing)).
+1. **Every new session writes them to the cache again.** In my measurements Claude Code writes to the 1-hour cache, priced at **2×** base input ($4 per million tokens for Sonnet 5.5, $8 for Opus 5.5, per the [official pricing](https://platform.claude.com/docs/en/about-claude/pricing)).
 2. **Every cache invalidation rereads them at full price.** Switching models, changing effort, or resuming the next day all trigger it.
 
-With the roughly 9.7k tokens this slimming saved, each new session saves about $0.04 on Sonnet 5 and about $0.08 on Opus 5.5. Not much once, but I opened hundreds of sessions in 120 days, and that's for one project.
+With the roughly 9.7k tokens this slimming saved, each new session saves about $0.04 on Sonnet 5.5 and about $0.08 on Opus 5.5. Not much once, but I opened hundreds of sessions in 120 days, and that's for one project.
 
 The other saving is **turns**: with fewer instructions, the agent spends less effort "reading every rule before starting."
 

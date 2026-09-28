@@ -55,10 +55,10 @@ description: "我把一個大型專案的 AGENTS.md 瘦身後做了對照實驗�
 
 總綱提過，快取讀取至少打 1 折。所以常駐指令每回合重送，在快取命中時其實很便宜。真正的帳在兩個地方：
 
-1. **每個新 session 都要重新寫入快取。** 我實測 Claude Code 寫入的是 1 小時快取，價格是原價的 **2 倍**（Sonnet 5 為每百萬 token $4、Opus 5.5 為 $8，[官方定價](https://platform.claude.com/docs/en/about-claude/pricing)）。
+1. **每個新 session 都要重新寫入快取。** 我實測 Claude Code 寫入的是 1 小時快取，價格是原價的 **2 倍**（Sonnet 5.5 為每百萬 token $4、Opus 5.5 為 $8，[官方定價](https://platform.claude.com/docs/en/about-claude/pricing)）。
 2. **快取一失效，就全價重讀。** 換模型、改 effort、隔天接著聊，都會觸發。
 
-以這次瘦身省下的約 9.7k token 計算，每開一個新 session，Sonnet 5 省約 $0.04，Opus 5.5 省約 $0.08。單次不多，但我 120 天開了數百個 session，而且這還只是一個專案。
+以這次瘦身省下的約 9.7k token 計算，每開一個新 session，Sonnet 5.5 省約 $0.04，Opus 5.5 省約 $0.08。單次不多，但我 120 天開了數百個 session，而且這還只是一個專案。
 
 另一個省下的是**回合數**：指令少了，agent 花在「讀完所有規則再開始」的力氣也少了。
 

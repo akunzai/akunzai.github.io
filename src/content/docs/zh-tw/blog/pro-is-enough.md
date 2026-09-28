@@ -69,11 +69,11 @@ description: "我的 Claude Max 5x（每月 100 美元）一個月用掉超過 5
 | Claude Fable 5.1 | $10 | $50 | $0.25 |
 | Claude Opus 5 | $5 | $25 | $0.50 |
 | **Claude Opus 5.5** | **$4** | **$20** | **$0.20** |
-| Claude Sonnet 5 | $2 | $10 | $0.20 |
+| Claude Sonnet 5.5 | $2 | $10 | $0.20 |
 
 （單位：美元／百萬 token）
 
-Cache 讀取從 $0.50 降到 $0.20，和 Sonnet 5 一樣。在 Coding Agent 的工作裡，cache 讀取往往就是大宗：主機 A 這 30 天的 6.4B token 裡，有 6.2B 是 cache 讀取。也就是說，**佔最大宗的那一項，Opus 5.5 和 Sonnet 5 同價**。
+Cache 讀取從 $0.50 降到 $0.20，和 Sonnet 5.5 一樣。在 Coding Agent 的工作裡，cache 讀取往往就是大宗：主機 A 這 30 天的 6.4B token 裡，有 6.2B 是 cache 讀取。也就是說，**佔最大宗的那一項，Opus 5.5 和 Sonnet 5.5 同價**。
 
 我的觀察是：一般企業內的軟體開發，Opus 就夠用了。最貴的模型像是拿大砲打小鳥，除非任務真的非常困難，否則不建議預設使用。什麼任務該用哪個模型，請見[第 3 篇](/zh-tw/blog/subagent-model-selection/)。
 
@@ -85,11 +85,11 @@ Codex 的額度看起來更多，limit 也常常重置。但我自己用下來�
 |---|---|---|
 | 最強 | Fable 5.1（$10／$50） | GPT-6 Astra（$10／$50） |
 | 中堅 | Opus 5.5（$4／$20） | — |
-| 主力 | Sonnet 5（$2／$10） | GPT-6 Sol（$2／$10） |
+| 主力 | Sonnet 5.5（$2／$10） | GPT-6 Sol（$2／$10） |
 
-依 [OpenAI 官方定價](https://developers.openai.com/api/docs/pricing)，GPT-6 系列只有 Astra、Sol、Luna 三個型號，沒有 Terra。GPT-6 Sol 和 Sonnet 5 同價，甚至比上一代的 GPT-5.6 Terra 還便宜。
+依 [OpenAI 官方定價](https://developers.openai.com/api/docs/pricing)，GPT-6 系列只有 Astra、Sol、Luna 三個型號，沒有 Terra。GPT-6 Sol 和 Sonnet 5.5 同價，甚至比上一代的 GPT-5.6 Terra 還便宜。
 
-我退訂 Codex 前用的是 GPT-5.6 Sol，體感大約是 Sonnet 等級。改看第三方評測，[Artificial Analysis](https://artificialanalysis.ai/models/releases/comparisons/gpt-6-sol-vs-claude-opus-5-5) 的 Intelligence Index（皆為最高 effort）是 Opus 5.5 58、GPT-6 Sol 48、Sonnet 5 38。GPT-6 Sol 和 Sonnet 5 同價卻強一截，是很划算的主力；但和 Opus 5.5 仍差 10 分，再往上一階就是和 Fable 一樣貴的 Astra。**Codex 缺的，仍是 Opus 這樣夠強、又不算貴的中堅份子。**
+我退訂 Codex 前用的是 GPT-5.6 Sol，體感大約是 Sonnet 等級。改看第三方評測，Artificial Analysis 的 Intelligence Index（皆為最高 effort，見 [Opus 5.5](https://artificialanalysis.ai/models/releases/comparisons/gpt-6-sol-vs-claude-opus-5-5) 與 [Sonnet 5.5](https://artificialanalysis.ai/models/releases/comparisons/gpt-6-sol-vs-claude-sonnet-5-5) 的比較）是 Opus 5.5 58、Sonnet 5.5 56、GPT-6 Sol 48。GPT-6 Sol 和 Sonnet 5.5 同價，卻落後 8 分，和 Opus 5.5 更差了 10 分；再往上一階，就是和 Fable 一樣貴的 Astra。**Codex 缺的，仍是 Opus 這樣夠強、又不算貴的中堅份子。**
 
 所以我會推薦 Codex 的情境是：你的任務不是更難（交給 Astra），就是更簡單（交給 Sol）；或是你的工作需要生成圖片或影片。
 
@@ -103,7 +103,7 @@ Codex 的額度看起來更多，limit 也常常重置。但我自己用下來�
 | Copilot Pro+ | $39 | $70 | 1.8× |
 | Copilot Max | $100 | $200 | 2× |
 
-同樣是用 Sonnet 5，Claude Pro 的補貼大約是 20 倍，Copilot 不到 2 倍，**差了十倍以上**。額度也是每月重置一次。
+同樣是用 Sonnet 5.5，Claude Pro 的補貼大約是 20 倍，Copilot 不到 2 倍，**差了十倍以上**。額度也是每月重置一次。
 
 我能想到的理由只有兩個：
 
@@ -151,7 +151,7 @@ flowchart TD
 - **只有大量重構這類長時間、高 token 的任務**，才考慮 Max。
 - **5 小時或 7 天的額度用完，就休息吧。** 那個重置週期不只是在限制你，也是在提醒你該停下來了。
 
-我也在期待 Claude Sonnet 與 Haiku 的 5.5 版。GPT-6 Sol 已經在同價位超車 Sonnet 5；如果下一代的 Sonnet、Haiku 能跟上，交給 subagent 的工作會更便宜，Pro 的額度也更撐得住。
+Claude Sonnet 5.5 已在 9/28 釋出：價格維持 $2／$10，Intelligence Index 卻從 Sonnet 5 的 38 跳到 56，直逼 Opus 5.5，也在同價位反超 GPT-6 Sol；Haiku 5.5 官方說會在幾週內跟上。交給 subagent 的工作會更便宜，Pro 的額度也更撐得住。
 
 我會在下個月實際用 Pro 跑一整個月，再回來報告結果。
 
@@ -167,7 +167,8 @@ flowchart TD
 - [Claude 官方公告：提高 Pro、Max、Team 的 5 小時使用上限](https://x.com/claudeai/status/2102435538120691886) — Opus 5.5 釋出時的額度調整
 - [OpenAI API：Pricing](https://developers.openai.com/api/docs/pricing) — GPT-6 Astra／Sol／Luna 的 API 牌價
 - [Artificial Analysis：Claude Opus 5.5 vs GPT-6 Sol](https://artificialanalysis.ai/models/releases/comparisons/gpt-6-sol-vs-claude-opus-5-5) — 第三方評測的 Intelligence Index 與每任務成本
-- [Artificial Analysis：GPT-6 Sol vs Claude Sonnet 5](https://artificialanalysis.ai/models/releases/comparisons/gpt-6-sol-vs-claude-sonnet-5) — 同價位兩個模型的第三方比較
+- [Claude Sonnet 5.5 官方公告](https://www.anthropic.com/claude-sonnet-5-5) — 釋出日期、定價與 Haiku 5.5 的時程
+- [Artificial Analysis：GPT-6 Sol vs Claude Sonnet 5.5](https://artificialanalysis.ai/models/releases/comparisons/gpt-6-sol-vs-claude-sonnet-5-5) — 同價位兩個模型的第三方比較
 - [GitHub Copilot：Plans](https://github.com/features/copilot/plans) — Copilot 各方案的月費與 AI credits
 - [Cursor：Pricing](https://cursor.com/pricing) — Cursor 方案
 - [akunzai/agent-skills](https://github.com/akunzai/agent-skills) — 用 Copilot 跑 Evals 的 skills 儲存庫
