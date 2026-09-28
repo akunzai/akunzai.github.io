@@ -150,6 +150,8 @@ agent 交付後才由人工發現問題，退回重做的那一輪，才是最�
 
 - [Claude 模型定價](https://platform.claude.com/docs/en/about-claude/pricing) — 各模型輸入、輸出與快取單價
 - [Claude Prompt Caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching) — 快取的建立順序與失效條件
+- [Anthropic：Maximizing the value of your Claude Code sessions](https://claude.com/blog/maximizing-the-value-of-your-claude-code-sessions) — Claude Code 成本的驅動因素與節省方式
+- [Anthropic：Claude Opus 5.5 is built for coding sessions that use more context](https://claude.com/blog/claude-opus-5-5-built-for-coding-sessions-that-use-more-context) — Opus 5.5 降價（快取讀取降 60%）與使用趨勢
 - [AgentsView](https://github.com/kenn-io/agentsview) — 本機 AI agent session 瀏覽與成本分析工具
 - [我的 Claude Code statusline 腳本（GitHub Gist）](https://gist.github.com/akunzai/b1151ff86099c4a12935a71dda2bd380) — 顯示模型、effort、context 用量與快取命中率
 - [GitHub 專案：akunzai/agent-skills](https://github.com/akunzai/agent-skills) — `tech-lead`、cheap-dev-workers 等 skills

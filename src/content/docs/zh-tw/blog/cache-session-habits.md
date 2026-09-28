@@ -50,7 +50,7 @@ description: "我分析了 120 天、三萬多個對話回合：一般回合的�
 理解三件事，後面的習慣就很好懂：
 
 1. **快取只認開頭。** 依照[官方文件](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)，快取依 `tools → system → messages` 的順序建立；前面任何一段變了，後面全部失效。
-2. **快取以模型為單位。** 換了模型，就是另一份快取，整段歷史得用新模型從頭寫入。調整 effort 或 thinking 設定，也會讓訊息部分的快取失效。
+2. **快取以模型為單位。** 換了模型，就是另一份快取，整段歷史得用新模型從頭寫入。調整 thinking 設定，也會讓訊息部分的快取失效；在 Opus 5.5、Sonnet 5.5、Fable 5.1 上，使用 API key 或訂閱時，Claude Code 中途調整 effort 會保留快取（[文件](https://code.claude.com/docs/en/prompt-caching#changing-effort-level)）；其他模型仍會重置。
 3. **快取有期限。** 5 分鐘或 1 小時，每次命中會重新計時。我實測 Claude Code 寫入的是 1 小時快取，寫入價是原價的 2 倍。
 
 換句話說：**只要開頭不變、在期限內，快取就會一直幫你打折；一旦變動或過期，就得付一次昂貴的寫入費。**
@@ -63,7 +63,7 @@ description: "我分析了 120 天、三萬多個對話回合：一般回合的�
 
 - **開工前先決定。** 任務本身的難度通常在開始時就看得出來。
 - **難的子任務，派 subagent，不要換主模型。** subagent 有自己獨立的 context 與快取，主對話的快取不受影響。怎麼派得便宜又派得對，是第 3 篇〈[MODEL：規則寫了，卻不在做決定的那一刻](/zh-tw/blog/subagent-model-selection/)〉的主題。
-- **effort 也一樣。** 在對話中途調高或調低 effort，同樣會讓訊息部分的快取失效。
+- **effort 在較新的模型上是例外。** 在 Opus 5.5、Sonnet 5.5、Fable 5.1 上，使用 API key 或 Claude 訂閱時，調整 effort 會保留快取（[文件](https://code.claude.com/docs/en/prompt-caching#changing-effort-level)；[公告](https://claude.com/blog/claude-opus-5-5-built-for-coding-sessions-that-use-more-context)）。Bedrock、Google Cloud Agent Platform、Claude apps gateway 不適用，而且 [changelog](https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md) 將 Fable 5.1 的修正標在 v2.1.260。Opus 5.5 在 Claude Code v2.1.280、Sonnet 5.5 在 v2.1.284 才首次推出，都晚於該版本，所以用這兩個模型時版本通常不成問題。我自己實測過：在 Sonnet 5.5 上，effort 依序切換 medium → low → medium，statusline 的快取命中率沒有下降；在 Opus 5.5 上依序切換 low → medium → low，transcript 顯示每一輪仍從快取讀取整段歷史，只寫入數百個新 token（各為單一 session）。其他情況請照 [Anthropic 的建議](https://claude.com/blog/maximizing-the-value-of-your-claude-code-sessions)事先設定好。
 
 ## 習慣二：一個任務一串對話，別隔天接著聊
 
@@ -140,6 +140,9 @@ description: "我分析了 120 天、三萬多個對話回合：一般回合的�
 
 - [Claude Prompt Caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching) — 快取的建立順序、期限與失效條件
 - [Claude 模型定價](https://platform.claude.com/docs/en/about-claude/pricing) — 快取寫入與讀取的單價
+- [Anthropic：Maximizing the value of your Claude Code sessions](https://claude.com/blog/maximizing-the-value-of-your-claude-code-sessions) — 官方的 session 習慣：`/clear`、`/compact`、事先設定模型與 effort
+- [Anthropic：Claude Opus 5.5 is built for coding sessions that use more context](https://claude.com/blog/claude-opus-5-5-built-for-coding-sessions-that-use-more-context) — 快取讀取降價、中途調整 effort、1 小時快取
+- [Claude Code：How Claude Code uses prompt caching](https://code.claude.com/docs/en/prompt-caching) — 哪些操作會使快取失效，含調整 effort 的規則
 - [Claude Code：MCP](https://code.claude.com/docs/en/mcp) — tool search 與斷線重連
 - [akunzai/agent-skills：agentsview-resume](https://github.com/akunzai/agent-skills/tree/main/skills/agentsview-resume) — 跨工具、跨機器的交接 skill
 - [AgentsView](https://github.com/kenn-io/agentsview) — 本機 AI agent session 瀏覽與成本分析工具
