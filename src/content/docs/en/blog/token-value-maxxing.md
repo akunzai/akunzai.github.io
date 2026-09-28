@@ -69,13 +69,13 @@ Optimize cost alone and you'll hand everything to the cheapest model, then redo 
 | **Output** | Replies and reasoning | Highest unit price; save the big guns for hard problems |
 | **Cache** | Reusing an identical prefix on a hit | Don't re-brew the same soup every day |
 
-Taking Claude as the example ([official pricing](https://platform.claude.com/docs/en/about-claude/pricing), verified 2026-09-28, USD per million tokens):
+Taking Claude as the example ([official pricing](https://platform.claude.com/docs/en/about-claude/pricing), verified 2026-09-29, USD per million tokens):
 
 | Model | Input | Cache read | Output |
 |---|---|---|---|
 | Fable 5.1 | $10 | $0.25 (2.5%) | $50 |
 | Opus 5.5 | $4 | $0.20 (5%) | $20 |
-| Sonnet 5 | $2 | $0.20 (10%) | $10 |
+| Sonnet 5.5 | $2 | $0.20 (10%) | $10 |
 | Haiku 4.5 | $1 | $0.10 (10%) | $5 |
 
 Two things worth remembering: **a cache hit costs at most 10% of input**, and even less on flagship models; **Haiku costs about 1/4 of Opus 5.5**. Those two ratios are the source of leverage for every technique that follows.

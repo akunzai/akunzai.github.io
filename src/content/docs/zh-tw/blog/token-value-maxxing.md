@@ -69,13 +69,13 @@ description: "「多用 Token」不是 KPI，產出才是。用我自己 120 天
 | **Output** | 回覆與 reasoning | 單價最高，難題才值得開大火 |
 | **Cache** | 命中時，重用開頭相同的內容 | 同一碗湯不要每天重熬 |
 
-以 Claude 為例（[官方定價](https://platform.claude.com/docs/en/about-claude/pricing)，2026-09-28 查證，單位為美元／每百萬 token）：
+以 Claude 為例（[官方定價](https://platform.claude.com/docs/en/about-claude/pricing)，2026-09-29 查證，單位為美元／每百萬 token）：
 
 | 模型 | 輸入 | 快取讀取 | 輸出 |
 |---|---|---|---|
 | Fable 5.1 | $10 | $0.25（2.5%） | $50 |
 | Opus 5.5 | $4 | $0.20（5%） | $20 |
-| Sonnet 5 | $2 | $0.20（10%） | $10 |
+| Sonnet 5.5 | $2 | $0.20（10%） | $10 |
 | Haiku 4.5 | $1 | $0.10（10%） | $5 |
 
 兩件事值得記住：**快取命中至少打 1 折**，旗艦模型甚至更低；**Haiku 約是 Opus 5.5 的 1/4 價**。這兩個比例，就是後面所有技巧的槓桿來源。

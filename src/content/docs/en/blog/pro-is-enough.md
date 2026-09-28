@@ -69,11 +69,11 @@ Per [Claude's official pricing](https://platform.claude.com/docs/en/about-claude
 | Claude Fable 5.1 | $10 | $50 | $0.25 |
 | Claude Opus 5 | $5 | $25 | $0.50 |
 | **Claude Opus 5.5** | **$4** | **$20** | **$0.20** |
-| Claude Sonnet 5 | $2 | $10 | $0.20 |
+| Claude Sonnet 5.5 | $2 | $10 | $0.20 |
 
 (USD per million tokens)
 
-Cache reads dropped from $0.50 to $0.20, the same as Sonnet 5. In coding-agent work, cache reads are usually the bulk: of machine A's 6.4B tokens over these 30 days, 6.2B were cache reads. In other words, **on the line item that dominates, Opus 5.5 costs the same as Sonnet 5**.
+Cache reads dropped from $0.50 to $0.20, the same as Sonnet 5.5. In coding-agent work, cache reads are usually the bulk: of machine A's 6.4B tokens over these 30 days, 6.2B were cache reads. In other words, **on the line item that dominates, Opus 5.5 costs the same as Sonnet 5.5**.
 
 My observation: for typical in-house software development, Opus is enough. Reaching for the most expensive model is like firing a cannon at a sparrow; unless the task is genuinely hard, I don't recommend it as the default. For which task gets which model, see [part 3](/en/blog/subagent-model-selection/).
 
@@ -85,11 +85,11 @@ Codex looks like it gives more quota, and its limits reset often. In my own use,
 |---|---|---|
 | Strongest | Fable 5.1 ($10 / $50) | GPT-6 Astra ($10 / $50) |
 | Middle | Opus 5.5 ($4 / $20) | — |
-| Workhorse | Sonnet 5 ($2 / $10) | GPT-6 Sol ($2 / $10) |
+| Workhorse | Sonnet 5.5 ($2 / $10) | GPT-6 Sol ($2 / $10) |
 
-Per [OpenAI's official pricing](https://developers.openai.com/api/docs/pricing), the GPT-6 family has only Astra, Sol, and Luna; there is no Terra. GPT-6 Sol is priced the same as Sonnet 5, even cheaper than the previous GPT-5.6 Terra.
+Per [OpenAI's official pricing](https://developers.openai.com/api/docs/pricing), the GPT-6 family has only Astra, Sol, and Luna; there is no Terra. GPT-6 Sol is priced the same as Sonnet 5.5, even cheaper than the previous GPT-5.6 Terra.
 
-Before I canceled Codex, I was using GPT-5.6 Sol, and it felt roughly Sonnet-level. Looking at third-party evaluations instead, [Artificial Analysis](https://artificialanalysis.ai/models/releases/comparisons/gpt-6-sol-vs-claude-opus-5-5) gives these Intelligence Index scores (all at maximum effort): Opus 5.5 58, GPT-6 Sol 48, Sonnet 5 38. GPT-6 Sol is clearly stronger than Sonnet 5 at the same price, which makes it a very good-value workhorse; but it still trails Opus 5.5 by 10 points, and the next rung up is Astra, which costs as much as Fable. **What Codex still lacks is an Opus: strong enough, and not too expensive.**
+Before I canceled Codex, I was using GPT-5.6 Sol, and it felt roughly Sonnet-level. Looking at third-party evaluations instead, Artificial Analysis gives these Intelligence Index scores (all at maximum effort; see the [Opus 5.5](https://artificialanalysis.ai/models/releases/comparisons/gpt-6-sol-vs-claude-opus-5-5) and [Sonnet 5.5](https://artificialanalysis.ai/models/releases/comparisons/gpt-6-sol-vs-claude-sonnet-5-5) comparisons): Opus 5.5 58, Sonnet 5.5 56, GPT-6 Sol 48. GPT-6 Sol costs the same as Sonnet 5.5 yet trails it by 8 points, and trails Opus 5.5 by 10; the next rung up is Astra, which costs as much as Fable. **What Codex still lacks is an Opus: strong enough, and not too expensive.**
 
 So I'd recommend Codex when your tasks are either harder (give them to Astra) or simpler (give them to Sol), or when your work needs image or video generation.
 
@@ -103,7 +103,7 @@ Per [GitHub's plans page](https://github.com/features/copilot/plans), each Copil
 | Copilot Pro+ | $39 | $70 | 1.8× |
 | Copilot Max | $100 | $200 | 2× |
 
-For the same Sonnet 5, Claude Pro subsidizes about 20×, Copilot under 2×: **more than a tenfold gap**. The allowance also resets only once a month.
+For the same Sonnet 5.5, Claude Pro subsidizes about 20×, Copilot under 2×: **more than a tenfold gap**. The allowance also resets only once a month.
 
 I can think of only two reasons to use it:
 
@@ -151,7 +151,7 @@ My recommendations:
 - **Consider Max only for long, token-heavy work** such as large refactors.
 - **When the 5-hour or 7-day quota runs out, take a break.** The reset cycle doesn't just limit you; it reminds you to stop.
 
-I'm also looking forward to Claude Sonnet and Haiku 5.5. GPT-6 Sol has already overtaken Sonnet 5 at the same price; if the next Sonnet and Haiku catch up, work handed to subagents gets cheaper, and the Pro quota goes further.
+Claude Sonnet 5.5 shipped on 9/28: still $2 / $10, but its Intelligence Index jumped from Sonnet 5's 38 to 56, close to Opus 5.5 and ahead of GPT-6 Sol at the same price; Anthropic says Haiku 5.5 will follow in the coming weeks. Work handed to subagents gets cheaper, and the Pro quota goes further.
 
 I'll run Pro for a full month next month and report back.
 
@@ -167,7 +167,8 @@ Stop chasing Token Maxxing. Get the most value out of every token instead.
 - [Claude announcement: higher 5-hour limits on Pro, Max, and Team](https://x.com/claudeai/status/2102435538120691886) — quota changes that shipped with Opus 5.5
 - [OpenAI API: Pricing](https://developers.openai.com/api/docs/pricing) — API list prices for GPT-6 Astra / Sol / Luna
 - [Artificial Analysis: Claude Opus 5.5 vs GPT-6 Sol](https://artificialanalysis.ai/models/releases/comparisons/gpt-6-sol-vs-claude-opus-5-5) — third-party Intelligence Index scores and cost per task
-- [Artificial Analysis: GPT-6 Sol vs Claude Sonnet 5](https://artificialanalysis.ai/models/releases/comparisons/gpt-6-sol-vs-claude-sonnet-5) — third-party comparison of the two models at the same price
+- [Claude Sonnet 5.5 announcement](https://www.anthropic.com/claude-sonnet-5-5) — release date, pricing, and the Haiku 5.5 timeline
+- [Artificial Analysis: GPT-6 Sol vs Claude Sonnet 5.5](https://artificialanalysis.ai/models/releases/comparisons/gpt-6-sol-vs-claude-sonnet-5-5) — third-party comparison of the two models at the same price
 - [GitHub Copilot: Plans](https://github.com/features/copilot/plans) — Copilot plan fees and AI credits
 - [Cursor: Pricing](https://cursor.com/pricing) — Cursor plans
 - [akunzai/agent-skills](https://github.com/akunzai/agent-skills) — the skills repository whose evals run on Copilot
