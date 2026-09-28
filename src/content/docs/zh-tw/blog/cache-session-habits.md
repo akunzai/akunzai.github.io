@@ -9,7 +9,7 @@ description: "我分析了 120 天、三萬多個對話回合：一般回合的�
 0. [總綱：五個誤解與四個槓桿](/zh-tw/blog/token-value-maxxing/)
 1. [INPUT：知識翻倍、常駐少四分之三，遵守率卻沒變](/zh-tw/blog/agents-md-instruction-budget/)
 2. **CACHE：多命中快取**（本篇）
-3. MODEL：用對模型（撰寫中）
+3. [MODEL：規則寫了，卻不在做決定的那一刻](/zh-tw/blog/subagent-model-selection/)
 4. REWORK：少做重工（撰寫中）
 5. 分發：把 skills 沉澱下來（撰寫中）
 
@@ -62,7 +62,7 @@ description: "我分析了 120 天、三萬多個對話回合：一般回合的�
 中途換模型最常見的理由是「這題有點難，換大的來」或「這段很簡單，換小的省錢」。兩種都會讓整段歷史用新模型全價重寫。
 
 - **開工前先決定。** 任務本身的難度通常在開始時就看得出來。
-- **難的子任務，派 subagent，不要換主模型。** subagent 有自己獨立的 context 與快取，主對話的快取不受影響。怎麼派得便宜又派得對，是第 3 篇〈MODEL〉的主題。
+- **難的子任務，派 subagent，不要換主模型。** subagent 有自己獨立的 context 與快取，主對話的快取不受影響。怎麼派得便宜又派得對，是第 3 篇〈[MODEL：規則寫了，卻不在做決定的那一刻](/zh-tw/blog/subagent-model-selection/)〉的主題。
 - **effort 也一樣。** 在對話中途調高或調低 effort，同樣會讓訊息部分的快取失效。
 
 ## 習慣二：一個任務一串對話，別隔天接著聊

@@ -9,7 +9,7 @@ description: "Burning more tokens is not a KPI; output is. Using 120 days of my 
 0. **Overview: five misconceptions and four levers** (this post)
 1. [INPUT: Twice the Knowledge, a Quarter of the Resident Load, Same Compliance](/en/blog/agents-md-instruction-budget/)
 2. [CACHE: Come Back After an Hour and That Turn Costs 80×](/en/blog/cache-session-habits/)
-3. MODEL: use the right model (coming soon)
+3. [MODEL: The Rule Was Written, but Absent When the Decision Was Made](/en/blog/subagent-model-selection/)
 4. REWORK: redo less (coming soon)
 5. Distribution: turning practices into skills (coming soon)
 
@@ -110,7 +110,7 @@ It doesn't. Most harnesses let the main model do everything by default, and a su
 
 "When to delegate, to whom, and with which model and effort" must be written explicitly into a skill or agent definition, and the caller has to actually pass that choice through.
 
-→ More in part 3 (MODEL): the design of `tech-lead` and cheap-dev-workers, and how the remaining 46% slipped through.
+→ More in part 3: [MODEL: The Rule Was Written, but Absent When the Decision Was Made](/en/blog/subagent-model-selection/): the design of `tech-lead` and cheap-dev-workers, and how the remaining 46% slipped through.
 
 ### Misconception 5: Leaving verification to humans is cheaper?
 

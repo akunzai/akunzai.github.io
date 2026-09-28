@@ -9,7 +9,7 @@ description: "I slimmed the AGENTS.md of a large project and ran a controlled ex
 0. [Overview: five misconceptions and four levers](/en/blog/token-value-maxxing/)
 1. **INPUT: send less** (this post)
 2. [CACHE: Come Back After an Hour and That Turn Costs 80×](/en/blog/cache-session-habits/)
-3. MODEL: use the right model (coming soon)
+3. [MODEL: The Rule Was Written, but Absent When the Decision Was Made](/en/blog/subagent-model-selection/)
 4. REWORK: redo less (coming soon)
 5. Distribution: turning practices into skills (coming soon)
 

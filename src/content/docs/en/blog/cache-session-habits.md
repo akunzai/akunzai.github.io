@@ -9,7 +9,7 @@ description: "I analyzed 120 days and more than thirty thousand conversation tur
 0. [Overview: five misconceptions and four levers](/en/blog/token-value-maxxing/)
 1. [INPUT: Twice the Knowledge, a Quarter of the Resident Load, Same Compliance](/en/blog/agents-md-instruction-budget/)
 2. **CACHE: hit the cache more** (this post)
-3. MODEL: use the right model (coming soon)
+3. [MODEL: The Rule Was Written, but Absent When the Decision Was Made](/en/blog/subagent-model-selection/)
 4. REWORK: redo less (coming soon)
 5. Distribution: turning practices into skills (coming soon)
 
@@ -62,7 +62,7 @@ In other words: **as long as the start stays the same and you're within the time
 The usual reasons for switching mid-conversation are "this is getting hard, bring in the big one" or "this part is easy, switch to a small one to save money." Both rewrite the entire history at full price for the new model.
 
 - **Decide up front.** A task's difficulty is usually visible at the start.
-- **Send a hard subtask to a subagent instead of switching the main model.** A subagent has its own context and cache, so the main conversation's cache is untouched. Dispatching cheaply and correctly is the subject of part 3 (MODEL).
+- **Send a hard subtask to a subagent instead of switching the main model.** A subagent has its own context and cache, so the main conversation's cache is untouched. Dispatching cheaply and correctly is the subject of part 3: [MODEL: The Rule Was Written, but Absent When the Decision Was Made](/en/blog/subagent-model-selection/).
 - **The same goes for effort.** Raising or lowering effort mid-conversation also invalidates the message part of the cache.
 
 ## Habit 2: One conversation per task, and don't resume the next day

@@ -9,7 +9,7 @@ description: "「多用 Token」不是 KPI，產出才是。用我自己 120 天
 0. **總綱：五個誤解與四個槓桿**（本篇）
 1. [INPUT：知識翻倍、常駐少四分之三，遵守率卻沒變](/zh-tw/blog/agents-md-instruction-budget/)
 2. [CACHE：隔一小時再回來，那一回合貴了 80 倍](/zh-tw/blog/cache-session-habits/)
-3. MODEL：用對模型（撰寫中）
+3. [MODEL：規則寫了，卻不在做決定的那一刻](/zh-tw/blog/subagent-model-selection/)
 4. REWORK：少做重工（撰寫中）
 5. 分發：把 skills 沉澱下來（撰寫中）
 
@@ -110,7 +110,7 @@ description: "「多用 Token」不是 KPI，產出才是。用我自己 120 天
 
 「何時委派、派給誰、用哪個模型與 effort」必須明確寫進 skill 或 agent 定義裡，而且呼叫端要真的傳遞這個選擇。
 
-→ 詳見第 3 篇〈MODEL〉：`tech-lead` 與 cheap-dev-workers 的設計，以及剩下那 46% 是怎麼漏掉的。
+→ 詳見第 3 篇〈[MODEL：規則寫了，卻不在做決定的那一刻](/zh-tw/blog/subagent-model-selection/)〉：`tech-lead` 與 cheap-dev-workers 的設計，以及剩下那 46% 是怎麼漏掉的。
 
 ### 誤解⑤：驗證留給人工比較省？
 

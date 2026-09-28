@@ -9,7 +9,7 @@ description: "我把一個大型專案的 AGENTS.md 瘦身後做了對照實驗�
 0. [總綱：五個誤解與四個槓桿](/zh-tw/blog/token-value-maxxing/)
 1. **INPUT：少送一點**（本篇）
 2. [CACHE：隔一小時再回來，那一回合貴了 80 倍](/zh-tw/blog/cache-session-habits/)
-3. MODEL：用對模型（撰寫中）
+3. [MODEL：規則寫了，卻不在做決定的那一刻](/zh-tw/blog/subagent-model-selection/)
 4. REWORK：少做重工（撰寫中）
 5. 分發：把 skills 沉澱下來（撰寫中）
 
