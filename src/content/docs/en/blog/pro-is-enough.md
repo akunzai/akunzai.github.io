@@ -77,6 +77,8 @@ Cache reads dropped from $0.50 to $0.20, the same as Sonnet 5.5. In coding-agent
 
 My observation: for typical in-house software development, Opus is enough. Reaching for the most expensive model is like firing a cannon at a sparrow; unless the task is genuinely hard, I don't recommend it as the default. For which task gets which model, see [part 3](/en/blog/subagent-model-selection/).
 
+Since Sonnet 5.5 shipped, I switch by task: Sonnet 5.5 for well-scoped work whose result can be checked automatically (small projects, single-point edits, documents); Opus 5.5 stays the default for cross-module refactors, legacy-framework upgrades, and large projects with thin test coverage. On effort, both default to `medium` in Claude Code; Sonnet 5.5's levels are recalibrated, so don't carry over Sonnet 5 settings.
+
 ### Codex: More Quota, Missing the Middle Rung
 
 Codex looks like it gives more quota, and its limits reset often. In my own use, though, the problem is the model ladder:
