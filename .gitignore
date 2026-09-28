@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # playwright-cli session artifacts
 .playwright-cli/
+
+# local scratch (screenshots, drafts)
+tmp/
