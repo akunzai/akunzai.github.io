@@ -150,6 +150,8 @@ You don't have to believe my five misconceptions up front. Measure first, and th
 
 - [Claude model pricing](https://platform.claude.com/docs/en/about-claude/pricing) — input, output, and cache prices per model
 - [Claude prompt caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching) — cache build order and invalidation rules
+- [Anthropic: Maximizing the value of your Claude Code sessions](https://claude.com/blog/maximizing-the-value-of-your-claude-code-sessions) — what drives Claude Code cost and how to trim it
+- [Anthropic: Claude Opus 5.5 is built for coding sessions that use more context](https://claude.com/blog/claude-opus-5-5-built-for-coding-sessions-that-use-more-context) — Opus 5.5 price cuts (cache reads down 60%) and usage trends
 - [AgentsView](https://github.com/kenn-io/agentsview) — local AI agent session browser and cost analytics
 - [My Claude Code statusline script (GitHub Gist)](https://gist.github.com/akunzai/b1151ff86099c4a12935a71dda2bd380) — shows model, effort, context usage, and cache hit rate
 - [GitHub: akunzai/agent-skills](https://github.com/akunzai/agent-skills) — `tech-lead`, cheap-dev-workers, and other skills

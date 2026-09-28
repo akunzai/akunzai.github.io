@@ -50,7 +50,7 @@ I had only 51 such turns in total, yet they account for 4% of all cache writes. 
 Three facts make the habits below easy to follow:
 
 1. **The cache only matches from the start.** Per the [official docs](https://platform.claude.com/docs/en/build-with-claude/prompt-caching), it's built in `tools → system → messages` order; change any earlier part and everything after it is invalidated.
-2. **The cache is per model.** A different model means a different cache, and the whole history is written from scratch for the new model. Changing effort or thinking settings also invalidates the message part of the cache.
+2. **The cache is per model.** A different model means a different cache, and the whole history is written from scratch for the new model. Changing thinking settings also invalidates the message part of the cache; on Opus 5.5, Sonnet 5.5, and Fable 5.1 with an API key or a subscription, Claude Code keeps the cache when you change effort mid-session ([docs](https://code.claude.com/docs/en/prompt-caching#changing-effort-level)); on other models it still resets.
 3. **The cache expires.** 5 minutes or 1 hour, and every hit resets the clock. In my measurements Claude Code writes to the 1-hour cache, whose write price is 2× base input.
 
 In other words: **as long as the start stays the same and you're within the time limit, the cache keeps giving you a discount; change it or let it expire and you pay an expensive write.**
@@ -63,7 +63,7 @@ The usual reasons for switching mid-conversation are "this is getting hard, brin
 
 - **Decide up front.** A task's difficulty is usually visible at the start.
 - **Send a hard subtask to a subagent instead of switching the main model.** A subagent has its own context and cache, so the main conversation's cache is untouched. Dispatching cheaply and correctly is the subject of part 3: [MODEL: The Rule Was Written, but Absent When the Decision Was Made](/en/blog/subagent-model-selection/).
-- **The same goes for effort.** Raising or lowering effort mid-conversation also invalidates the message part of the cache.
+- **Effort is the exception on newer models.** On Opus 5.5, Sonnet 5.5, and Fable 5.1 with an API key or a Claude subscription, changing effort keeps the cache ([docs](https://code.claude.com/docs/en/prompt-caching#changing-effort-level); [announcement](https://claude.com/blog/claude-opus-5-5-built-for-coding-sessions-that-use-more-context)). It doesn't apply on Bedrock, Google Cloud's Agent Platform, or a Claude apps gateway, and the [changelog](https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md) dates the Fable 5.1 fix to v2.1.260. Opus 5.5 first shipped in Claude Code v2.1.280 and Sonnet 5.5 in v2.1.284, both later, so on those models the version rarely matters. I checked this myself: on Sonnet 5.5, switching effort medium → low → medium didn't drop the cache hit rate in my statusline; on Opus 5.5, switching low → medium → low, the transcript showed each turn still reading the whole history from cache and writing only a few hundred new tokens (one session each). On any other case, set effort up front, as [Anthropic advises](https://claude.com/blog/maximizing-the-value-of-your-claude-code-sessions).
 
 ## Habit 2: One conversation per task, and don't resume the next day
 
@@ -140,6 +140,9 @@ Most mainstream harnesses already defer loading tool definitions, on by default,
 
 - [Claude prompt caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching) — cache build order, lifetime, and invalidation rules
 - [Claude model pricing](https://platform.claude.com/docs/en/about-claude/pricing) — cache write and read prices
+- [Anthropic: Maximizing the value of your Claude Code sessions](https://claude.com/blog/maximizing-the-value-of-your-claude-code-sessions) — official session habits: `/clear`, `/compact`, model and effort up front
+- [Anthropic: Claude Opus 5.5 is built for coding sessions that use more context](https://claude.com/blog/claude-opus-5-5-built-for-coding-sessions-that-use-more-context) — cache-read price cut, mid-session effort changes, 1-hour cache
+- [Claude Code: How Claude Code uses prompt caching](https://code.claude.com/docs/en/prompt-caching) — what invalidates the cache, including the effort-change rules
 - [Claude Code: MCP](https://code.claude.com/docs/en/mcp) — tool search and reconnection
 - [akunzai/agent-skills: agentsview-resume](https://github.com/akunzai/agent-skills/tree/main/skills/agentsview-resume) — cross-tool, cross-machine handoff skill
 - [AgentsView](https://github.com/kenn-io/agentsview) — local AI agent session browser and cost analytics
