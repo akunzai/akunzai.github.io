@@ -7,7 +7,7 @@ description: "「多用 Token」不是 KPI，產出才是。用我自己 120 天
 
 :::note[Token Value Maxxing 系列]
 0. **總綱：五個誤解與四個槓桿**（本篇）
-1. INPUT：少送一點（撰寫中）
+1. [INPUT：知識翻倍、常駐少四分之三，遵守率卻沒變](/zh-tw/blog/agents-md-instruction-budget/)
 2. CACHE：多命中快取（撰寫中）
 3. MODEL：用對模型（撰寫中）
 4. REWORK：少做重工（撰寫中）
@@ -102,7 +102,7 @@ description: "「多用 Token」不是 KPI，產出才是。用我自己 120 天
 
 `AGENTS.md` 與記憶檔每回合都會重送。有快取的時候，重送其實不貴；真正的代價是**每個新 session 都要重新寫入快取**。我實測 Claude Code 寫入的是 1 小時快取，價格是原價的 **2 倍**；而且快取一失效，又得全價重讀。只有「每次都用得到的事實」值得常駐，其餘應該下放到 nested `AGENTS.md` 或按需載入的 skill。
 
-→ 詳見第 1 篇〈INPUT〉：專案層級的 `AGENTS.md` 與記憶。全域層的分層治理，另見〈[拒當失憶鹹魚：我的全域 AGENTS.md 分層治理架構](/zh-tw/blog/global-agents-architecture/)〉。
+→ 詳見第 1 篇〈[INPUT：知識翻倍、常駐少四分之三，遵守率卻沒變](/zh-tw/blog/agents-md-instruction-budget/)〉。全域層的分層治理，另見〈[拒當失憶鹹魚：我的全域 AGENTS.md 分層治理架構](/zh-tw/blog/global-agents-architecture/)〉。
 
 ### 誤解④：harness 會自己判斷難度，派便宜的模型？
 

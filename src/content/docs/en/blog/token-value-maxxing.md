@@ -7,7 +7,7 @@ description: "Burning more tokens is not a KPI; output is. Using 120 days of my 
 
 :::note[Token Value Maxxing series]
 0. **Overview: five misconceptions and four levers** (this post)
-1. INPUT: send less (coming soon)
+1. [INPUT: Twice the Knowledge, a Quarter of the Resident Load, Same Compliance](/en/blog/agents-md-instruction-budget/)
 2. CACHE: hit the cache more (coming soon)
 3. MODEL: use the right model (coming soon)
 4. REWORK: redo less (coming soon)
@@ -102,7 +102,7 @@ The cache lives only 5 minutes to 1 hour. Pick up the thread the next day and th
 
 `AGENTS.md` and memory files are resent every turn. With caching, that resend is actually cheap; the real cost is that **every new session writes them to the cache again**. In my measurements Claude Code writes to the 1-hour cache, priced at **2×** base input, and every cache invalidation rereads them at full price. Only "facts needed every single time" deserve to stay resident; everything else belongs in a nested `AGENTS.md` or an on-demand skill.
 
-→ More in part 1 (INPUT): project-level `AGENTS.md` and memory. For governance at the global layer, see [Beyond the Amnesiac Salted Fish: My Hierarchical Global AGENTS.md Architecture](/en/blog/global-agents-architecture/).
+→ More in part 1: [INPUT: Twice the Knowledge, a Quarter of the Resident Load, Same Compliance](/en/blog/agents-md-instruction-budget/). For governance at the global layer, see [Beyond the Amnesiac Salted Fish: My Hierarchical Global AGENTS.md Architecture](/en/blog/global-agents-architecture/).
 
 ### Misconception 4: The harness judges difficulty and dispatches a cheaper model on its own?
 
