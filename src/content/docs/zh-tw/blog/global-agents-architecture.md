@@ -4,6 +4,17 @@ date: 2026-09-06
 tags: ["ai-agent", "workflow", "governance"]
 ---
 
+:::note[Token Value Maxxing 系列]
+本文是系列的延伸閱讀，談全域指令的分層治理。系列各篇：
+
+0. [總綱：五個誤解與四個槓桿](/zh-tw/blog/token-value-maxxing/)
+1. [INPUT：知識翻倍、常駐少四分之三，遵守率卻沒變](/zh-tw/blog/agents-md-instruction-budget/)
+2. [CACHE：隔一小時再回來，那一回合貴了 80 倍](/zh-tw/blog/cache-session-habits/)
+3. [MODEL：規則寫了，卻不在做決定的那一刻](/zh-tw/blog/subagent-model-selection/)
+4. [REWORK：別再問「要怎麼避免再發生」](/zh-tw/blog/prevent-recurrence/)
+5. [分發：沒寫成 skill 的 SOP，每個 agent 都要撞一次牆](/zh-tw/blog/skills-distribution/)
+:::
+
 周星馳在《少林足球》裡有一句經典台詞：「**做人如果沒有夢想，跟鹹魚有什麼分別？**」
 
 在人機協同開發的時代，未經架構調校的 AI Coding Agent，往往就像是一條條**隨時失憶的鹹魚**：
