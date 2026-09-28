@@ -8,7 +8,7 @@ description: "「多用 Token」不是 KPI，產出才是。用我自己 120 天
 :::note[Token Value Maxxing 系列]
 0. **總綱：五個誤解與四個槓桿**（本篇）
 1. [INPUT：知識翻倍、常駐少四分之三，遵守率卻沒變](/zh-tw/blog/agents-md-instruction-budget/)
-2. CACHE：多命中快取（撰寫中）
+2. [CACHE：隔一小時再回來，那一回合貴了 80 倍](/zh-tw/blog/cache-session-habits/)
 3. MODEL：用對模型（撰寫中）
 4. REWORK：少做重工（撰寫中）
 5. 分發：把 skills 沉澱下來（撰寫中）
@@ -88,7 +88,7 @@ description: "「多用 Token」不是 KPI，產出才是。用我自己 120 天
 
 快取以模型為單位。中途切換模型，整段歷史就得用新模型全價重讀一次。調整 effort 或 thinking 設定、MCP 掉線導致工具定義變動，也都會讓快取從變動點往後失效——[官方文件](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)寫得很清楚，快取依 `tools → system → messages` 的順序建立，**前面一變，後面全廢**。
 
-→ 詳見第 2 篇〈CACHE〉：如果你大量使用 MCP，如何穩住工具介面。
+→ 詳見第 2 篇〈[CACHE：隔一小時再回來，那一回合貴了 80 倍](/zh-tw/blog/cache-session-habits/)〉的 MCP 側欄。
 
 ### 誤解②：同一串對話用一整天，比較省？
 
@@ -96,7 +96,7 @@ description: "「多用 Token」不是 KPI，產出才是。用我自己 120 天
 
 我自己有 139 個 session 的 context 峰值超過 200k——這些多半不是「任務本來就這麼大」，而是「我懶得開新對話」。
 
-→ 詳見第 2 篇〈CACHE〉：一個任務一串，用交接取代長對話。
+→ 詳見第 2 篇〈[CACHE：隔一小時再回來，那一回合貴了 80 倍](/zh-tw/blog/cache-session-habits/)〉：一個任務一串，用交接取代長對話。
 
 ### 誤解③：AGENTS.md 與記憶寫越多，AI 越聰明？
 

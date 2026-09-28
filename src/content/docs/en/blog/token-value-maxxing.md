@@ -8,7 +8,7 @@ description: "Burning more tokens is not a KPI; output is. Using 120 days of my 
 :::note[Token Value Maxxing series]
 0. **Overview: five misconceptions and four levers** (this post)
 1. [INPUT: Twice the Knowledge, a Quarter of the Resident Load, Same Compliance](/en/blog/agents-md-instruction-budget/)
-2. CACHE: hit the cache more (coming soon)
+2. [CACHE: Come Back After an Hour and That Turn Costs 80×](/en/blog/cache-session-habits/)
 3. MODEL: use the right model (coming soon)
 4. REWORK: redo less (coming soon)
 5. Distribution: turning practices into skills (coming soon)
@@ -88,7 +88,7 @@ Two things worth remembering: **a cache hit costs at most 10% of input**, and ev
 
 The cache is per model. Switch models mid-conversation and the entire history is reread by the new model at full price. Changing effort or thinking settings, or an MCP server dropping out and changing the tool definitions, also invalidates the cache from that point on. The [official docs](https://platform.claude.com/docs/en/build-with-claude/prompt-caching) are explicit: the cache is built in `tools → system → messages` order, and **a change early on invalidates everything after it**.
 
-→ More in part 2 (CACHE): keeping the tool surface stable if you rely heavily on MCP.
+→ More in part 2: [CACHE: Come Back After an Hour and That Turn Costs 80×](/en/blog/cache-session-habits/), in its MCP sidebar.
 
 ### Misconception 2: Keeping one conversation going all day is cheaper?
 
@@ -96,7 +96,7 @@ The cache lives only 5 minutes to 1 hour. Pick up the thread the next day and th
 
 139 of my own sessions peaked above 200k tokens of context. Most weren't "the task really was that big"; they were "I couldn't be bothered to start a new conversation."
 
-→ More in part 2 (CACHE): one conversation per task, with handoffs instead of marathons.
+→ More in part 2: [CACHE: Come Back After an Hour and That Turn Costs 80×](/en/blog/cache-session-habits/): one conversation per task, with handoffs instead of marathons.
 
 ### Misconception 3: The more you put in AGENTS.md and memory, the smarter the AI?
 

@@ -8,7 +8,7 @@ description: "I slimmed the AGENTS.md of a large project and ran a controlled ex
 :::note[Token Value Maxxing series]
 0. [Overview: five misconceptions and four levers](/en/blog/token-value-maxxing/)
 1. **INPUT: send less** (this post)
-2. CACHE: hit the cache more (coming soon)
+2. [CACHE: Come Back After an Hour and That Turn Costs 80×](/en/blog/cache-session-habits/)
 3. MODEL: use the right model (coming soon)
 4. REWORK: redo less (coming soon)
 5. Distribution: turning practices into skills (coming soon)
