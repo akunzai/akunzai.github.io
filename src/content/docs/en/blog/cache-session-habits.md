@@ -47,13 +47,44 @@ I had only 51 such turns in total, yet they account for 4% of all cache writes. 
 
 ## How the cache works
 
-Three facts make the habits below easy to follow:
+Three Claude cache rules make the habits below easy to follow:
 
 1. **The cache only matches from the start.** Per the [official docs](https://platform.claude.com/docs/en/build-with-claude/prompt-caching), it's built in `tools → system → messages` order; change any earlier part and everything after it is invalidated.
-2. **The cache is per model.** A different model means a different cache, and the whole history is written from scratch for the new model. Changing thinking settings also invalidates the message part of the cache; on Opus 5.5, Sonnet 5.5, and Fable 5.1, Claude Code keeps the cache when you change effort mid-session ([docs](https://code.claude.com/docs/en/prompt-caching#changing-effort-level)); on other models it still resets.
+2. **The cache is per model.** A different model means a different cache, and the whole history is written from scratch for the new model. Changing thinking settings also invalidates the message part of the cache; on Opus 5.5, Sonnet 5.5, and Fable 5.1, Claude Code keeps the cache when you change effort mid-session ([docs](https://code.claude.com/docs/en/prompt-caching#changing-effort-level)); on other Claude models it still resets.
 3. **The cache expires.** 5 minutes or 1 hour, and every hit resets the clock. In my measurements Claude Code writes to the 1-hour cache, whose write price is 2× base input.
 
 In other words: **as long as the start stays the same and you're within the time limit, the cache keeps giving you a discount; change it or let it expire and you pay an expensive write.**
+
+---
+
+## GPT-6 in Codex: effort and cache lifetime
+
+For Codex subscription use, my question is practical: after changing effort through the UI in the same conversation, does the next request still reuse the cache? That depends on the model and client in use; Claude Code results do not establish Codex behavior.
+
+On 2026-09-30, I used the same Codex conversation with GPT-6.1 Sol throughout and ran two rounds of UI effort changes: `medium → low → medium`. I extracted per-request counts from the session records' `last_token_usage`, calculating hit rate as `cached_input_tokens ÷ input_tokens`. No compaction was recorded during the switches:
+
+| Round | Request | Effort | Input tokens | Cached tokens | Hit rate |
+|---|---|---|---:|---:|---:|
+| 1 | Last request before switching to low | medium | 191,625 | 190,336 | 99.33% |
+| 1 | First request after switching to low | low | 191,979 | 0 | 0% |
+| 1 | Next request at low | low | 192,961 | 191,744 | 99.37% |
+| 1 | Last request before returning to medium | low | 194,395 | 193,408 | 99.49% |
+| 1 | First request after returning to medium | medium | 194,634 | 161,280 | 82.86% |
+| 1 | Next request at medium | medium | 195,444 | 194,432 | 99.48% |
+| 2 | Last request before switching to low | medium | 203,149 | 201,856 | 99.36% |
+| 2 | First request after switching to low | low | 203,384 | 194,176 | 95.47% |
+| 2 | Next request at low | low | 204,178 | 203,264 | 99.55% |
+| 2 | Last request before returning to medium | low | 205,807 | 204,800 | 99.51% |
+| 2 | First request after returning to medium | medium | 206,049 | 198,784 | 96.47% |
+| 2 | Next request at medium | medium | 206,887 | 205,824 | 99.49% |
+
+**All four UI switches across two rounds reduced the next request's hit rate, with varying severity.** The first missed entirely; the other three retained partial hits, and the following request always recovered to roughly 99%. In round two, switching to low and returning to medium followed the preceding requests by only about 53 and 45 seconds. Uncached input rose from 1,293 to 9,208 tokens and from 1,007 to 7,265 tokens, respectively, then fell back to 914 and 1,063 tokens.
+
+These are two rounds in one session, without captured outbound requests or controlled cache routing. They do not establish whether effort-update handling, routing, or another factor caused the drops, nor whether every Codex version resets the cache. Repetition makes the observed drop-and-recovery pattern more consistent, but does not establish causation. These are individual model requests, not totals for complete user turns.
+
+For cache lifetime, I could not confirm an explicit retention period from the official Codex subscription documentation. This short effort-switching test did not measure retention time either.
+
+The “start fresh after an hour” advice below is therefore my Claude Code habit. For Codex, elapsed time alone does not establish expiry; inspect available cache usage before deciding whether to use a concise handoff.
 
 ---
 
@@ -73,7 +104,7 @@ The usual reasons for switching mid-conversation are "this is getting hard, brin
 - **Expiry hurts more.** The longer the conversation, the more expensive the rewrite after the cache expires; the 224k tokens in the table above are exactly what a long conversation plus an hour's gap produces.
 - **Attention gets diluted.** Irrelevant old context mixed in lowers answer quality.
 
-What I do: **different tasks get different conversations; if I've been away for more than an hour, I come back to a new conversation instead of picking up the old one.**
+What I do: **different tasks get different conversations; in Claude Code, if I've been away for more than an hour, I come back to a new conversation instead of picking up the old one.**
 
 ## Habit 3: A new conversation doesn't mean amnesia
 
@@ -123,7 +154,7 @@ Most mainstream harnesses already defer loading tool definitions, on by default,
 
 ## One thing you can do today
 
-**Set yourself one rule: if you've been away for more than an hour, come back to a new conversation.** When you need the earlier context, bring it over with resume or a handoff summary rather than forcing your way back into a long conversation whose cache expired long ago.
+**Set yourself one Claude Code rule: if you've been away for more than an hour, come back to a new conversation.** When you need the earlier context, bring it over with resume or a handoff summary rather than forcing your way back into a long conversation whose cache expired long ago.
 
 ---
 

@@ -58,6 +58,8 @@ With none of the first three set, you get the fourth: **the main model**. Even t
 
 In other words, **the harness won't downgrade by difficulty for you**. "When to delegate, to whom, and with which model and effort" has to be written down, and the caller has to actually follow it.
 
+Effort selection also has cache implications: changing GPT-6.1 Sol effort through the Codex subscription UI reduced the next request's hit rate in my test, before subsequent requests recovered. Do not assume effort changes always avoid additional cache writes. See [the Codex section in part 2](/en/blog/cache-session-habits/#gpt-6-in-codex-effort-and-cache-lifetime) for the single-session results and limitations.
+
 ---
 
 ## My approach: tech-lead and cheap-dev-workers
