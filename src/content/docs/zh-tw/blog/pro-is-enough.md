@@ -91,16 +91,18 @@ Codex 的額度看起來更多，limit 也常常重置。問題是它的模型�
 
 依 [OpenAI 官方定價](https://developers.openai.com/api/docs/pricing)，GPT-6 系列只有 Astra、Sol、Luna 三個型號，沒有 Terra。GPT-6.1 Sol（發布一週後取代了 GPT-6 Sol）和 Sonnet 5.5 同價，快取輸入為 $0.10，甚至比上一代的 GPT-5.6 Terra 還便宜。
 
-我退訂 Codex 前用的是 GPT-5.6 Sol，體感大約是 Sonnet 等級。改看第三方評測，Artificial Analysis 的 Intelligence Index（皆為最高 effort，見 [Opus 5.5](https://artificialanalysis.ai/models/releases/comparisons/gpt-6-1-sol-vs-claude-opus-5-5) 與 [Sonnet 5.5](https://artificialanalysis.ai/models/releases/comparisons/gpt-6-1-sol-vs-claude-sonnet-5-5) 的比較）如下：
+我退訂 Codex 前用的是 GPT-5.6 Sol，體感大約是 Sonnet 等級。改看第三方評測，這裡統一採用 Artificial Analysis Intelligence Index v4.3.2 的 **`medium` effort**，對應前面提到的 Claude Code 預設設定，避免拿最高 effort 的成績與成本推論日常用法。各模型的評測資料可見 [Opus 5.5](https://artificialanalysis.ai/models/releases/claude-opus-5-5)、[Sonnet 5.5](https://artificialanalysis.ai/models/releases/claude-sonnet-5-5)、[GPT-6 Astra](https://artificialanalysis.ai/models/releases/gpt-6-astra) 與 [GPT-6.1 Sol](https://artificialanalysis.ai/models/releases/gpt-6-1-sol) 的評測頁：
 
-| 模型 | Intelligence Index | 每任務成本 |
-|---|---|---|
-| Claude Opus 5.5 | 58 | $5.98 |
-| Claude Sonnet 5.5 | 56 | $7.60 |
-| GPT-6 Astra | 53 | $3.26 |
-| GPT-6.1 Sol | 52 | $0.72 |
+| 模型（皆為 `medium`） | Intelligence Index | 每任務成本 |
+|---|---:|---:|
+| Claude Opus 5.5 | 51 | $1.34 |
+| Claude Sonnet 5.5 | 41 | $0.59 |
+| GPT-6 Astra | 50 | $1.54 |
+| GPT-6.1 Sol | 48 | $0.21 |
 
-GPT-6.1 Sol 和 Sonnet 5.5 同價，只落後 4 分，和 Opus 5.5 差 6 分，但每任務成本低很多；再往上一階，就是和 Fable 一樣貴、卻只高 1 分的 Astra，所以停在 Sol 最划算。**6.1 之前，Codex 缺的是 Opus 這樣夠強、又不算貴的中堅份子；現在 Sol 看起來有機會同時當中堅與主力。** 但有兩個保留：第一，每任務成本低不等於完成率高，同一份指數裡 Sonnet 5.5 產生的 output tokens 約是 Sol 的 6 倍，成本差距多半來自這裡；第二，最貼近 Codex 使用情境的 Terminal-Bench 4.0，Artificial Analysis 顯示 6.1 Sol 比 GPT-6 Sol 進步 12 分（我推算約 56%，原文只給進步幅度），仍落後 Sonnet 5.5（63.6%）與 Opus 5.5（59.6%）。它才發布一天，我也還沒用夠，所以跨模組重構我暫時仍交給 Opus。
+在 `medium` 下，GPT-6.1 Sol 比 Sonnet 5.5 高 7 分，每任務成本低約 64%；和 Opus 5.5 差 3 分，成本則低約 84%。再往上一階的 Astra 比 Sol 高 2 分，成本卻約為 7.3 倍；Opus 還比 Astra 高 1 分、成本低約 13%。**以這組評測來看，Sol 有機會同時當 Codex 的中堅與主力；需要更高能力時，Opus 仍有優勢。** 同樣在 `medium` 下，Sonnet 比 Opus 便宜約 56%，但落後 10 分，也支持我把 Sonnet 用在範圍明確的工作，把複雜任務交給 Opus。
+
+這裡仍有兩個保留。第一，各家對 `medium` effort 等級的定義不同，不代表相同的運算預算；Claude 的評測資料也包含預設 fallback。第二，每任務成本是各評測的輸入、快取讀寫、推理與回答 token 費用，依任務數與指數權重計算的加權平均，不是成功完成一個任務的成本，也不能直接換算成訂閱額度。整體指數也不能代替你自己的開發任務；Sol 才發布一天，我還沒用夠，所以跨模組重構我暫時仍交給 Opus。
 
 所以我會考慮 Codex 的情境是：日常開發以 Sol 為預設模型，最簡單的任務改用 Luna，前提是先確認 Sol 能勝任你自己的任務；或是你的工作需要生成圖片或影片。
 
@@ -163,7 +165,7 @@ flowchart TD
 - **只有大量重構這類長時間、高 token 的任務**，才考慮 Max。
 - **5 小時或 7 天的額度用完，就休息吧。** 那個重置週期不只是在限制你，也是在提醒你該停下來了。
 
-Claude Sonnet 5.5 已在 9/28 釋出：價格維持 $2／$10，Intelligence Index 卻從 Sonnet 5 的 38 跳到 56，直逼 Opus 5.5，也在同價位反超 GPT-6.1 Sol；Haiku 5.5 官方說會在幾週內跟上。交給 subagent 的工作會更便宜，Pro 的額度也更撐得住。
+Claude Sonnet 5.5 已在 9/28 釋出，價格維持 $2／$10。在本文比較的 `medium` effort 下，它的 Intelligence Index 為 41，每任務成本 $0.59，比 Opus 5.5 便宜，但能力仍有差距，也落後同價位的 GPT-6.1 Sol。Haiku 5.5 官方說會在幾週內跟上。我的做法仍是把範圍明確的工作交給較便宜的模型，把 Opus 留給需要更多判斷的任務；Pro 的額度能否因此更撐得住，留待下個月實測。
 
 我會在下個月實際用 Pro 跑一整個月，再回來報告結果。
 
@@ -178,9 +180,11 @@ Claude Sonnet 5.5 已在 9/28 釋出：價格維持 $2／$10，Intelligence Inde
 - [Claude：Plans & Pricing](https://claude.com/pricing) — Pro／Max 方案與 5 小時、每週的使用上限
 - [Claude 官方公告：提高 Pro、Max、Team 的 5 小時使用上限](https://x.com/claudeai/status/2102435538120691886) — Opus 5.5 釋出時的額度調整
 - [OpenAI API：Pricing](https://developers.openai.com/api/docs/pricing) — GPT-6 Astra／Sol／Luna 的 API 牌價
-- [Artificial Analysis：Claude Opus 5.5 vs GPT-6.1 Sol](https://artificialanalysis.ai/models/releases/comparisons/gpt-6-1-sol-vs-claude-opus-5-5) — 第三方評測的 Intelligence Index 與每任務成本
+- [Artificial Analysis： Claude Opus 5.5](https://artificialanalysis.ai/models/releases/claude-opus-5-5) — 各 effort 的 Intelligence Index 與每任務成本
+- [Artificial Analysis： Claude Sonnet 5.5](https://artificialanalysis.ai/models/releases/claude-sonnet-5-5) — 各 effort 的 Intelligence Index 與每任務成本
+- [Artificial Analysis： GPT-6 Astra](https://artificialanalysis.ai/models/releases/gpt-6-astra) — 各 effort 的 Intelligence Index 與每任務成本
+- [Artificial Analysis： GPT-6.1 Sol](https://artificialanalysis.ai/models/releases/gpt-6-1-sol) — 各 effort 的 Intelligence Index 與每任務成本
 - [Claude Sonnet 5.5 官方公告](https://www.anthropic.com/claude-sonnet-5-5) — 釋出日期、定價與 Haiku 5.5 的時程
-- [Artificial Analysis：GPT-6.1 Sol vs Claude Sonnet 5.5](https://artificialanalysis.ai/models/releases/comparisons/gpt-6-1-sol-vs-claude-sonnet-5-5) — 同價位兩個模型的第三方比較
 - [GitHub Copilot：Plans](https://github.com/features/copilot/plans) — Copilot 各方案的月費與 AI credits
 - [Cursor：Pricing](https://cursor.com/pricing) — Cursor 方案
 - [akunzai/agent-skills](https://github.com/akunzai/agent-skills) — 用 Copilot 跑 Evals 的 skills 儲存庫
