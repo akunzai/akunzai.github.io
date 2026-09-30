@@ -57,6 +57,19 @@ In other words: **as long as the start stays the same and you're within the time
 
 ---
 
+## Sonnet 5.5 in Claude Code: changing effort mid-session
+
+Per the [docs](https://code.claude.com/docs/en/prompt-caching#changing-effort-level), changing effort mid-session keeps the cache on Sonnet 5.5. On 2026-09-30 I ran one `medium → low → medium` round with `/effort` in a single Claude Code session, staying on Sonnet 5.5. I took each model request's usage from the transcript and computed the hit rate as `cache_read ÷ (input + cache_creation + cache_read)`:
+
+| Request | Effort | Input | Cache write | Cache read | Hit rate |
+|---|---|---:|---:|---:|---:|
+| Last before switching to low | medium | 2 | 615 | 54,903 | 98.89% |
+| First after switching to low | low | 2 | 234 | 55,817 | 99.58% |
+| Next request on low | low | 2 | 71 | 56,085 | 99.87% |
+| First after switching back to medium | medium | 2 | 234 | 56,191 | 99.58% |
+
+The first request after each switch showed no drop in hit rate and wrote only a few hundred new tokens, matching the docs. This is one round in one session. Codex's docs don't say that changing effort leaves the cache intact, so the drops in the next section are not surprising.
+
 ## GPT-6 in Codex: effort and cache lifetime
 
 For Codex subscription use, my question is practical: after changing effort through the UI in the same conversation, does the next request still reuse the cache? That depends on the model and client in use; Claude Code results do not establish Codex behavior.
@@ -82,9 +95,24 @@ On 2026-09-30, I used the same Codex conversation with GPT-6.1 Sol throughout an
 
 These are two rounds in one session, without captured outbound requests or controlled cache routing. They do not establish whether effort-update handling, routing, or another factor caused the drops, nor whether every Codex version resets the cache. Repetition makes the observed drop-and-recovery pattern more consistent, but does not establish causation. These are individual model requests, not totals for complete user turns.
 
-For cache lifetime, I could not confirm an explicit retention period from the official Codex subscription documentation. This short effort-switching test did not measure retention time either.
+As for how long the Codex subscription keeps the cache, the subscription documentation gives no explicit period, so I looked at my local records. I took `gpt-5.6-sol`, the most-used older model in `~/.codex/sessions` (GPT-6.1 Sol is too new to have enough data), and compared each request with the previous one in the same session, 7,453 requests in all. I excluded the first request after a model or effort change, the first after compaction, and any request whose input tokens fell more than 10% below the previous one:
 
-The “start fresh after an hour” advice below is therefore my Claude Code habit. For Codex, elapsed time alone does not establish expiry; inspect available cache usage before deciding whether to use a concise handoff.
+| Gap since previous request | Requests | Median hit rate | Hit rate below 50% |
+|---|---:|---:|---:|
+| Under 10 s | 4,323 | 98.5% | 0.7% |
+| 10–60 s | 2,666 | 98.6% | 0.7% |
+| 1–5 min | 355 | 98.5% | 0.3% |
+| 5–10 min | 53 | 98.4% | 1.9% |
+| 10–15 min | 26 | 97.8% | 0% |
+| 15–30 min | 21 | 98.5% | 0% |
+| 30–60 min | 8 | 64.3% | 50% |
+| Over 60 min | 1 | 8.1% | 100% |
+
+Every bucket up to 30 minutes has a median around 98%. Only 9 requests came after more than 30 minutes, and they are erratic: 95%–99% at 26–33 minutes, 99% at 36.6, just 4% at 36.9, 31% at 39.7, back to 99% at 44.7, and under 10% at 54 minutes and beyond. A third party saw something similar: one user analysing their own 474 Codex sessions reported about 30 minutes for Sol and Astra, with Sol occasionally lasting about an hour ([volt-hq/Volt #458](https://github.com/volt-hq/Volt/issues/458); I only saw a summary and did not verify their raw data). OpenAI's API documentation likewise describes extended retention as "typically around 30 minutes, up to 24 hours" ([Prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching)), but that describes the API and does not mention subscriptions.
+
+So I treat this only as an observation from this machine: stable hits within about 30 minutes, unreliable afterwards. Nine samples, gaps that include my own waiting time, and a single model mean it is not a TTL.
+
+That is why the "start a new conversation after an hour away" rule below is my Claude Code habit. On Codex, the cache may be gone after about 30 minutes away but that isn't guaranteed; check the cache usage you can see, then decide whether to switch to a compact handoff.
 
 ---
 
