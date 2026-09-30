@@ -58,6 +58,30 @@ Still, $5,355 is 2.7 times their estimate for a fully used Max 5x (about $2,000)
 
 ---
 
+## Compare Models First: Capability and Cost at `medium`
+
+Beyond API rates, I want to know what models can do and what they spend on tasks. I use **`medium` effort** throughout Artificial Analysis Intelligence Index v4.3.2. This matches the Claude Code default for Opus 5.5 and Sonnet 5.5 and avoids using maximum-effort scores and costs to infer everyday usage. Figures were checked on 2026-09-30; Sonnet 5, GPT-5.6 Sol, and GPT-6 Sol are included as previous-generation baselines. The results come from the evaluation pages for [Opus 5.5](https://artificialanalysis.ai/models/releases/claude-opus-5-5), [Sonnet 5](https://artificialanalysis.ai/models/releases/claude-sonnet-5), [Sonnet 5.5](https://artificialanalysis.ai/models/releases/claude-sonnet-5-5), [GPT-5.6 Sol](https://artificialanalysis.ai/models/releases/gpt-5-6-sol), [GPT-6 Sol](https://artificialanalysis.ai/models/releases/gpt-6-sol), [GPT-6 Astra](https://artificialanalysis.ai/models/releases/gpt-6-astra), and [GPT-6.1 Sol](https://artificialanalysis.ai/models/releases/gpt-6-1-sol):
+
+| Model (all at `medium`) | Intelligence Index | Cost per task |
+|---|---:|---:|
+| Claude Opus 5.5 | 51 | $1.34 |
+| Claude Sonnet 5 | 28 | $1.00 |
+| Claude Sonnet 5.5 | 41 | $0.59 |
+| GPT-6 Astra | 50 | $1.54 |
+| GPT-5.6 Sol | 39 | $0.50 |
+| GPT-6 Sol | 40 | $0.25 |
+| GPT-6.1 Sol | 48 | $0.21 |
+
+Across generations, Sonnet 5.5 gains 13 points over Sonnet 5 while costing 41% less per task; GPT-6.1 Sol gains 8 points over GPT-6 Sol while costing 16% less. Compared with GPT-5.6 Sol, which I used before canceling, GPT-6 Sol gains only 1 point but halves the cost; GPT-6.1 Sol gains 9 points while costing 58% less. Both newer model families are more capable and cheaper at the setting named `medium`, though that does not imply equal compute budgets.
+
+At `medium`, GPT-6.1 Sol scores 7 points above Sonnet 5.5 and costs about 64% less per task. It trails Opus 5.5 by 3 points while costing about 84% less. The next rung up, Astra, scores 2 points above Sol at about 7.3 times the cost; Opus scores 1 point above Astra while costing about 13% less. **On these evaluations, Sol looks like it could cover both the middle rung and the workhorse role in Codex; Opus retains an advantage when more capability is needed.** At the same `medium` setting, Sonnet costs about 56% less than Opus but trails it by 10 points, supporting my choice to use Sonnet for well-scoped work and Opus for complex tasks.
+
+Two caveats remain. First, each provider defines its own `medium` effort level, so the label does not imply an equal compute budget; the Opus 5.5 and Sonnet 5.5 results also include default fallback, whereas Sonnet 5 is labeled Adaptive Reasoning, Medium Effort. Second, cost per task is a weighted average of evaluation costs for input, cache reads and writes, reasoning, and answer tokens, calculated using task counts and index weights. It is not cost per successful task and cannot be converted directly into subscription quota. The overall index is also no substitute for your own development tasks. Sol shipped only a day ago and I haven't used it enough, so I'd keep cross-module refactors on Opus for now.
+
+Beyond scores and cost per task, I would compare how long the same work takes and how often it needs rework. A cheaper model may offer less value if it needs frequent corrections or retries. For a subscription, the most useful comparison is still to run the same everyday tasks and see which model finishes reliably while making the quota last longer.
+
+---
+
 ## Choosing a Provider
 
 ### Claude: Opus Is the Workhorse in the Middle
@@ -79,7 +103,7 @@ My observation: for typical in-house software development, Opus is enough. Reach
 
 Since Sonnet 5.5 shipped, I switch by task: Sonnet 5.5 for well-scoped work whose result can be checked automatically (small projects, single-point edits, documents); Opus 5.5 stays the default for cross-module refactors, legacy-framework upgrades, and large projects with thin test coverage. On effort, both default to `medium` in Claude Code; Sonnet 5.5's levels are recalibrated, so don't carry over Sonnet 5 settings.
 
-### Codex: More Quota, and Sol May Now Cover the Middle
+### Codex: More Quota, and GPT-6.1 Sol May Now Cover the Middle
 
 Codex looks like it gives more quota, and its limits reset often. The question is whether its model ladder has enough rungs:
 
@@ -91,18 +115,7 @@ Codex looks like it gives more quota, and its limits reset often. The question i
 
 Per [OpenAI's official pricing](https://developers.openai.com/api/docs/pricing), the GPT-6 family has only Astra, Sol, and Luna; there is no Terra. GPT-6.1 Sol (which replaced GPT-6 Sol a week after its launch) is priced the same as Sonnet 5.5, with cached input at $0.10, even cheaper than the previous GPT-5.6 Terra.
 
-Before I canceled Codex, I was using GPT-5.6 Sol, and it felt roughly Sonnet-level. For a third-party comparison, I use **`medium` effort** throughout Artificial Analysis Intelligence Index v4.3.2. This matches the Claude Code default discussed above and avoids using maximum-effort scores and costs to infer everyday usage. The results come from the evaluation pages for [Opus 5.5](https://artificialanalysis.ai/models/releases/claude-opus-5-5), [Sonnet 5.5](https://artificialanalysis.ai/models/releases/claude-sonnet-5-5), [GPT-6 Astra](https://artificialanalysis.ai/models/releases/gpt-6-astra), and [GPT-6.1 Sol](https://artificialanalysis.ai/models/releases/gpt-6-1-sol):
-
-| Model (all at `medium`) | Intelligence Index | Cost per task |
-|---|---:|---:|
-| Claude Opus 5.5 | 51 | $1.34 |
-| Claude Sonnet 5.5 | 41 | $0.59 |
-| GPT-6 Astra | 50 | $1.54 |
-| GPT-6.1 Sol | 48 | $0.21 |
-
-At `medium`, GPT-6.1 Sol scores 7 points above Sonnet 5.5 and costs about 64% less per task. It trails Opus 5.5 by 3 points while costing about 84% less. The next rung up, Astra, scores 2 points above Sol at about 7.3 times the cost; Opus scores 1 point above Astra while costing about 13% less. **On these evaluations, Sol looks like it could cover both the middle rung and the workhorse role in Codex; Opus retains an advantage when more capability is needed.** At the same `medium` setting, Sonnet costs about 56% less than Opus but trails it by 10 points, supporting my choice to use Sonnet for well-scoped work and Opus for complex tasks.
-
-Two caveats remain. First, each provider defines its own `medium` effort level, so the label does not imply an equal compute budget; the Claude results also include default fallback. Second, cost per task is a weighted average of evaluation costs for input, cache reads and writes, reasoning, and answer tokens, calculated using task counts and index weights. It is not cost per successful task and cannot be converted directly into subscription quota. The overall index is also no substitute for your own development tasks. Sol shipped only a day ago and I haven't used it enough, so I'd keep cross-module refactors on Opus for now.
+Before I canceled Codex, I was using GPT-5.6 Sol, and it felt roughly Sonnet-level. The earlier `medium` evaluations make me want to try GPT-6.1 Sol again, though I still need to validate it on my own development tasks.
 
 So I'd consider Codex for everyday development with Sol as the default model and Luna for the simplest tasks, once you've confirmed Sol handles your own tasks; it also fits when your work needs image or video generation.
 
@@ -181,9 +194,13 @@ Stop chasing Token Maxxing. Get the most value out of every token instead.
 - [Claude announcement: higher 5-hour limits on Pro, Max, and Team](https://x.com/claudeai/status/2102435538120691886) — quota changes that shipped with Opus 5.5
 - [OpenAI API: Pricing](https://developers.openai.com/api/docs/pricing) — API list prices for GPT-6 Astra / Sol / Luna
 - [Artificial Analysis: Claude Opus 5.5](https://artificialanalysis.ai/models/releases/claude-opus-5-5) — Intelligence Index scores and cost per task across effort levels
+- [Artificial Analysis: Claude Sonnet 5](https://artificialanalysis.ai/models/releases/claude-sonnet-5) — previous-generation Intelligence Index scores and cost per task across effort levels
 - [Artificial Analysis: Claude Sonnet 5.5](https://artificialanalysis.ai/models/releases/claude-sonnet-5-5) — Intelligence Index scores and cost per task across effort levels
 - [Artificial Analysis: GPT-6 Astra](https://artificialanalysis.ai/models/releases/gpt-6-astra) — Intelligence Index scores and cost per task across effort levels
+- [Artificial Analysis: GPT-5.6 Sol](https://artificialanalysis.ai/models/releases/gpt-5-6-sol) — Intelligence Index scores and cost per task for the previous model I used before canceling
+- [Artificial Analysis: GPT-6 Sol](https://artificialanalysis.ai/models/releases/gpt-6-sol) — previous-generation Intelligence Index scores and cost per task across effort levels
 - [Artificial Analysis: GPT-6.1 Sol](https://artificialanalysis.ai/models/releases/gpt-6-1-sol) — Intelligence Index scores and cost per task across effort levels
+- [Artificial Analysis: Intelligence Index methodology](https://artificialanalysis.ai/methodology/intelligence-benchmarking) — evaluation composition, weights, and scope
 - [Claude Sonnet 5.5 announcement](https://www.anthropic.com/claude-sonnet-5-5) — release date, pricing, and the Haiku 5.5 timeline
 - [GitHub Copilot: Plans](https://github.com/features/copilot/plans) — Copilot plan fees and AI credits
 - [Cursor: Pricing](https://cursor.com/pricing) — Cursor plans
