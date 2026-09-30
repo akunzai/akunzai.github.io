@@ -14,7 +14,7 @@ export default defineConfig({
         'zh-TW': '應無所住，而生其心',
         en: 'Abiding nowhere, give rise to mind.',
       },
-      description: '查理的技術筆記與隨想',
+      description: '查理的隨想與筆記',
       defaultLocale: 'zh-tw',
       locales: {
         'zh-tw': { label: '繁體中文', lang: 'zh-TW' },

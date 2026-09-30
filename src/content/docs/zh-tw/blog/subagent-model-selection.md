@@ -58,6 +58,8 @@ description: "我寫了 tech-lead 與 cheap-dev-workers，要求派工前先挑�
 
 換句話說，**harness 不會依難度替你降級**。「何時委派、派給誰、用哪個模型與 effort」必須寫下來，而且呼叫端要真的照做。
 
+選 effort 時也要考慮快取：我在 Codex 訂閱介面切換 GPT-6.1 Sol 的 effort，下一筆請求的命中率就下降，後續才恢復。不能假設切換 effort 一律不會增加快取寫入；單一 session 的結果與限制整理在[第 2 篇的 Codex 小節](/zh-tw/blog/cache-session-habits/#codex-的-gpt-6effort-與快取期限)。
+
 ---
 
 ## 我的做法：tech-lead 與 cheap-dev-workers
