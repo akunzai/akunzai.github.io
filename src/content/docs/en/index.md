@@ -1,15 +1,15 @@
 ---
 title: Home
-description: Charley's technical notes and thoughts. Essays for judgment; notes for steps you can repeat.
+description: Charley's thoughts and notes. Observations and ideas, with technical steps you can repeat.
 template: splash
 hero:
-  title: Charley's Technical Notes and Thoughts
-  tagline: Essays for judgment; notes for steps you can repeat.
+  title: Charley's Thoughts and Notes
+  tagline: Observations and ideas, with technical steps you can repeat.
   actions:
-    - text: Read Blog
+    - text: Thoughts and Observations
       link: /en/blog/
       icon: right-arrow
-    - text: Browse Notes
+    - text: Technical Notes
       link: /en/notes/
       icon: open-book
       variant: minimal
