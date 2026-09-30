@@ -2,7 +2,7 @@
 title: "Pro Is Enough: Picking an AI Subscription After Burning $5,000 of Tokens in a Month"
 date: 2026-09-28
 tags: ["ai-agent", "token-value-maxxing", "cost"]
-description: "My Claude Max 5x subscription ($100 a month) used over $5,000 of API-equivalent value in one month. Using SemiAnalysis's subsidy estimates and my own usage across two machines, I compare Claude, Codex, GitHub Copilot, and Cursor subscriptions, and explain why I'm dropping back to Pro next month."
+description: "My Claude Max 5x subscription ($100 a month) used over $5,000 of API-equivalent value in one month. Using SemiAnalysis's subsidy estimates and my own usage across two machines, I compare Claude, ChatGPT (Codex), GitHub Copilot, and Cursor subscriptions, and explain why I'm dropping back to Pro next month."
 ---
 
 :::note[Token Value Maxxing series: a side story]
@@ -64,6 +64,7 @@ Beyond API rates, I want to know what models can do and what they spend on tasks
 
 | Model (all at `medium`) | Intelligence Index | Cost per task |
 |---|---:|---:|
+| Claude Opus 5 | 45 | $2.19 |
 | Claude Opus 5.5 | 51 | $1.34 |
 | Claude Sonnet 5 | 28 | $1.00 |
 | Claude Sonnet 5.5 | 41 | $0.59 |
@@ -103,9 +104,9 @@ My observation: for typical in-house software development, Opus is enough. Reach
 
 Since Sonnet 5.5 shipped, I switch by task: Sonnet 5.5 for well-scoped work whose result can be checked automatically (small projects, single-point edits, documents); Opus 5.5 stays the default for cross-module refactors, legacy-framework upgrades, and large projects with thin test coverage. On effort, both default to `medium` in Claude Code; Sonnet 5.5's levels are recalibrated, so don't carry over Sonnet 5 settings.
 
-### Codex: More Quota, and GPT-6.1 Sol May Now Cover the Middle
+### ChatGPT (Codex): More Quota, and GPT-6.1 Sol May Now Cover the Middle
 
-Codex looks like it gives more quota, and its limits reset often. The question is whether its model ladder has enough rungs:
+Codex is the coding agent bundled with ChatGPT plans; there is no separate subscription ([docs](https://learn.chatgpt.com/docs/pricing)). ChatGPT looks like it gives more quota, and its limits reset often. The question is whether its model ladder has enough rungs:
 
 | Role | Claude | OpenAI |
 |---|---|---|
@@ -115,9 +116,9 @@ Codex looks like it gives more quota, and its limits reset often. The question i
 
 Per [OpenAI's official pricing](https://developers.openai.com/api/docs/pricing), the GPT-6 family has only Astra, Sol, and Luna; there is no Terra. GPT-6.1 Sol (which replaced GPT-6 Sol a week after its launch) is priced the same as Sonnet 5.5, with cached input at $0.10, even cheaper than the previous GPT-5.6 Terra.
 
-Before I canceled Codex, I was using GPT-5.6 Sol, and it felt roughly Sonnet-level. The earlier `medium` evaluations make me want to try GPT-6.1 Sol again, though I still need to validate it on my own development tasks.
+Before I canceled ChatGPT Plus, I was using GPT-5.6 Sol in Codex, and it felt roughly Sonnet-level. The earlier `medium` evaluations make me want to try GPT-6.1 Sol again, though I still need to validate it on my own development tasks.
 
-So I'd consider Codex for everyday development with Sol as the default model and Luna for the simplest tasks, once you've confirmed Sol handles your own tasks; it also fits when your work needs image or video generation.
+So I'd consider ChatGPT (Codex) for everyday development with Sol as the default model and Luna for the simplest tasks, once you've confirmed Sol handles your own tasks; it also fits when your work needs image or video generation.
 
 ### GitHub Copilot: For Review and Evals
 
@@ -140,7 +141,7 @@ Beyond that, Copilot doesn't pay off as your primary coding agent.
 
 ### Cursor / Grok: The Spare When Claude Runs Out
 
-I still subscribe to Cursor, mainly with Grok models, and it performs well (machine B used about $147 on Cursor this month, mostly `grok-4.6-high`); I also had SuperGrok before, since canceled. But like Copilot, both allowances are monthly; there's no 5-hour and 7-day reset cycle subsidizing you as with Claude and Codex. Heavy development burns through it fast.
+I still subscribe to Cursor, mainly with Grok models, and it performs well (machine B used about $147 on Cursor this month, mostly `grok-4.6-high`); I also had SuperGrok before, since canceled. But like Copilot, both allowances are monthly; there's no 5-hour and 7-day reset cycle subsidizing you as with Claude and ChatGPT. Heavy development burns through it fast.
 
 My use: **when my Claude quota runs out and I want to keep going before the reset, I switch to Cursor.**
 
@@ -151,16 +152,17 @@ My use: **when my Claude quota runs out and I want to keep going before the rese
 ```mermaid
 flowchart TD
     A[Mainly software development?] -->|Yes| B[Mostly ordinary difficulty?]
-    A -->|No, need image or video generation| X[Codex]
-    B -->|Yes| C[Lots of large refactors?]
+    A -->|No, need image or video generation| X[ChatGPT]
+    B -->|Yes| C[Lots of development work?<br/>Long-running, token-heavy]
     B -->|No, mostly very hard tasks| M
-    P -.Quota out, or Sol is enough for the task.-> X
-    C -->|No| P[Claude Pro]
+    C -->|No| P[Claude Pro or ChatGPT (Codex)<br/>ChatGPT if you need image generation]
     C -->|Yes| M[Claude Max]
     P -.Quota out, want to continue before reset.-> R[Cursor / Grok]
     G[Repo on GitHub, want code review or evals] --> H[GitHub Copilot]
     style P stroke-width:3px
 ```
+
+Without lots of development work, I think Claude Pro and ChatGPT (Codex) are both enough, so pick whichever quota suits you better. If you also need image generation, my impression is that OpenAI's is stronger than Claude's, so pick ChatGPT.
 
 ---
 
@@ -175,12 +177,10 @@ On Max, I often looked at the remaining quota late in the evening, felt it would
 My recommendations:
 
 - **For typical in-house software development, start with Claude Pro**, paired with the habits from the [Token Value Maxxing series](/en/blog/token-value-maxxing/): keep resident context lean, don't let the cache expire, put model choice at the moment of decision, and prevent rework at the source.
-- **Consider Max only for long, token-heavy work** such as large refactors.
+- **Consider Max only for long, token-heavy work** such as heavy development.
 - **When the 5-hour or 7-day quota runs out, take a break.** The reset cycle doesn't just limit you; it reminds you to stop.
 
-Claude Sonnet 5.5 shipped on 9/28 at the same $2 / $10 price. At the `medium` effort used in this comparison, it scores 41 on the Intelligence Index and costs $0.59 per task: cheaper than Opus 5.5, but with a capability gap, and behind GPT-6.1 Sol at the same token price. Anthropic says Haiku 5.5 will follow in the coming weeks. I'll continue assigning well-scoped work to cheaper models and reserving Opus for tasks that need more judgment; next month's trial will show whether that makes Pro's quota last longer.
-
-I'll run Pro for a full month next month and report back.
+Claude Sonnet 5.5 shipped on 9/28 at the same $2 / $10 price. At the `medium` effort used in this comparison, it scores 41 on the Intelligence Index and costs $0.59 per task: cheaper than Opus 5.5, but with a capability gap, and behind GPT-6.1 Sol at the same token price. Anthropic says Haiku 5.5 will follow in the coming weeks. After dropping back to Pro, I'll try Sonnet 5.5 as my main model, since the large development task I had been working on (completing every test scenario for a project, including unit, integration, and e2e) is done; Opus stays for tasks that need more judgment.
 
 Stop chasing Token Maxxing. Get the most value out of every token instead.
 

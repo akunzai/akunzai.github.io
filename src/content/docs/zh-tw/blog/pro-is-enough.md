@@ -2,7 +2,7 @@
 title: "Pro 就夠了：一個月燒掉 5,000 美元 token 之後，我的 AI 訂閱選擇"
 date: 2026-09-28
 tags: ["ai-agent", "token-value-maxxing", "cost"]
-description: "我的 Claude Max 5x（每月 100 美元）一個月用掉超過 5,000 美元的 API 等值額度。拿 SemiAnalysis 的補貼估算，加上我自己兩台主機的用量，比較 Claude、Codex、GitHub Copilot 與 Cursor 的訂閱，以及為什麼我下個月要降回 Pro。"
+description: "我的 Claude Max 5x（每月 100 美元）一個月用掉超過 5,000 美元的 API 等值額度。拿 SemiAnalysis 的補貼估算，加上我自己兩台主機的用量，比較 Claude、ChatGPT（Codex）、GitHub Copilot 與 Cursor 的訂閱，以及為什麼我下個月要降回 Pro。"
 ---
 
 :::note[Token Value Maxxing 系列番外篇]
@@ -64,6 +64,7 @@ API 單價之外，我也想知道模型實際做任務的能力與花費。這�
 
 | 模型（皆為 `medium`） | Intelligence Index | 每任務成本 |
 |---|---:|---:|
+| Claude Opus 5 | 45 | $2.19 |
 | Claude Opus 5.5 | 51 | $1.34 |
 | Claude Sonnet 5 | 28 | $1.00 |
 | Claude Sonnet 5.5 | 41 | $0.59 |
@@ -103,9 +104,9 @@ Cache 讀取從 $0.50 降到 $0.20，和 Sonnet 5.5 一樣。在 Coding Agent �
 
 Sonnet 5.5 釋出後，我的做法是依任務切換：範圍明確、結果能自動驗證的工作（小型專案、單點修改、文件）用 Sonnet 5.5；跨模組重構、舊框架升級、缺乏測試的大型專案，仍以 Opus 5.5 為主。effort 方面，Claude Code 裡兩者預設都是 `medium`；Sonnet 5.5 的等級已重新校準，不能沿用 Sonnet 5 的設定。
 
-### Codex：額度多，GPT-6.1 Sol 可能補上了中間那一階
+### ChatGPT（Codex）：額度多，GPT-6.1 Sol 可能補上了中間那一階
 
-Codex 的額度看起來更多，limit 也常常重置。問題是它的模型階梯夠不夠完整：
+Codex 是 ChatGPT 方案內附的 coding agent，沒有獨立訂閱（[官方說明](https://learn.chatgpt.com/docs/pricing)）。ChatGPT 的額度看起來更多，limit 也常常重置。問題是它的模型階梯夠不夠完整：
 
 | 定位 | Claude | OpenAI |
 |---|---|---|
@@ -115,9 +116,9 @@ Codex 的額度看起來更多，limit 也常常重置。問題是它的模型�
 
 依 [OpenAI 官方定價](https://developers.openai.com/api/docs/pricing)，GPT-6 系列只有 Astra、Sol、Luna 三個型號，沒有 Terra。GPT-6.1 Sol（發布一週後取代了 GPT-6 Sol）和 Sonnet 5.5 同價，快取輸入為 $0.10，甚至比上一代的 GPT-5.6 Terra 還便宜。
 
-我退訂 Codex 前用的是 GPT-5.6 Sol，體感大約是 Sonnet 等級。前面的 `medium` 評測讓我想再試 GPT-6.1 Sol，但仍需要用自己的開發任務確認。
+我退訂 ChatGPT Plus 前，在 Codex 裡用的是 GPT-5.6 Sol，體感大約是 Sonnet 等級。前面的 `medium` 評測讓我想再試 GPT-6.1 Sol，但仍需要用自己的開發任務確認。
 
-所以我會考慮 Codex 的情境是：日常開發以 Sol 為預設模型，最簡單的任務改用 Luna，前提是先確認 Sol 能勝任你自己的任務；或是你的工作需要生成圖片或影片。
+所以我會考慮 ChatGPT（Codex）的情境是：日常開發以 Sol 為預設模型，最簡單的任務改用 Luna，前提是先確認 Sol 能勝任你自己的任務；或是你的工作需要生成圖片或影片。
 
 ### GitHub Copilot：為了 Review 與 Evals
 
@@ -140,7 +141,7 @@ Codex 的額度看起來更多，limit 也常常重置。問題是它的模型�
 
 ### Cursor／Grok：Claude 用完時的備胎
 
-我目前仍訂閱 Cursor，主要搭配 Grok 模型，表現不錯（主機 B 這個月在 Cursor 上用了約 $147，大多是 `grok-4.6-high`）；先前也訂過 SuperGrok，已經取消。但兩者都和 Copilot 一樣是以月為單位的額度，不像 Claude／Codex 有 5 小時與 7 天的重置週期在補貼。大量開發的話，很快就會用光。
+我目前仍訂閱 Cursor，主要搭配 Grok 模型，表現不錯（主機 B 這個月在 Cursor 上用了約 $147，大多是 `grok-4.6-high`）；先前也訂過 SuperGrok，已經取消。但兩者都和 Copilot 一樣是以月為單位的額度，不像 Claude／ChatGPT 有 5 小時與 7 天的重置週期在補貼。大量開發的話，很快就會用光。
 
 我的用法是：**Claude 的額度用完、又想在重置前繼續時，才切到 Cursor。**
 
@@ -151,16 +152,17 @@ Codex 的額度看起來更多，limit 也常常重置。問題是它的模型�
 ```mermaid
 flowchart TD
     A[主要工作是軟體開發？] -->|是| B[任務大多是一般難度？]
-    A -->|否，需要生成圖片或影片| X[Codex]
-    B -->|是| C[有大量重構任務？]
+    A -->|否，需要生成圖片或影片| X[ChatGPT]
+    B -->|是| C[有大量開發任務？<br/>長時間、高 token]
     B -->|否，大多是極難的任務| M
-    P -.額度用完，或 Sol 已足夠.-> X
-    C -->|否| P[Claude Pro]
+    C -->|否| P[Claude Pro 或 ChatGPT（Codex）<br/>需要生成圖片選 ChatGPT]
     C -->|是| M[Claude Max]
     P -.額度用完、想趁重置前繼續.-> R[Cursor／Grok]
     G[repo 在 GitHub，要 Code Review 或 Evals] --> H[GitHub Copilot]
     style P stroke-width:3px
 ```
+
+沒有大量開發任務時，Claude Pro 與 ChatGPT（Codex）我認為都夠用，選哪個看額度用得順不順手；若也需要生成圖片，我的體感是 OpenAI 的生圖能力比 Claude 強，這時選 ChatGPT。
 
 ---
 
@@ -175,12 +177,10 @@ flowchart TD
 我的建議是：
 
 - **一般企業內的軟體開發，先從 Claude Pro 開始**，搭配 [Token Value Maxxing 系列](/zh-tw/blog/token-value-maxxing/)的習慣：精簡常駐 context、別讓 cache 過期、把模型選擇放在做決定的那一刻、從根源避免重工。
-- **只有大量重構這類長時間、高 token 的任務**，才考慮 Max。
+- **只有大量開發這類長時間、高 token 的任務**，才考慮 Max。
 - **5 小時或 7 天的額度用完，就休息吧。** 那個重置週期不只是在限制你，也是在提醒你該停下來了。
 
-Claude Sonnet 5.5 已在 9/28 釋出，價格維持 $2／$10。在本文比較的 `medium` effort 下，它的 Intelligence Index 為 41，每任務成本 $0.59，比 Opus 5.5 便宜，但能力仍有差距，也落後同價位的 GPT-6.1 Sol。Haiku 5.5 官方說會在幾週內跟上。我的做法仍是把範圍明確的工作交給較便宜的模型，把 Opus 留給需要更多判斷的任務；Pro 的額度能否因此更撐得住，留待下個月實測。
-
-我會在下個月實際用 Pro 跑一整個月，再回來報告結果。
+Claude Sonnet 5.5 已在 9/28 釋出，價格維持 $2／$10。在本文比較的 `medium` effort 下，它的 Intelligence Index 為 41，每任務成本 $0.59，比 Opus 5.5 便宜，但能力仍有差距，也落後同價位的 GPT-6.1 Sol。Haiku 5.5 官方說會在幾週內跟上。降回 Pro 後，我會試著改以 Sonnet 5.5 為主力模型，因為先前那個大型開發任務（補完某專案的所有測試情境，包含單元、整合與 e2e）已經完成；Opus 則留給需要更多判斷的任務。
 
 別再追求 Token Maxxing 了，把每一顆 token 的價值發揮到最大吧。
 
