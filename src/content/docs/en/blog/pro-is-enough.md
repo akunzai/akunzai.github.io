@@ -79,21 +79,30 @@ My observation: for typical in-house software development, Opus is enough. Reach
 
 Since Sonnet 5.5 shipped, I switch by task: Sonnet 5.5 for well-scoped work whose result can be checked automatically (small projects, single-point edits, documents); Opus 5.5 stays the default for cross-module refactors, legacy-framework upgrades, and large projects with thin test coverage. On effort, both default to `medium` in Claude Code; Sonnet 5.5's levels are recalibrated, so don't carry over Sonnet 5 settings.
 
-### Codex: More Quota, Missing the Middle Rung
+### Codex: More Quota, and Sol May Now Cover the Middle
 
-Codex looks like it gives more quota, and its limits reset often. In my own use, though, the problem is the model ladder:
+Codex looks like it gives more quota, and its limits reset often. The question is whether its model ladder has enough rungs:
 
 | Role | Claude | OpenAI |
 |---|---|---|
 | Strongest | Fable 5.1 ($10 / $50) | GPT-6 Astra ($10 / $50) |
-| Middle | Opus 5.5 ($4 / $20) | — |
-| Workhorse | Sonnet 5.5 ($2 / $10) | GPT-6 Sol ($2 / $10) |
+| Middle | Opus 5.5 ($4 / $20) | GPT-6.1 Sol ($2 / $10) |
+| Workhorse | Sonnet 5.5 ($2 / $10) | GPT-6.1 Sol ($2 / $10) |
 
-Per [OpenAI's official pricing](https://developers.openai.com/api/docs/pricing), the GPT-6 family has only Astra, Sol, and Luna; there is no Terra. GPT-6 Sol is priced the same as Sonnet 5.5, even cheaper than the previous GPT-5.6 Terra.
+Per [OpenAI's official pricing](https://developers.openai.com/api/docs/pricing), the GPT-6 family has only Astra, Sol, and Luna; there is no Terra. GPT-6.1 Sol (which replaced GPT-6 Sol a week after its launch) is priced the same as Sonnet 5.5, with cached input at $0.10, even cheaper than the previous GPT-5.6 Terra.
 
-Before I canceled Codex, I was using GPT-5.6 Sol, and it felt roughly Sonnet-level. Looking at third-party evaluations instead, Artificial Analysis gives these Intelligence Index scores (all at maximum effort; see the [Opus 5.5](https://artificialanalysis.ai/models/releases/comparisons/gpt-6-sol-vs-claude-opus-5-5) and [Sonnet 5.5](https://artificialanalysis.ai/models/releases/comparisons/gpt-6-sol-vs-claude-sonnet-5-5) comparisons): Opus 5.5 58, Sonnet 5.5 56, GPT-6 Sol 48. GPT-6 Sol costs the same as Sonnet 5.5 yet trails it by 8 points, and trails Opus 5.5 by 10; the next rung up is Astra, which costs as much as Fable. **What Codex still lacks is an Opus: strong enough, and not too expensive.**
+Before I canceled Codex, I was using GPT-5.6 Sol, and it felt roughly Sonnet-level. Looking at third-party evaluations instead, Artificial Analysis gives these Intelligence Index scores (all at maximum effort; see the [Opus 5.5](https://artificialanalysis.ai/models/releases/comparisons/gpt-6-1-sol-vs-claude-opus-5-5) and [Sonnet 5.5](https://artificialanalysis.ai/models/releases/comparisons/gpt-6-1-sol-vs-claude-sonnet-5-5) comparisons):
 
-So I'd recommend Codex when your tasks are either harder (give them to Astra) or simpler (give them to Sol), or when your work needs image or video generation.
+| Model | Intelligence Index | Cost per task |
+|---|---|---|
+| Claude Opus 5.5 | 58 | $5.98 |
+| Claude Sonnet 5.5 | 56 | $7.60 |
+| GPT-6 Astra | 53 | $3.26 |
+| GPT-6.1 Sol | 52 | $0.72 |
+
+GPT-6.1 Sol costs the same per token as Sonnet 5.5 and trails it by only 4 points, and Opus 5.5 by 6, while costing far less per task. The next rung up is Astra, which costs as much as Fable and scores just 1 point higher, so Sol is the sensible stop. **Before 6.1, Codex lacked an Opus: strong enough, and not too expensive. Now Sol looks like it could be both the middle rung and the workhorse.** Two caveats. First, cost per task is not completion rate: Sonnet 5.5 generated about 6 times Sol's output tokens on the same index, and that accounts for most of the cost gap. Second, on Terminal-Bench 4.0, the closest test to Codex-style work, Artificial Analysis shows 6.1 Sol gaining 12 points over GPT-6 Sol (about 56% by my arithmetic; the article gives only the gain), still behind Sonnet 5.5 (63.6%) and Opus 5.5 (59.6%). It shipped only a day ago and I haven't used it enough, so I'd keep cross-module refactors on Opus for now.
+
+So I'd consider Codex for everyday development with Sol as the default model and Luna for the simplest tasks, once you've confirmed Sol handles your own tasks; it also fits when your work needs image or video generation.
 
 ### GitHub Copilot: For Review and Evals
 
@@ -129,7 +138,8 @@ flowchart TD
     A[Mainly software development?] -->|Yes| B[Mostly ordinary difficulty?]
     A -->|No, need image or video generation| X[Codex]
     B -->|Yes| C[Lots of large refactors?]
-    B -->|No, only very hard or very easy tasks| X
+    B -->|No, mostly very hard tasks| M
+    P -.Quota out, or Sol is enough for the task.-> X
     C -->|No| P[Claude Pro]
     C -->|Yes| M[Claude Max]
     P -.Quota out, want to continue before reset.-> R[Cursor / Grok]
@@ -153,7 +163,7 @@ My recommendations:
 - **Consider Max only for long, token-heavy work** such as large refactors.
 - **When the 5-hour or 7-day quota runs out, take a break.** The reset cycle doesn't just limit you; it reminds you to stop.
 
-Claude Sonnet 5.5 shipped on 9/28: still $2 / $10, but its Intelligence Index jumped from Sonnet 5's 38 to 56, close to Opus 5.5 and ahead of GPT-6 Sol at the same price; Anthropic says Haiku 5.5 will follow in the coming weeks. Work handed to subagents gets cheaper, and the Pro quota goes further.
+Claude Sonnet 5.5 shipped on 9/28: still $2 / $10, but its Intelligence Index jumped from Sonnet 5's 38 to 56, close to Opus 5.5 and ahead of GPT-6.1 Sol at the same price; Anthropic says Haiku 5.5 will follow in the coming weeks. Work handed to subagents gets cheaper, and the Pro quota goes further.
 
 I'll run Pro for a full month next month and report back.
 
@@ -168,9 +178,9 @@ Stop chasing Token Maxxing. Get the most value out of every token instead.
 - [Claude: Plans & Pricing](https://claude.com/pricing) — Pro / Max plans and the 5-hour and weekly usage limits
 - [Claude announcement: higher 5-hour limits on Pro, Max, and Team](https://x.com/claudeai/status/2102435538120691886) — quota changes that shipped with Opus 5.5
 - [OpenAI API: Pricing](https://developers.openai.com/api/docs/pricing) — API list prices for GPT-6 Astra / Sol / Luna
-- [Artificial Analysis: Claude Opus 5.5 vs GPT-6 Sol](https://artificialanalysis.ai/models/releases/comparisons/gpt-6-sol-vs-claude-opus-5-5) — third-party Intelligence Index scores and cost per task
+- [Artificial Analysis: Claude Opus 5.5 vs GPT-6.1 Sol](https://artificialanalysis.ai/models/releases/comparisons/gpt-6-1-sol-vs-claude-opus-5-5) — third-party Intelligence Index scores and cost per task
 - [Claude Sonnet 5.5 announcement](https://www.anthropic.com/claude-sonnet-5-5) — release date, pricing, and the Haiku 5.5 timeline
-- [Artificial Analysis: GPT-6 Sol vs Claude Sonnet 5.5](https://artificialanalysis.ai/models/releases/comparisons/gpt-6-sol-vs-claude-sonnet-5-5) — third-party comparison of the two models at the same price
+- [Artificial Analysis: GPT-6.1 Sol vs Claude Sonnet 5.5](https://artificialanalysis.ai/models/releases/comparisons/gpt-6-1-sol-vs-claude-sonnet-5-5) — third-party comparison of the two models at the same price
 - [GitHub Copilot: Plans](https://github.com/features/copilot/plans) — Copilot plan fees and AI credits
 - [Cursor: Pricing](https://cursor.com/pricing) — Cursor plans
 - [akunzai/agent-skills](https://github.com/akunzai/agent-skills) — the skills repository whose evals run on Copilot
