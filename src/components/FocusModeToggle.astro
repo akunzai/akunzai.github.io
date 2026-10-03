@@ -1,0 +1,208 @@
+---
+const { locale } = Astro.locals.starlightRoute
+const isZh = locale === 'zh-tw'
+const title = isZh ? '專注閱讀模式 (Alt+Z / [)' : 'Focus Mode (Alt+Z / [)'
+const labelEnter = isZh ? '開啟專注閱讀模式 (Alt+Z / [)' : 'Enter Focus Mode (Alt+Z / [)'
+const labelExit = isZh ? '退出專注模式 (Alt+Z / [)' : 'Exit Focus Mode (Alt+Z / [)'
+const floatingLabel = isZh ? '選單目錄' : 'Sidebars'
+---
+
+<starlight-focus-mode
+  data-label-enter={labelEnter}
+  data-label-exit={labelExit}
+>
+  <button
+    type="button"
+    class="sl-focus-mode-btn"
+    aria-label={labelEnter}
+    aria-pressed="false"
+    title={title}
+  >
+    <!-- Focus off icon: sidebars visible, arrow pointing inward to collapse -->
+    <svg class="icon-focus-off" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect width="18" height="18" x="3" y="3" rx="2" />
+      <path d="M9 3v18" />
+      <path d="m14 9-3 3 3 3" />
+    </svg>
+    <!-- Focus on icon: sidebars hidden, arrow pointing outward to expand -->
+    <svg class="icon-focus-on" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect width="18" height="18" x="3" y="3" rx="2" />
+      <path d="M9 3v18" />
+      <path d="m13 15 3-3-3-3" />
+    </svg>
+    <span class="sr-only">{title}</span>
+  </button>
+
+  <button
+    type="button"
+    class="sl-focus-mode-floating-btn"
+    aria-label={labelExit}
+    title={title}
+  >
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect width="18" height="18" x="3" y="3" rx="2" />
+      <path d="M9 3v18" />
+      <path d="m13 15 3-3-3-3" />
+    </svg>
+    <span>{floatingLabel}</span>
+  </button>
+</starlight-focus-mode>
+
+<script>
+  class StarlightFocusMode extends HTMLElement {
+    constructor() {
+      super()
+      const storageKey = 'starlight-focus-mode'
+      const labelEnter = this.dataset.labelEnter || 'Enter Focus Mode (Alt+Z / [)'
+      const labelExit = this.dataset.labelExit || 'Exit Focus Mode (Alt+Z / [)'
+      const btn = this.querySelector<HTMLButtonElement>('.sl-focus-mode-btn')
+      const floatingBtn = this.querySelector<HTMLButtonElement>('.sl-focus-mode-floating-btn')
+
+      const isFocusActive = () => document.documentElement.hasAttribute('data-focus-mode')
+
+      const updateUI = (active: boolean) => {
+        if (btn) {
+          btn.setAttribute('aria-pressed', active ? 'true' : 'false')
+          btn.setAttribute('aria-label', active ? labelExit : labelEnter)
+        }
+      }
+
+      const setFocusMode = (active: boolean) => {
+        if (active) {
+          document.documentElement.setAttribute('data-focus-mode', '')
+        } else {
+          document.documentElement.removeAttribute('data-focus-mode')
+        }
+        try {
+          localStorage.setItem(storageKey, active ? 'true' : 'false')
+        } catch {}
+        updateUI(active)
+      }
+
+      const toggle = () => setFocusMode(!isFocusActive())
+
+      // Initial sync with DOM attribute
+      updateUI(isFocusActive())
+
+      btn?.addEventListener('click', toggle)
+      floatingBtn?.addEventListener('click', toggle)
+
+      // Keyboard shortcuts
+      window.addEventListener('keydown', (e) => {
+        // Alt+Z / Option+Z
+        if (e.altKey && (e.key === 'z' || e.key === 'Z')) {
+          e.preventDefault()
+          toggle()
+          return
+        }
+
+        // Bracket [ when not typing in form controls
+        if (
+          e.key === '[' &&
+          !e.ctrlKey &&
+          !e.metaKey &&
+          !e.altKey &&
+          !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName || '') &&
+          !(document.activeElement as HTMLElement)?.isContentEditable
+        ) {
+          e.preventDefault()
+          toggle()
+        }
+      })
+    }
+  }
+
+  if (!customElements.get('starlight-focus-mode')) {
+    customElements.define('starlight-focus-mode', StarlightFocusMode)
+  }
+</script>
+
+<style>
+  @layer starlight.core {
+    starlight-focus-mode {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .sl-focus-mode-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      padding: 0;
+      border-radius: 0.5rem;
+      border: 1px solid var(--sl-color-hairline);
+      background: var(--sl-color-bg-inline-code);
+      color: var(--sl-color-gray-2);
+      cursor: pointer;
+      transition: all 0.15s ease-in-out;
+    }
+
+    .sl-focus-mode-btn:hover {
+      background: var(--sl-color-hairline);
+      color: var(--sl-color-white);
+      border-color: var(--sl-color-gray-5);
+    }
+
+    .sl-focus-mode-btn[aria-pressed='true'] {
+      background: var(--sl-color-accent-low);
+      color: var(--sl-color-accent-high);
+      border-color: var(--sl-color-accent);
+    }
+
+    .sl-focus-mode-btn:focus-visible {
+      outline: 2px solid var(--sl-color-accent);
+      outline-offset: 1px;
+    }
+
+    .sl-focus-mode-btn .icon-focus-on {
+      display: none;
+    }
+
+    .sl-focus-mode-btn[aria-pressed='true'] .icon-focus-on {
+      display: block;
+    }
+
+    .sl-focus-mode-btn[aria-pressed='true'] .icon-focus-off {
+      display: none;
+    }
+
+    /* Floating quick toggle pill (only visible when in focus mode on desktop) */
+    .sl-focus-mode-floating-btn {
+      display: none;
+    }
+
+    @media (min-width: 50rem) {
+      :global(:root[data-focus-mode]) .sl-focus-mode-floating-btn {
+        display: inline-flex;
+        position: fixed;
+        bottom: 2rem;
+        inset-inline-start: 2rem;
+        z-index: var(--sl-z-index-menu);
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.85rem;
+        font-size: var(--sl-text-xs);
+        font-weight: 500;
+        border-radius: 9999px;
+        border: 1px solid var(--sl-color-hairline);
+        background: var(--sl-color-bg-nav);
+        color: var(--sl-color-gray-2);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+        opacity: 0.8;
+        transition: all 0.2s ease-in-out;
+        backdrop-filter: blur(8px);
+      }
+
+      :global(:root[data-focus-mode]) .sl-focus-mode-floating-btn:hover {
+        opacity: 1;
+        transform: translateY(-2px);
+        color: var(--sl-color-white);
+        border-color: var(--sl-color-accent);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+</style>
