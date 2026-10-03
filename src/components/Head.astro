@@ -2,6 +2,8 @@
 import Default from '@astrojs/starlight/components/Head.astro'
 import jetbrainsMono400 from '@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2?url'
 import jetbrainsMono700 from '@fontsource/jetbrains-mono/files/jetbrains-mono-latin-700-normal.woff2?url'
+import CloudflareAnalytics from './CloudflareAnalytics.astro'
+import SentryErrorTracking from './SentryErrorTracking.astro'
 ---
 
 <Default><slot /></Default>
@@ -14,3 +16,5 @@ import jetbrainsMono700 from '@fontsource/jetbrains-mono/files/jetbrains-mono-la
 </script>
 <link rel="preload" href={jetbrainsMono400} as="font" type="font/woff2" crossorigin />
 <link rel="preload" href={jetbrainsMono700} as="font" type="font/woff2" crossorigin />
+<CloudflareAnalytics />
+<SentryErrorTracking />

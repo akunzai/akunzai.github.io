@@ -1,0 +1,15 @@
+---
+const isProd = import.meta.env.PROD
+const sentryDsn = import.meta.env.PUBLIC_SENTRY_DSN
+---
+
+{isProd && sentryDsn && (
+  <script
+    is:inline
+    defer
+    src="https://browser.sentry-cdn.com/8.54.0/bundle.min.js"
+    crossorigin="anonymous"
+    data-dsn={sentryDsn}
+    onload="if (window.Sentry) { Sentry.init({ dsn: this.dataset.dsn }); }"
+  />
+)}
