@@ -5,5 +5,12 @@ import jetbrainsMono700 from '@fontsource/jetbrains-mono/files/jetbrains-mono-la
 ---
 
 <Default><slot /></Default>
+<script is:inline>
+	try {
+		if (localStorage.getItem('starlight-focus-mode') === 'true') {
+			document.documentElement.setAttribute('data-focus-mode', '')
+		}
+	} catch {}
+</script>
 <link rel="preload" href={jetbrainsMono400} as="font" type="font/woff2" crossorigin />
 <link rel="preload" href={jetbrainsMono700} as="font" type="font/woff2" crossorigin />

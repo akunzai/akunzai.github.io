@@ -2,10 +2,11 @@
 import LanguageSelect from '@astrojs/starlight/components/LanguageSelect.astro'
 import Search from '@astrojs/starlight/components/Search.astro'
 import ThemeSelect from '@astrojs/starlight/components/ThemeSelect.astro'
+import FocusModeToggle from './FocusModeToggle.astro'
 import SiteTitle from './SiteTitle.astro'
 import SocialIcons from './SocialIcons.astro'
 
-const { locale } = Astro.locals.starlightRoute
+const { locale, hasSidebar, toc } = Astro.locals.starlightRoute
 const path = Astro.url.pathname
 const blogHref = `/${locale}/blog/`
 const notesHref = `/${locale}/notes/`
@@ -27,6 +28,7 @@ const onNotes = path.includes('/notes')
 			<div class="sl-flex social-icons">
 				<SocialIcons />
 			</div>
+			{(hasSidebar || Boolean(toc)) && <FocusModeToggle />}
 			<ThemeSelect />
 			<LanguageSelect />
 		</div>
@@ -102,6 +104,10 @@ const onNotes = path.includes('/notes')
 				--__sidebar-pad: calc(2 * var(--sl-nav-pad-x));
 			}
 			:global(:root:not([data-has-toc])) {
+				--__toc-width: 0rem;
+			}
+			:global(:root[data-focus-mode]) {
+				--__sidebar-pad: 0rem;
 				--__toc-width: 0rem;
 			}
 			.header-row {
