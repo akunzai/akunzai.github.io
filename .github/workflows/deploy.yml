@@ -49,6 +49,9 @@ jobs:
 
       - name: Build with Astro
         run: aubr build
+        env:
+          PUBLIC_CLOUDFLARE_ANALYTICS_TOKEN: ${{ vars.PUBLIC_CLOUDFLARE_ANALYTICS_TOKEN || secrets.PUBLIC_CLOUDFLARE_ANALYTICS_TOKEN }}
+          PUBLIC_SENTRY_DSN: ${{ vars.PUBLIC_SENTRY_DSN || secrets.PUBLIC_SENTRY_DSN }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5
