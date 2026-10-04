@@ -51,3 +51,18 @@ This series is engineered for new teammates (and weary seniors cleaning up unatt
 - macOS: Homebrew package management, Ghostty/Terminal terminfo, Zsh tooling
 - Windows: Winget / Scoop, OpenSSH Agent service automation, PowerShell 7, and WSL 2
 - Cross-platform file attributes, line endings, Credential hygiene, and the onboarding checklist
+
+### [Herdr Basics: A Multiplexer for Running Coding Agents Side by Side](./herdr-getting-started/)
+- Where Herdr sits: outer terminal, Herdr, shell, package manager
+- Workspace / Tab / Pane model, Agent states, detach and reattach
+- Shared configuration, integrations, and plugins worth keeping
+
+### [Herdr on macOS: Ghostty, Zsh, and Homebrew](./herdr-terminal-macos/)
+- Nerd Font, Option-as-Alt, and shortcut conflicts
+- Non-interactive shell setup so Agents find the same tools you do
+- Homebrew and mise installs
+
+### [Herdr on Windows: Windows Terminal, PowerShell 7, and Scoop](./herdr-terminal-windows/)
+- Windows Terminal font, copy/paste, and shortcuts
+- PowerShell 7 profile and persistent `PATH`
+- Scoop and mise installs
