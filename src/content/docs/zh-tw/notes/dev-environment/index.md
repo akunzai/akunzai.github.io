@@ -49,3 +49,18 @@ sidebar:
 - macOS 環境：Homebrew 套件管理、Ghostty/Terminal terminfo、Zsh 生態
 - Windows 環境：Winget / Scoop、OpenSSH Agent 自動啟動、PowerShell 與 WSL2
 - 跨環境檔案屬性、換行、Credential 安全與新人驗收清單
+
+### [Herdr 基礎：同時駕馭多個 Coding Agent 的多工器](./herdr-getting-started/)
+- Herdr 所在的位置：外層終端機、Herdr、Shell、套件管理工具
+- Workspace / Tab / Pane 模型、Agent 狀態、卸離與重新連線
+- 值得保留的共用設定、Integration 與 Plugin
+
+### [Herdr 在 macOS：Ghostty、Zsh 與 Homebrew](./herdr-terminal-macos/)
+- Nerd Font、Option 當 Alt 與快速鍵衝突
+- 非互動式 Shell 設定，讓 Agent 找得到與你相同的工具
+- Homebrew 與 mise 安裝
+
+### [Herdr 在 Windows：Windows Terminal、PowerShell 7 與 Scoop](./herdr-terminal-windows/)
+- Windows Terminal 字型、複製貼上與快速鍵
+- PowerShell 7 Profile 與永久 `PATH`
+- Scoop 與 mise 安裝
