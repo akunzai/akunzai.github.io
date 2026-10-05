@@ -43,19 +43,20 @@ them are copied here.
 | zh-TW terminology, when `src/content/docs/zh-tw/` changed | `mise run zhtw:lint` |
 | Dependencies, when `node_modules` is missing | `mise exec -- aube ci` |
 
-`mise run zhtw:lint` builds and runs a container, so Docker must be
-running. It has been run against the current `.zhtw-mcp/baseline.json`
-and exits 0, reporting only suppressed baseline findings, so a non-zero
-exit means new drift and not a broken check. Skipping it is a gap to
-declare, not a silent omission: CI runs the same check and fails the
-pull request.
+`mise run zhtw:lint` selects a running container engine, preferring Podman
+and falling back to Docker. It builds and runs the local image against the
+current `.zhtw-mcp/baseline.json`; a successful run reports only suppressed
+baseline findings. A non-zero exit needs investigation: it may indicate new
+terminology drift or a container setup failure. Skipping it is a gap to
+declare, not a silent omission: CI runs the same check directly and fails
+the pull request.
 
 ## Human prerequisites
 
-Run once, by a person. `mise run verify` fails until they are done.
+Prepare the dependencies for the checks you run:
 
 - [ ] `mise install` — installs Node.js and aube per `mise.toml`.
-- [ ] Start Docker, needed only for `mise run zhtw:lint`.
+- [ ] Start Podman or Docker, needed only for `mise run zhtw:lint`.
 
 ## Ports
 
