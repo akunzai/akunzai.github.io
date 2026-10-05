@@ -4,7 +4,7 @@ RUN apt-get update -qq \
 	&& apt-get install -y -qq --no-install-recommends curl ca-certificates \
 	&& rm -rf /var/lib/apt/lists/*
 
-# TARGETARCH is set by Docker to the build's native platform (arm64 on
+# TARGETARCH is set by the container builder to the build's native platform (arm64 on
 # Apple Silicon, amd64 elsewhere) so this runs without QEMU on a Mac.
 ARG TARGETARCH
 RUN case "$TARGETARCH" in \
