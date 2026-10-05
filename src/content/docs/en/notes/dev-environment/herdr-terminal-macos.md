@@ -83,6 +83,8 @@ The `.zshenv` hook above selects tools once, for the startup directory. If an Ag
 
 A Herdr Session outlives your SSH logins and terminal windows. If `SSH_AUTH_SOCK` points at a per-login forwarded socket, it dies with that login and commit signing breaks inside panes that are still alive. For local signing, a stable local-agent socket (`~/.ssh/agent.sock`) with a startup health check avoids that per-login dependency. Preserve a forwarded socket when forwarding is intentional; replacing it changes which keys are available. The full reasoning is in [SSH Keys & Security](../ssh-keys-security/); the Gist's `.zshenv` has the Keychain-aware version.
 
+GUI Git tools do not read `.zshenv`. For login-time key loading into both the fixed local Agent and the built-in macOS Agent, see [the SSH Agent + Keychain setup](../ssh-keys-security/#macos-gui-git-tools-load-keys-into-the-agent-the-app-actually-uses).
+
 > [!WARNING]
 > A server started through SSH or a background job may lack interactive Keychain access. If Keychain-backed tools fail, finish or save running work before `herdr server stop`, which terminates all pane processes, then start Herdr again from a GUI terminal ([troubleshooting](https://herdr.dev/docs/troubleshooting/)).
 

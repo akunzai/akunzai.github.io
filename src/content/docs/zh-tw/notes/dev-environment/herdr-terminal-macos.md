@@ -83,6 +83,8 @@ eval "$(mise activate zsh)"
 
 Herdr Session 會比你的 SSH 登入與終端機視窗活得更久。若 `SSH_AUTH_SOCK` 指向每次登入轉送的 Socket，它會隨該次登入一起消失，導致仍在執行的 Pane 內 Commit 簽署失效。本機簽署可使用固定的本機 Agent Socket（`~/.ssh/agent.sock`），並在 Shell 啟動時檢查健康狀態，避開每次登入的依賴。若刻意使用 Agent forwarding，請保留轉送的 Socket；替換它會改變可用的金鑰。完整推導請見 [SSH 金鑰與安全](../ssh-keys-security/)；Gist 的 `.zshenv` 有支援 Keychain 的版本。
 
+GUI Git 工具不會讀取 `.zshenv`。若需要登入時同時載入固定的本機 Agent 與 macOS 內建 Agent，請參考 [SSH Agent + Keychain 設定](../ssh-keys-security/#macos-gui-git-工具將金鑰載入-app-實際使用的-agent)。
+
 > [!WARNING]
 > 從 SSH 或背景工作啟動的 server 可能無法存取互動式 Keychain。若依賴 Keychain 的工具失敗，請先完成或儲存執行中的工作，再執行 `herdr server stop`；它會終止所有 Pane 行程。接著從 GUI 終端機重新啟動 Herdr（見[疑難排解](https://herdr.dev/docs/troubleshooting/)）。
 
