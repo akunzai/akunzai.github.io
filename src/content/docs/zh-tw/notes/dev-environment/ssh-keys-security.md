@@ -79,25 +79,50 @@ Host *
 ssh-add --apple-use-keychain ~/.ssh/id_ed25519
 ```
 
-日後重新開機時，macOS 會自動透過 Keychain 解鎖並載入私鑰至 `ssh-agent`，既享有高強度 Passphrase 的保護，又兼具零干擾的開發體驗。
+這會儲存 Passphrase，並將金鑰載入目前的 Agent。重新開機後，仍需將金鑰載入新的 Agent；僅儲存至 Keychain，不代表每個 App 使用的 Agent 都已有可用金鑰。
+
+### macOS GUI Git 工具：將金鑰載入 App 實際使用的 Agent
+
+`UseKeychain` 讓 Apple 的 SSH client 從 Keychain 取得 Passphrase，不會安排登入時載入金鑰；`AddKeysToAgent` 則在該 client 載入金鑰時生效。SSH Commit 簽署使用 `ssh-keygen -Y sign`，因此只設定這兩項連線選項，不能保證 GUI Git 工具簽署時不再詢問 Passphrase。簽署用的金鑰必須已載入 App 的 `SSH_AUTH_SOCK` 所指向的 Agent。
+
+我的 [macOS SSH Agent + Keychain 設定](https://gist.github.com/akunzai/402cbbcf61703e6e9c50f2a929e09424) 同時處理終端機與 GUI 工作流：
+
+- 使用者的 LaunchAgent 在 GUI 登入時執行 `ssh-agent-wrapper`。它啟動或沿用 `~/.ssh/agent.sock` 上的本機 Agent，以 Apple 的 `ssh-add --apple-use-keychain` 載入金鑰，再透過 `launchctl setenv` 設定登入環境使用的 Socket。
+- Wrapper 也將金鑰載入登入 Session 內建的 `com.openssh.ssh-agent`。GUI App 在啟動時取得環境變數，執行期間不會自動更新；之後設定另一個 Socket，也不會套用至這個行程。補入內建 Agent 的金鑰，可協助仍使用其 Socket 的 App。
+
+先在本機 GUI 終端機為每把預計使用的金鑰儲存 Passphrase。若同時安裝 Homebrew OpenSSH，請明確使用 Apple 的執行檔：
+
+```bash
+/usr/bin/ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+```
+
+Gist 提供 Wrapper、LaunchAgent、安裝與診斷指令。請修改 plist 的 `ProgramArguments`，填入 Wrapper 的實際絕對路徑，並只把相關 SSH 設定合併至既有配置。Wrapper 會尋找具有對應 `~/.ssh/id_*.pub` 檔案的私鑰；若只應載入部分身分，請調整這項選取方式。
+
+檢查固定 Agent 時，可避免輸出金鑰指紋與註解：
+
+```bash
+SSH_AUTH_SOCK="$HOME/.ssh/agent.sock" /usr/bin/ssh-add -l >/dev/null 2>&1
+printf 'ssh-add exit status: %s\n' "$?"
+```
+
+對這個列出身分的指令，結束碼 `0` 表示有可用身分；`1` 表示指令失敗，包括 Agent 沒有載入身分的情況；`2` 表示無法連上 Agent。若終端機簽署正常、GUI App 卻仍要求 Passphrase，請依 Gist 的診斷方式，分別檢查 App 使用的 Socket 與內建 Agent。修改 Wrapper 或 plist 後，需要重新載入 LaunchAgent；同一個 Agent 內的金鑰內容改變，不需要更換 App 的 Socket。
+
+這套設定用於本機 GUI 登入。透過 SSH 連線時，若刻意使用 Agent forwarding，請保留轉送的 Socket；若改接固定的本機 Socket，SSH 就會使用本機 Agent 的金鑰。長時間執行的 Herdr Session 仍需要可連線且已載入金鑰的 Agent，詳見 [Herdr 的 macOS 終端機設定](../herdr-terminal-macos/)。
 
 ### Windows：啟用 OpenSSH Authentication Agent 服務
-Windows 10/11 內建了 OpenSSH，但其背景服務預設是停用的。請以**系統管理員身分**開啟 PowerShell 執行：
+Windows 10/11 的 OpenSSH Agent 是系統服務。一般使用者可以先檢查它是否已啟用：
 
 ```powershell
-# 設定服務啟動類型為「自動」並立即啟動
-Set-Service ssh-agent -StartupType Automatic
-Start-Service ssh-agent
-
-# 確認服務運行狀態
 Get-Service ssh-agent
 ```
 
-接著新增金鑰至 agent（此時會提示輸入一次 passphrase）：
+若狀態為 `Running`，可用一般使用者權限新增金鑰至 Agent（此時會提示輸入一次 Passphrase）：
 
 ```powershell
 ssh-add $HOME\.ssh\id_ed25519
 ```
+
+若服務未啟用，`Set-Service` 與 `Start-Service` 需要管理員權限；部分企業環境提權可能需要額外申請。尚未取得權限時，仍可透過 `~/.ssh/config` 中的 `IdentityFile` 使用有 Passphrase 的私鑰，連線時逐次輸入；若已有 HTTPS Credential Manager，也可用 HTTPS 存取 Git 儲存庫。
 
 ---
 
@@ -197,7 +222,7 @@ Host internal-db
 
 - [ ] 是否已捨棄舊版 RSA，改用 `ssh-keygen -t ed25519` 生成金鑰？
 - [ ] 私鑰是否有設定高強度 Passphrase，而非空白？
-- [ ] 是否已設定作業系統 Agent（macOS Keychain / Windows Service）達成免密使用？
+- [ ] 若使用作業系統 Agent，macOS Keychain 或已啟用的 Windows Service 是否正常運作？
 - [ ] `~/.ssh/config` 中是否已針對不同 Host 配置 `IdentitiesOnly yes`？
 - [ ] 是否確認 `ForwardAgent no` 寫在檔案最末的 `Host *`，且沒有被前面的全域區塊鎖死？
 
@@ -212,3 +237,7 @@ Host internal-db
 - [GitHub 文件：Connecting to GitHub with SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) — SSH 金鑰建立、新增至帳戶與連線測試指引
 - [GitLab 文件：Use SSH keys to communicate with GitLab](https://docs.gitlab.com/ee/user/ssh.html) — GitLab SSH 驗證與金鑰管理策略
 - [Microsoft Learn：Key management with OpenSSH on Windows](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_keymanagement) — Windows 內建 OpenSSH 服務與金鑰權限管理
+- [OpenSSH Manual: ssh-add(1)](https://man.openbsd.org/ssh-add.1) — Agent 檢查與結束碼
+- [Apple: Creating Launch Daemons and Agents](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html) — 使用者 LaunchAgent 與登入時執行
+- [macOS SSH Agent + Keychain Gist](https://gist.github.com/akunzai/402cbbcf61703e6e9c50f2a929e09424) — 個人 Wrapper 實作與 GUI Agent 診斷
+- [GitHub Docs: Adding an SSH key to the Agent](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) — Apple ssh-add 與 Keychain 整合

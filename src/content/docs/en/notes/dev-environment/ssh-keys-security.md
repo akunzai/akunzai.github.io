@@ -79,22 +79,50 @@ Run this command once to store your passphrase in the Keychain:
 ssh-add --apple-use-keychain ~/.ssh/id_ed25519
 ```
 
-Upon subsequent reboots, macOS automatically unlocks and loads the key into `ssh-agent` via Keychain, providing zero-prompt daily convenience with full cryptographic security.
+This stores the passphrase and loads the key into the current Agent. After a reboot, keys must be loaded into the new Agent again; Keychain storage alone does not guarantee that they are already available to every app.
+
+### macOS GUI Git tools: load keys into the Agent the app actually uses
+
+`UseKeychain` supplies passphrases to Apple's SSH client; it does not schedule key loading at login. `AddKeysToAgent` applies when that client loads a key. SSH commit signing uses `ssh-keygen -Y sign`, so those connection settings alone do not ensure that a GUI Git tool can sign without prompting. The signing key must be available to the Agent selected by the app's `SSH_AUTH_SOCK`.
+
+My [macOS SSH Agent + Keychain setup](https://gist.github.com/akunzai/402cbbcf61703e6e9c50f2a929e09424) handles both terminal and GUI workflows:
+
+- A user LaunchAgent runs `ssh-agent-wrapper` at GUI login. It starts or reuses a local Agent at `~/.ssh/agent.sock`, loads keys with Apple's `ssh-add --apple-use-keychain`, and publishes that socket with `launchctl setenv`.
+- The wrapper also loads keys into the login session's built-in `com.openssh.ssh-agent`. An already running GUI app retains its inherited environment; publishing a different socket does not update that process. Populating the built-in Agent helps apps that still use its socket.
+
+First store each intended key's passphrase from a local GUI terminal. Use Apple's executable explicitly if Homebrew OpenSSH is also installed:
+
+```bash
+/usr/bin/ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+```
+
+The Gist contains the wrapper, LaunchAgent, installation, and diagnostic commands. Adapt the plist's absolute executable path to your own home directory, and merge only the relevant SSH settings into your existing config. The wrapper discovers private keys with matching `~/.ssh/id_*.pub` files; review that selection if only some identities should be loaded.
+
+Check the fixed Agent without printing key fingerprints or comments:
+
+```bash
+SSH_AUTH_SOCK="$HOME/.ssh/agent.sock" /usr/bin/ssh-add -l >/dev/null 2>&1
+printf 'ssh-add exit status: %s\n' "$?"
+```
+
+For this listing command, exit `0` means identities are available. Exit `1` means the command failed, including an Agent with no identities; `2` means the Agent cannot be contacted. If terminal signing works but a GUI app still prompts, check the app's socket and the built-in Agent separately using the Gist's diagnostics. Reload the LaunchAgent after editing its wrapper or plist; changing key contents in the same Agent does not require changing an app's socket.
+
+This setup is for local GUI login. Keep an intentionally forwarded Socket when connecting over SSH; replacing it with the fixed local Socket changes which identities are available. A persistent Herdr Session still needs a reachable Agent and loaded keys, as described in [Herdr on macOS](../herdr-terminal-macos/).
 
 ### Windows: Enable OpenSSH Authentication Agent
-Windows 10/11 includes OpenSSH, but its agent service is disabled by default. Open PowerShell as **Administrator** and run:
+Windows 10/11 provides OpenSSH Agent as a system service. An ordinary user can first check whether it is enabled:
 
 ```powershell
-Set-Service ssh-agent -StartupType Automatic
-Start-Service ssh-agent
 Get-Service ssh-agent
 ```
 
-Then add your key to the running agent:
+If its status is `Running`, add your key to the agent without elevation:
 
 ```powershell
 ssh-add $HOME\.ssh\id_ed25519
 ```
+
+If the service is disabled, `Set-Service` and `Start-Service` require administrator rights. In some enterprise environments, elevation may require a separate request. Until access is available, `IdentityFile` in `~/.ssh/config` can use a passphrase-protected private key and prompt on each connection. If an HTTPS credential manager is already available, HTTPS is another option for Git remotes.
 
 ---
 
@@ -191,7 +219,7 @@ Verify your setup against this checklist:
 
 - [ ] Deprecated RSA keys replaced with `ssh-keygen -t ed25519`
 - [ ] Private key protected with a strong passphrase
-- [ ] Operating system agent configured for automated in-memory key loading
+- [ ] If using an operating-system agent, macOS Keychain or the enabled Windows service works
 - [ ] `~/.ssh/config` configured with `IdentitiesOnly yes` for each remote host
 - [ ] `ForwardAgent no` lives in a trailing `Host *` block, not an early global lock
 
@@ -206,3 +234,7 @@ With identity and network transport secured, proceed to [Essential Global Git Co
 - [GitHub Docs: Connecting to GitHub with SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) — SSH key generation, account association, and connection testing
 - [GitLab Docs: Use SSH keys to communicate with GitLab](https://docs.gitlab.com/ee/user/ssh.html) — GitLab SSH authentication and credential lifecycle management
 - [Microsoft Learn: Key management with OpenSSH on Windows](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_keymanagement) — Native Windows OpenSSH service and file ACL management
+- [OpenSSH Manual: ssh-add(1)](https://man.openbsd.org/ssh-add.1) — Agent checks and exit statuses
+- [Apple: Creating Launch Daemons and Agents](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html) — User LaunchAgents and login-time execution
+- [macOS SSH Agent + Keychain Gist](https://gist.github.com/akunzai/402cbbcf61703e6e9c50f2a929e09424) — Personal wrapper and GUI Agent diagnostics
+- [GitHub Docs: Adding an SSH key to the Agent](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) — Apple ssh-add and Keychain integration
