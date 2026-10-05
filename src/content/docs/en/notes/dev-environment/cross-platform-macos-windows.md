@@ -18,18 +18,19 @@ This final installment provides platform-specific onboarding playbooks and resol
 macOS is a Unix-based operating system with an excellent terminal ecosystem out of the box, but requires deliberate configuration to meet team standards.
 
 ### 1.1 Package Management: [Homebrew](https://brew.sh/)
-Avoid downloading `.pkg` or `.dmg` installers directly from websites. Use Homebrew for declarative package management:
+On a managed Mac, first confirm that Homebrew is available and your account can write to its prefix. Initial provisioning may require administrator rights; in some enterprise environments, elevation may require a separate request. Afterward, the prefix owner can install ordinary formulae without elevation. If Homebrew is unavailable, do not run the installer script or `sudo brew`: see [Homebrew's non-admin deployment guide](https://docs.brew.sh/Homebrew-for-Mac-Admins).
 
 ```bash
-# Install Homebrew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
+export HOMEBREW_NO_SUDO=1
 # Install version control and platform CLIs
 brew install git gh glab
 
 # Install GPU-accelerated terminal (e.g. Ghostty) and Nerd Fonts
-brew install --cask ghostty font-jetbrains-mono-nerd-font
+brew install --cask --appdir="$HOME/Applications" ghostty
+brew install --cask font-jetbrains-mono-nerd-font
 ```
+
+`HOMEBREW_NO_SUDO=1` makes Homebrew fail when it needs elevation. The Ghostty command targets `~/Applications`; the font cask uses `~/Library/Fonts` by default. Some casks' own installers still need system access; follow the software installation rules for your environment if an elevation prompt appears.
 
 ### 1.2 Modern Terminals & Terminfo Compatibility
 Modern GPU-accelerated terminal emulators (such as Ghostty, Alacritty, or Kitty) can encounter terminal type errors when connecting to legacy Linux hosts:
@@ -64,31 +65,28 @@ Modern Windows development generally takes one of two approaches:
 1. **Windows Native (PowerShell 7)**: Well-suited for .NET, cross-platform CLIs, and desktop applications.
 2. **WSL 2 (Windows Subsystem for Linux)**: Ideal for container-centric architectures, Docker, and Linux-native toolchains.
 
-### 2.1 Package Management: Winget
-Windows 10/11 includes `winget` as its official package manager:
+### 2.1 Package Management: Prefer User Scope
+On a managed device, first check which installation methods are available. If self-installation is allowed, [Scoop](https://scoop.sh/) defaults to the user profile and can install ordinary development CLIs:
 
 ```powershell
-# Install Git, GitHub CLI, and GitLab CLI
-winget install --id Git.Git -e --source winget
-winget install --id GitHub.cli -e --source winget
-winget install --id GLab.GLab -e --source winget
-
-# Install Windows Terminal and PowerShell 7
-winget install --id Microsoft.WindowsTerminal -e --source winget
-winget install --id Microsoft.PowerShell -e --source winget
+scoop install git gh glab
 ```
+
+If Windows Terminal or PowerShell 7 is missing, check the available installation sources. Winget's `--scope user` works only when the package offers a user-scope installer; it cannot guarantee an elevation-free install. Follow the software installation rules for your environment if an installer requests administrator rights.
 
 ### 2.2 Enable OpenSSH Authentication Agent
-Ensure the background service starts automatically to cache key passphrases:
+Changing or starting the `ssh-agent` system service requires administrator rights. Check its state as an ordinary user first:
 
 ```powershell
-# Run in an elevated (Administrator) PowerShell session
-Set-Service ssh-agent -StartupType Automatic
-Start-Service ssh-agent
+Get-Service ssh-agent
 ```
+
+If it is not running, enabling it requires administrator rights. Until access is available, use an already configured HTTPS credential manager or enter the SSH private key's passphrase when needed; Git identity settings do not require elevation. See [SSH Keys & Security Practices](../ssh-keys-security/).
 
 ### 2.3 Critical WSL 2 Rules of Thumb
 If developing within WSL 2 (e.g. Ubuntu on Windows), follow these two essential guidelines:
+
+If WSL is not already enabled, `wsl --install` needs administrator rights and a reboot. Use native PowerShell until access is available. The following rules apply only after WSL is available.
 
 #### Rule 1: Store Source Code in the Linux File System
 - ❌ **Anti-pattern**: Storing projects under `/mnt/c/Users/...`. Crossing the Windows/Linux boundary through the 9P protocol imposes such massive I/O friction that running `npm install` takes long enough to brew three cups of artisanal pour-over coffee, effectively torturing your blazing-fast NVMe SSD into performing like a 5400 RPM spinning drive!
@@ -135,4 +133,6 @@ As code authoring becomes increasingly automated, engineering discipline does no
 - [Microsoft Learn: Set up a WSL development environment](https://learn.microsoft.com/en-us/windows/wsl/setup/environment) — WSL 2 setup, distribution management, and best practices
 - [Microsoft Learn: Comparing WSL Versions](https://learn.microsoft.com/en-us/windows/wsl/compare-versions) — Architectural differences and cross-OS 9P filesystem performance implications
 - [Microsoft Learn: Windows Package Manager (winget)](https://learn.microsoft.com/en-us/windows/package-manager/winget/) — Comprehensive guide for discovering and managing packages on Windows
+- [Microsoft Learn: WinGet install](https://learn.microsoft.com/en-us/windows/package-manager/winget/install) — Conditions for user-scope installation
+- [Microsoft Learn: Install WSL](https://learn.microsoft.com/en-us/windows/wsl/install) — Administrator rights for first-time WSL setup
 - [PowerShell Official Documentation](https://learn.microsoft.com/en-us/powershell/) — PowerShell 7 cross-platform scripting, configuration, and module management

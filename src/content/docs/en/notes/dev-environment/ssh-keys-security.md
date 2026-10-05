@@ -82,19 +82,19 @@ ssh-add --apple-use-keychain ~/.ssh/id_ed25519
 Upon subsequent reboots, macOS automatically unlocks and loads the key into `ssh-agent` via Keychain, providing zero-prompt daily convenience with full cryptographic security.
 
 ### Windows: Enable OpenSSH Authentication Agent
-Windows 10/11 includes OpenSSH, but its agent service is disabled by default. Open PowerShell as **Administrator** and run:
+Windows 10/11 provides OpenSSH Agent as a system service. An ordinary user can first check whether it is enabled:
 
 ```powershell
-Set-Service ssh-agent -StartupType Automatic
-Start-Service ssh-agent
 Get-Service ssh-agent
 ```
 
-Then add your key to the running agent:
+If its status is `Running`, add your key to the agent without elevation:
 
 ```powershell
 ssh-add $HOME\.ssh\id_ed25519
 ```
+
+If the service is disabled, `Set-Service` and `Start-Service` require administrator rights. In some enterprise environments, elevation may require a separate request. Until access is available, `IdentityFile` in `~/.ssh/config` can use a passphrase-protected private key and prompt on each connection. If an HTTPS credential manager is already available, HTTPS is another option for Git remotes.
 
 ---
 
@@ -191,7 +191,7 @@ Verify your setup against this checklist:
 
 - [ ] Deprecated RSA keys replaced with `ssh-keygen -t ed25519`
 - [ ] Private key protected with a strong passphrase
-- [ ] Operating system agent configured for automated in-memory key loading
+- [ ] If using an operating-system agent, macOS Keychain or the enabled Windows service works
 - [ ] `~/.ssh/config` configured with `IdentitiesOnly yes` for each remote host
 - [ ] `ForwardAgent no` lives in a trailing `Host *` block, not an early global lock
 

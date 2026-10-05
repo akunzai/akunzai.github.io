@@ -18,18 +18,19 @@ sidebar:
 macOS 是 Unix-like 系統，天生具備絕佳的命令列體驗，但依然需要適度調校以符合現代工程標準。
 
 ### 1.1 套件管理：[Homebrew](https://brew.sh/)
-不要手動下載 `.pkg` 或 `.dmg` 來安裝開發工具，一律使用 Homebrew 進行版本化管理：
+在受管理的 Mac 上，先確認 Homebrew 已配置，且你的帳號可寫入其 prefix。初次配置可能需要管理員權限；部分企業環境提權可能需要額外申請。完成後，prefix 擁有者安裝一般 formula 不需提權。若尚未配置，不要自行執行安裝指令稿或 `sudo brew`：[Homebrew 的非管理員配置指南](https://docs.brew.sh/Homebrew-for-Mac-Admins)。
 
 ```bash
-# 安裝 Homebrew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
+export HOMEBREW_NO_SUDO=1
 # 安裝現代版本控制與平台 CLI
 brew install git gh glab
 
 # 安裝現代終端機（如 Ghostty）與字型
-brew install --cask ghostty font-jetbrains-mono-nerd-font
+brew install --cask --appdir="$HOME/Applications" ghostty
+brew install --cask font-jetbrains-mono-nerd-font
 ```
+
+`HOMEBREW_NO_SUDO=1` 讓 Homebrew 在需要提權時直接失敗。Ghostty 指定安裝到 `~/Applications`，字型 Cask 預設安裝到 `~/Library/Fonts`。部分 Cask 自帶的安裝程式仍需要系統權限；若遇到提權提示，請依所在環境的軟體安裝規範處理。
 
 ### 1.2 現代終端機與 Terminfo 調校
 如果你使用新一代 GPU 加速終端機（例如 Ghostty、Alacritty、Kitty），在透過 SSH 登入遠端老舊 Linux 伺服器時，可能會遭遇：
@@ -64,31 +65,28 @@ mise use --global node@lts
 1. **Windows 原生環境（Native PowerShell 7）**：適合 .NET、跨平台 CLI 或桌面應用開發。
 2. **WSL 2（Windows Subsystem for Linux）**：適合深度依賴 Linux 容器、Docker 或原生 Unix 建置工具鏈的專案。
 
-### 2.1 套件管理：Winget
-Windows 10/11 內建的 `winget` 是最標準的套件管理器：
+### 2.1 套件管理：使用者範圍優先
+在受管理的裝置上，先確認可使用的軟體安裝方式。若允許自行安裝，[Scoop](https://scoop.sh/) 預設寫入使用者目錄，可安裝一般開發 CLI：
 
 ```powershell
-# 安裝 Git、GitHub CLI 與 GitLab CLI
-winget install --id Git.Git -e --source winget
-winget install --id GitHub.cli -e --source winget
-winget install --id GLab.GLab -e --source winget
-
-# 安裝現代 Windows Terminal 與 PowerShell 7
-winget install --id Microsoft.WindowsTerminal -e --source winget
-winget install --id Microsoft.PowerShell -e --source winget
+scoop install git gh glab
 ```
+
+Windows Terminal 與 PowerShell 7 若未配置，先確認可用的安裝來源。Winget 的 `--scope user` 只適用於提供使用者範圍安裝的套件；不能保證每個套件都能避開提權。遇到管理員提示時，依所在環境的軟體安裝規範處理。
 
 ### 2.2 開啟 Windows 內建 OpenSSH Agent
-確保背景服務處於自動執行狀態，以便記憶金鑰密碼：
+修改或啟動 `ssh-agent` 系統服務需要管理員權限。先以一般使用者檢查狀態：
 
 ```powershell
-# 以管理員身分執行
-Set-Service ssh-agent -StartupType Automatic
-Start-Service ssh-agent
+Get-Service ssh-agent
 ```
+
+若服務未執行，啟用它需要管理員權限。尚未取得權限時，可使用已配置的 HTTPS Credential Manager，或讓 SSH 私鑰在每次使用時提示 Passphrase；不必為了設定 Git 身分而提權。詳見 [SSH 金鑰與安全實務](../ssh-keys-security/)。
 
 ### 2.3 WSL 2 核心避坑黃金法則
 如果你選擇在 WSL 2（如 Ubuntu on Windows）下工作，請務必銘記以下兩條血淚經驗：
+
+若 WSL 尚未啟用，`wsl --install` 需要管理員權限與重新開機。尚未取得權限時，可使用原生 PowerShell 開發；以下規則只適用於已配置的 WSL。
 
 #### 規則一：程式碼必須放在 Linux 檔案系統內！
 - ❌ **嚴重降速寫法**：把專案放在 `/mnt/c/Users/...` 下進行開發。跨作業系統的 9P 協定檔案系統轉換開銷極大，每次 `npm install` 或 `git status` 花的時間足以讓你悠閒手沖三次咖啡，硬生生把 NVMe SSD 效能折磨成 5400 轉老機械硬碟！
@@ -139,4 +137,6 @@ git config --global credential.helper "/mnt/c/Program\ Files/Git/mingw64/bin/git
 - [Microsoft Learn：WSL 安裝與最佳實踐](https://learn.microsoft.com/en-us/windows/wsl/setup/environment) — WSL 2 開發環境建置、Linux 發行版管理與遠端除錯
 - [Microsoft Learn：比較 WSL 1 與 WSL 2 架構差異](https://learn.microsoft.com/en-us/windows/wsl/compare-versions) — 跨作業系統 9P 檔案系統協定效能深入剖析
 - [Microsoft Learn：Windows 套件管理員 (winget)](https://learn.microsoft.com/en-us/windows/package-manager/winget/) — Windows 現代化指令列套件探索與安裝標準
+- [Microsoft Learn：WinGet install](https://learn.microsoft.com/en-us/windows/package-manager/winget/install) — 使用者範圍安裝的條件
+- [Microsoft Learn：Install WSL](https://learn.microsoft.com/en-us/windows/wsl/install) — 首次啟用 WSL 的管理員權限要求
 - [PowerShell 官方文件](https://learn.microsoft.com/en-us/powershell/) — PowerShell 7 跨平台命令列、模組與自動化環境指南

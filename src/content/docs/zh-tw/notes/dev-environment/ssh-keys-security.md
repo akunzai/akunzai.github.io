@@ -82,22 +82,19 @@ ssh-add --apple-use-keychain ~/.ssh/id_ed25519
 日後重新開機時，macOS 會自動透過 Keychain 解鎖並載入私鑰至 `ssh-agent`，既享有高強度 Passphrase 的保護，又兼具零干擾的開發體驗。
 
 ### Windows：啟用 OpenSSH Authentication Agent 服務
-Windows 10/11 內建了 OpenSSH，但其背景服務預設是停用的。請以**系統管理員身分**開啟 PowerShell 執行：
+Windows 10/11 的 OpenSSH Agent 是系統服務。一般使用者可以先檢查它是否已啟用：
 
 ```powershell
-# 設定服務啟動類型為「自動」並立即啟動
-Set-Service ssh-agent -StartupType Automatic
-Start-Service ssh-agent
-
-# 確認服務運行狀態
 Get-Service ssh-agent
 ```
 
-接著新增金鑰至 agent（此時會提示輸入一次 passphrase）：
+若狀態為 `Running`，可用一般使用者權限新增金鑰至 Agent（此時會提示輸入一次 Passphrase）：
 
 ```powershell
 ssh-add $HOME\.ssh\id_ed25519
 ```
+
+若服務未啟用，`Set-Service` 與 `Start-Service` 需要管理員權限；部分企業環境提權可能需要額外申請。尚未取得權限時，仍可透過 `~/.ssh/config` 中的 `IdentityFile` 使用有 Passphrase 的私鑰，連線時逐次輸入；若已有 HTTPS Credential Manager，也可用 HTTPS 存取 Git 儲存庫。
 
 ---
 
@@ -197,7 +194,7 @@ Host internal-db
 
 - [ ] 是否已捨棄舊版 RSA，改用 `ssh-keygen -t ed25519` 生成金鑰？
 - [ ] 私鑰是否有設定高強度 Passphrase，而非空白？
-- [ ] 是否已設定作業系統 Agent（macOS Keychain / Windows Service）達成免密使用？
+- [ ] 若使用作業系統 Agent，macOS Keychain 或已啟用的 Windows Service 是否正常運作？
 - [ ] `~/.ssh/config` 中是否已針對不同 Host 配置 `IdentitiesOnly yes`？
 - [ ] 是否確認 `ForwardAgent no` 寫在檔案最末的 `Host *`，且沒有被前面的全域區塊鎖死？
 
