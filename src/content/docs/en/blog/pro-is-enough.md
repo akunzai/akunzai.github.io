@@ -41,16 +41,18 @@ Three things stand out:
 
 [SemiAnalysis's report from 10/5](https://newsletter.semianalysis.com/p/anthropic-subscriptions-offer-5x) measures what each subscription is worth at API list prices when fully used. The table below covers the mid-tier models (Opus 5.5 on Claude, GPT-6.1 Sol on ChatGPT) under an agentic workload in which 96.6% of tokens are cache reads:
 
-| Plan | Monthly fee | API equivalent at full use | Multiple |
-|---|---:|---:|---:|
-| Claude Pro | $20 | ~$1,178 | 59× |
-| Claude Max 5x | $100 | ~$5,725 | 57× |
-| ChatGPT Plus | $20 | ~$211 | 11× |
-| ChatGPT Pro 100 | $100 | ~$1,055 | 11× |
+| Plan | Monthly fee | Tokens per month | API equivalent at full use | Multiple |
+|---|---:|---:|---:|---:|
+| Claude Pro | $20 | 2.9B | ~$1,178 | 59× |
+| Claude Max 5x | $100 | 14.0B | ~$5,725 | 57× |
+| ChatGPT Plus | $20 | 1.0B | ~$211 | 11× |
+| ChatGPT Pro 100 | $100 | 5.1B | ~$1,055 | 11× |
 
 The multiple is "API equivalent at full use ÷ monthly fee": the most API value the plan can give, assuming you use up every weekly limit on the model in the table. The value you actually get is that multiple times your own utilization.
 
-API-equivalent value is "tokens you can use × API list price", so it moves with model pricing: when OpenAI shipped GPT-6.1 Sol it cut the cache-read price without raising Sol's token limits, so the same allowance became worth about 30% less. Figures from different dates or models aren't directly comparable.
+Tokens count input, cache reads, cache writes, and output, in a 0.4% / 96.6% / 2.6% / 0.3% mix. That works out to about 140M tokens per dollar on Claude and 51M on ChatGPT; the $200 plans match, with 28.6B on Max 20x and 10.2B on ChatGPT Pro 200.
+
+API-equivalent value is "tokens you can use × API list price", so it moves with model pricing: when OpenAI shipped GPT-6.1 Sol it cut the cache-read price without raising Sol's token limits, so the same allowance became worth about 30% less. Dollar figures from different dates or models aren't directly comparable; token counts don't move with list prices, so they're the better yardstick for your own usage.
 
 For the same fee, Claude gives more than 5 times ChatGPT's API-equivalent value. After OpenAI halved its $200 plan's limits on 9/29, every ChatGPT plan offers the same value per dollar as the $100 plan; Anthropic's plans already did. ChatGPT's only counterpoint is that its Pro plans have no 5-hour limit, which makes the monthly allowance easier to use up. Also, Fable 5.1 can use at most 50% of a Claude plan's limit.
 
@@ -58,7 +60,7 @@ The report assumes API list prices carry a 92% gross margin, so the cost to serv
 
 By that math, serving me this month cost roughly $5,355 × 8% ≈ **$428**, and I paid $100. **I'm the one being subsidized.** That's also why leaving quota unused felt like a waste.
 
-$5,355 is about 94% of a fully used Max 5x, so I nearly used up the whole allowance this month, including the one-time quota reset that shipped with Opus 5.5. Over 95% of the tokens on both machines were cache reads, close to the report's workload, so the comparison roughly holds. For keeping the hit rate high, see [part 2](/en/blog/cache-session-habits/).
+By dollars, $5,355 is about 94% of a fully used Max 5x, but most of it is Opus 5 at its higher list price, so tokens are the more accurate measure. Across both machines I used about 10.2B tokens (6.4B on machine A, 3.8B on machine B), about 73% of a fully used Max 5x, including the one-time quota reset that shipped with Opus 5.5. Models draw down the limit at different rates, so both ratios are estimates, but the conclusion is the same: I used most of the allowance this month. Over 95% of the tokens on both machines were cache reads, close to the report's workload, so the comparison roughly holds. For keeping the hit rate high, see [part 2](/en/blog/cache-session-habits/).
 
 The report also warns that providers can change limits silently: one of three accounts on the same plan had about 20% lower limits, which the provider confirmed was an A/B test.
 
