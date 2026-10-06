@@ -37,24 +37,30 @@ Three things stand out:
 
 ---
 
-## How Big Is the Subsidy: SemiAnalysis's Estimate
+## How Big Is the Subsidy: SemiAnalysis's Measurements
 
-[SemiAnalysis](https://x.com/SemiAnalysis_/status/2064815044085318040) estimated what each subscription is worth at API list prices when fully used:
+[SemiAnalysis's report from 10/5](https://newsletter.semianalysis.com/p/anthropic-subscriptions-offer-5x) measures what each subscription is worth at API list prices when fully used. The table below covers the mid-tier models (Opus 5.5 on Claude, GPT-6.1 Sol on ChatGPT) under an agentic workload in which 96.6% of tokens are cache reads:
 
 | Plan | Monthly fee | API equivalent at full use | Multiple |
 |---|---:|---:|---:|
-| Claude Pro | $20 | ~$400 | 20× |
-| Claude Max 5x | $100 | ~$2,000 | 20× |
-| Claude Max 20x | $200 | ~$8,000 | 40× |
-| ChatGPT Plus | $20 | ~$700 | 35× |
-| ChatGPT Pro 5x | $100 | ~$3,500 | 35× |
-| ChatGPT Pro 20x | $200 | ~$14,000 | 70× |
+| Claude Pro | $20 | ~$1,178 | 59× |
+| Claude Max 5x | $100 | ~$5,725 | 57× |
+| ChatGPT Plus | $20 | ~$211 | 11× |
+| ChatGPT Pro 100 | $100 | ~$1,055 | 11× |
 
-They also assume API list prices carry a 75% gross margin, so the cost to serve is about 25% of list. Under that assumption, Claude Pro and Max 5x start losing money above 20% average utilization, and Max 20x above 10%.
+The multiple is "API equivalent at full use ÷ monthly fee": the most API value the plan can give, assuming you use up every weekly limit on the model in the table. The value you actually get is that multiple times your own utilization.
 
-By that math, serving me this month cost roughly $5,355 × 25% ≈ **$1,339**, and I paid $100. **I'm the one being subsidized.** That's also why leaving quota unused felt like a waste.
+API-equivalent value is "tokens you can use × API list price", so it moves with model pricing: when OpenAI shipped GPT-6.1 Sol it cut the cache-read price without raising Sol's token limits, so the same allowance became worth about 30% less. Figures from different dates or models aren't directly comparable.
 
-Still, $5,355 is 2.7 times their estimate for a fully used Max 5x (about $2,000). Part of that is the one-time quota reset that shipped with Opus 5.5, which I used; but I think the bigger reason is the cache: over 95% of the tokens on both machines were cache reads. Cache reads are cheap to serve, so a high-hit-rate workload may get far more list-price value per unit of quota than a typical estimate assumes. Anthropic hasn't published how subscription limits count cache reads, though, so this is my inference. For keeping the hit rate high, see [part 2](/en/blog/cache-session-habits/).
+For the same fee, Claude gives more than 5 times ChatGPT's API-equivalent value. After OpenAI halved its $200 plan's limits on 9/29, every ChatGPT plan offers the same value per dollar as the $100 plan; Anthropic's plans already did. ChatGPT's only counterpoint is that its Pro plans have no 5-hour limit, which makes the monthly allowance easier to use up. Also, Fable 5.1 can use at most 50% of a Claude plan's limit.
+
+The report assumes API list prices carry a 92% gross margin, so the cost to serve is about 8% of list. Under that assumption, maxing out the limit on Opus 5.5 alone means a gross margin of about −369%; at 20% average utilization, it's about 6%.
+
+By that math, serving me this month cost roughly $5,355 × 8% ≈ **$428**, and I paid $100. **I'm the one being subsidized.** That's also why leaving quota unused felt like a waste.
+
+$5,355 is about 94% of a fully used Max 5x, so I nearly used up the whole allowance this month, including the one-time quota reset that shipped with Opus 5.5. Over 95% of the tokens on both machines were cache reads, close to the report's workload, so the comparison roughly holds. For keeping the hit rate high, see [part 2](/en/blog/cache-session-habits/).
+
+The report also warns that providers can change limits silently: one of three accounts on the same plan had about 20% lower limits, which the provider confirmed was an A/B test.
 
 ---
 
@@ -77,7 +83,7 @@ Across generations, Sonnet 5.5 gains 13 points over Sonnet 5 while costing 41% l
 
 At `medium`, GPT-6.1 Sol scores 7 points above Sonnet 5.5 and costs about 64% less per task. It trails Opus 5.5 by 3 points while costing about 84% less. The next rung up, Astra, scores 2 points above Sol at about 7.3 times the cost; Opus scores 1 point above Astra while costing about 13% less. **On these evaluations, Sol looks like it could cover both the middle rung and the workhorse role in Codex; Opus retains an advantage when more capability is needed.** At the same `medium` setting, Sonnet costs about 56% less than Opus but trails it by 10 points, supporting my choice to use Sonnet for well-scoped work and Opus for complex tasks.
 
-Two caveats remain. First, each provider defines its own `medium` effort level, so the label does not imply an equal compute budget; the Opus 5.5 and Sonnet 5.5 results also include default fallback, whereas Sonnet 5 is labeled Adaptive Reasoning, Medium Effort. Second, cost per task is a weighted average of evaluation costs for input, cache reads and writes, reasoning, and answer tokens, calculated using task counts and index weights. It is not cost per successful task and cannot be converted directly into subscription quota. The overall index is also no substitute for your own development tasks. Sol shipped only a day ago and I haven't used it enough, so I'd keep cross-module refactors on Opus for now.
+Two caveats remain. First, each provider defines its own `medium` effort level, so the label does not imply an equal compute budget; the Opus 5.5 and Sonnet 5.5 results also include default fallback, whereas Sonnet 5 is labeled Adaptive Reasoning, Medium Effort. Second, cost per task is a weighted average of evaluation costs for input, cache reads and writes, reasoning, and answer tokens, calculated using task counts and index weights. It is not cost per successful task and cannot be converted directly into subscription quota. The overall index is also no substitute for your own development tasks; SemiAnalysis says outright that it doesn't consider these benchmark tasks representative of real work. Sol shipped only a day ago and I haven't used it enough, so I'd keep cross-module refactors on Opus for now.
 
 Beyond scores and cost per task, I would compare how long the same work takes and how often it needs rework. A cheaper model may offer less value if it needs frequent corrections or retries. For a subscription, the most useful comparison is still to run the same everyday tasks and see which model finishes reliably while making the quota last longer.
 
@@ -104,9 +110,9 @@ My observation: for typical in-house software development, Opus is enough. Reach
 
 Since Sonnet 5.5 shipped, I switch by task: Sonnet 5.5 for well-scoped work whose result can be checked automatically (small projects, single-point edits, documents); Opus 5.5 stays the default for cross-module refactors, legacy-framework upgrades, and large projects with thin test coverage. On effort, both default to `medium` in Claude Code; Sonnet 5.5's levels are recalibrated, so don't carry over Sonnet 5 settings.
 
-### ChatGPT (Codex): More Quota, and GPT-6.1 Sol May Now Cover the Middle
+### ChatGPT (Codex): Less Quota Than It Seems, but GPT-6.1 Sol May Now Cover the Middle
 
-Codex is the coding agent bundled with ChatGPT plans; there is no separate subscription ([docs](https://learn.chatgpt.com/docs/pricing)). ChatGPT looks like it gives more quota, and its limits reset often. The question is whether its model ladder has enough rungs:
+Codex is the coding agent bundled with ChatGPT plans; there is no separate subscription ([docs](https://learn.chatgpt.com/docs/pricing)). ChatGPT used to be known for generous limits, but per the [measurements above](#how-big-is-the-subsidy-semianalysiss-measurements), its mid-tier API-equivalent value is about a fifth of Claude's. That isn't caused by the cut to the $200 plan; Plus and Pro $100 show the same gap. The other question is whether its model ladder has enough rungs:
 
 | Role | Claude | OpenAI |
 |---|---|---|
@@ -130,7 +136,7 @@ Per [GitHub's plans page](https://github.com/features/copilot/plans), each Copil
 | Copilot Pro+ | $39 | $70 | 1.8× |
 | Copilot Max | $100 | $200 | 2× |
 
-For the same Sonnet 5.5, Claude Pro subsidizes about 20×, Copilot under 2×: **more than a tenfold gap**. The allowance also resets only once a month.
+Here the multiple is "AI credits ÷ monthly fee"; the credits are already priced at list rates, so using them all gets you this multiple at most. Against the measurements above, a fully used Claude Pro is worth about 59× and ChatGPT Plus about 11×, while Copilot is under 2×: **more than a fivefold gap even against ChatGPT**. The allowance also resets only once a month.
 
 I can think of only two reasons to use it:
 
@@ -141,7 +147,7 @@ Beyond that, Copilot doesn't pay off as your primary coding agent.
 
 ### Cursor / Grok: The Spare When Claude Runs Out
 
-I still subscribe to Cursor, mainly with Grok models, and it performs well (machine B used about $147 on Cursor this month, mostly `grok-4.6-high`); I also had SuperGrok before, since canceled. But like Copilot, both allowances are monthly; there's no 5-hour and 7-day reset cycle subsidizing you as with Claude and ChatGPT. Heavy development burns through it fast.
+I still subscribe to Cursor, mainly with Grok models, and it performs well (machine B used about $147 on Cursor this month, mostly `grok-4.6-high`); I also had SuperGrok before, since canceled. But like Copilot, both allowances are monthly; there's no 5-hour and 7-day reset cycle subsidizing you as with Claude and ChatGPT. Heavy development burns through it fast. SemiAnalysis's new report also finds that using a model through a third-party plan like Cursor gives less value than the first-party subscription.
 
 My use: **when my Claude quota runs out and I want to keep going before the reset, I switch to Cursor.**
 
@@ -155,20 +161,20 @@ flowchart TD
     A -->|No, need image or video generation| X[ChatGPT]
     B -->|Yes| C[Lots of development work?<br/>Long-running, token-heavy]
     B -->|No, mostly very hard tasks| M
-    C -->|No| P[Claude Pro or ChatGPT (Codex)<br/>ChatGPT if you need image generation]
+    C -->|No| P[Claude Pro<br/>ChatGPT if you need image generation]
     C -->|Yes| M[Claude Max]
     P -.Quota out, want to continue before reset.-> R[Cursor / Grok]
     G[Repo on GitHub, want code review or evals] --> H[GitHub Copilot]
     style P stroke-width:3px
 ```
 
-Without lots of development work, I think Claude Pro and ChatGPT (Codex) are both enough, so pick whichever quota suits you better. If you also need image generation, my impression is that OpenAI's is stronger than Claude's, so pick ChatGPT.
+Without lots of development work, I originally thought Claude Pro and ChatGPT (Codex) were both enough, so you could pick whichever quota suited you better; SemiAnalysis's measurements show the same fee buys clearly more mid-tier usage on Claude, so I now recommend starting with Claude Pro. If you also need image generation, my impression is that OpenAI's is stronger than Claude's, so pick ChatGPT.
 
 ---
 
 ## Why I'm Dropping Back to Pro
 
-To be honest, per [Claude's plans page](https://claude.com/pricing), Max 5x gives 5 times Pro's usage per session. With the same habits, Pro would last about a fifth of this month. Neither the Opus 5.5 price cut nor the 20% higher 5-hour limit closes that gap.
+To be honest, per [Claude's plans page](https://claude.com/pricing), Max 5x gives 5 times Pro's usage per session. With the same habits, Pro would last about a fifth of this month. After the Opus 5.5 price cut, SemiAnalysis measured Opus token limits rising about 20% on Max and about 50% on Pro, which narrows the gap slightly but doesn't close it.
 
 What I want to test is something else: **how much of that 5× did I use only because the quota was there?**
 
@@ -188,7 +194,7 @@ Stop chasing Token Maxxing. Get the most value out of every token instead.
 
 ## References
 
-- [SemiAnalysis: Subscription margin by utilization](https://x.com/SemiAnalysis_/status/2064815044085318040) — API-equivalent value and margin estimates for each subscription at full use
+- [SemiAnalysis: Anthropic Subscriptions Offer 5x+ More Value Than OpenAI](https://newsletter.semianalysis.com/p/anthropic-subscriptions-offer-5x) — measured subscription limits and API-equivalent value per plan, 2026-10-05
 - [Claude Platform: Pricing](https://platform.claude.com/docs/en/about-claude/pricing) — API list prices for Claude models
 - [Claude: Plans & Pricing](https://claude.com/pricing) — Pro / Max plans and the 5-hour and weekly usage limits
 - [Claude announcement: higher 5-hour limits on Pro, Max, and Team](https://x.com/claudeai/status/2102435538120691886) — quota changes that shipped with Opus 5.5
