@@ -72,6 +72,8 @@ description: "我寫了 tech-lead 與 cheap-dev-workers，要求派工前先挑�
 2. **選模型**：每個 slice 選「能完成它的最便宜模型與 effort」。**不帶 model 參數等於沿用主模型，只有高判斷的 slice 才該這樣做**；機械性的 slice，一律明確指定更便宜的模型。
 3. **隔離與驗收**：可平行的 slice 放在各自的 git worktree；主對話只負責驗收，審查類的 skill 也留在主對話。
 
+選模型時，[10 月 7 日釋出的 Haiku 5.5](https://www.anthropic.com/claude-haiku-5-5)讓資料擷取、摘要與範圍明確的 subagent 工作多了一個更便宜、可調整 effort 的候選。先給它有邊界的任務與明確驗收條件，再比較包含重試的完成成本。Prompt 超過 100K tokens 會套用較高單價，因此繼承過長的 context 也會改變成本。Anthropic 仍建議複雜的 agentic coding 使用 Sonnet 5.5 或 Opus 5.5。上面的委派統計早於這次發布，不能用來評估 Haiku 5.5 的表現。
+
 ### 意外的收穫：兩個大腦把關
 
 `tech-lead` 要求每份 brief 分開標示兩種內容：一種是查過程式碼、確認無誤的事實，另一種是我自己的推測，留給實作者確認。這個設計帶來一個我沒預料到的好處：**實作者會回頭修正技術主管的假設。**
@@ -157,3 +159,4 @@ cat ~/.claude/projects/*/*.jsonl | jq -r 'select(.type=="assistant") | .message.
 - [akunzai/agent-skills：cheap-dev-workers](https://github.com/akunzai/agent-skills/tree/main/plugins/cheap-dev-workers) — 權限受限的便宜 worker
 - [My Global Agent Instructions（GitHub Gist）](https://gist.github.com/akunzai/c6c90c01a07eba50d26514ce676eaa40) — 包含 `subagents.md` 與修正後的觸發條件
 - [AgentsView](https://github.com/kenn-io/agentsview) — 本機 AI agent session 瀏覽與成本分析工具
+- [Anthropic：Introducing Claude Haiku 5.5](https://www.anthropic.com/claude-haiku-5-5) — 模型定位、分級定價、Sonnet 快取讀取降價與每月 API credit

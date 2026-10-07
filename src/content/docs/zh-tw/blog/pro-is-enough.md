@@ -102,15 +102,17 @@ API 單價之外，我也想知道模型實際做任務的能力與花費。這�
 | Claude Fable 5.1 | $10 | $50 | $0.25 |
 | Claude Opus 5 | $5 | $25 | $0.50 |
 | **Claude Opus 5.5** | **$4** | **$20** | **$0.20** |
-| Claude Sonnet 5.5 | $2 | $10 | $0.20 |
+| Claude Sonnet 5.5 | $2 | $10 | $0.10 |
 
 （單位：美元／百萬 token）
 
-Cache 讀取從 $0.50 降到 $0.20，和 Sonnet 5.5 一樣。在 Coding Agent 的工作裡，cache 讀取往往就是大宗：主機 A 這 30 天的 6.4B token 裡，有 6.2B 是 cache 讀取。也就是說，**佔最大宗的那一項，Opus 5.5 和 Sonnet 5.5 同價**。
+Opus 的 Cache 讀取從 $0.50 降到 $0.20。[10 月 7 日](https://www.anthropic.com/claude-haiku-5-5)，Sonnet 5.5 的 Cache 讀取進一步降到 $0.10，因此**這一項現在是 Sonnet 比 Opus 便宜一半**。在 Coding Agent 的工作裡，Cache 讀取往往就是大宗：主機 A 這 30 天的 6.4B token 裡，有 6.2B 是 Cache 讀取。這讓能穩定完成任務的 Sonnet 更值得選，但不代表整項任務的成本也恰好減半。
 
 我的觀察是：一般企業內的軟體開發，Opus 就夠用了。最貴的模型像是拿大砲打小鳥，除非任務真的非常困難，否則不建議預設使用。什麼任務該用哪個模型，請見[第 3 篇](/zh-tw/blog/subagent-model-selection/)。
 
 Sonnet 5.5 釋出後，我的做法是依任務切換：範圍明確、結果能自動驗證的工作（小型專案、單點修改、文件）用 Sonnet 5.5；跨模組重構、舊框架升級、缺乏測試的大型專案，仍以 Opus 5.5 為主。effort 方面，Claude Code 裡兩者預設都是 `medium`；Sonnet 5.5 的等級已重新校準，不能沿用 Sonnet 5 的設定。
+
+**2026-10-08 更新：**[Haiku 5.5 公告](https://www.anthropic.com/claude-haiku-5-5)也宣布本週陸續推出每月 Claude Platform API credit：Max 5x 為 $100、Max 20x 為 $200，Team 則是使用者共用最高 $500。這是前述 Claude Code 訂閱用量以外的 API 額度，沒有加進歷史總額或訂閱倍數。編列預算前，先依[官方說明](https://support.claude.com/en/articles/17154008-monthly-api-credits-for-max-and-team-plans)確認帳號是否已取得額度及適用條件。上方 9 月 30 日的評測成本仍保留當時資料，沒有依新定價重算。
 
 ### ChatGPT（Codex）：額度比想像中少，GPT-6.1 Sol 可能補上了中間那一階
 
@@ -213,3 +215,4 @@ Claude Sonnet 5.5 已在 9/28 釋出，價格維持 $2／$10。在本文比較�
 - [GitHub Copilot：Plans](https://github.com/features/copilot/plans) — Copilot 各方案的月費與 AI credits
 - [Cursor：Pricing](https://cursor.com/pricing) — Cursor 方案
 - [akunzai/agent-skills](https://github.com/akunzai/agent-skills) — 用 Copilot 跑 Evals 的 skills 儲存庫
+- [Anthropic：Introducing Claude Haiku 5.5](https://www.anthropic.com/claude-haiku-5-5) — 模型定位、分級定價、Sonnet 快取讀取降價與每月 API credit

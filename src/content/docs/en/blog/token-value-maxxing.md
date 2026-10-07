@@ -69,16 +69,19 @@ Optimize cost alone and you'll hand everything to the cheapest model, then redo 
 | **Output** | Replies and reasoning | Highest unit price; save the big guns for hard problems |
 | **Cache** | Reusing an identical prefix on a hit | Don't re-brew the same soup every day |
 
-Taking Claude as the example ([official pricing](https://platform.claude.com/docs/en/about-claude/pricing), verified 2026-09-29, USD per million tokens):
+Taking Claude as the example ([official pricing](https://platform.claude.com/docs/en/about-claude/pricing), verified 2026-10-08, USD per million tokens):
 
 | Model | Input | Cache read | Output |
 |---|---|---|---|
 | Fable 5.1 | $10 | $0.25 (2.5%) | $50 |
 | Opus 5.5 | $4 | $0.20 (5%) | $20 |
-| Sonnet 5.5 | $2 | $0.20 (10%) | $10 |
-| Haiku 4.5 | $1 | $0.10 (10%) | $5 |
+| Sonnet 5.5 | $2 | $0.10 (5%) | $10 |
+| Haiku 5.5 (prompt ≤ 100K tokens) | $0.10 | $0.01 (10%) | $0.50 |
+| Haiku 5.5 (prompt > 100K tokens) | $0.50 | $0.05 (10%) | $2.50 |
 
-Two things worth remembering: **a cache hit costs at most 10% of input**, and even less on flagship models; **Haiku costs about 1/4 of Opus 5.5**. Those two ratios are the source of leverage for every technique that follows.
+Two things worth remembering: **a cache hit costs at most 10% of input**, and even less on flagship models; **Haiku 5.5 input/output rates are 1/40 of Opus 5.5 for prompts up to 100K tokens, or 1/8 above that threshold**. Those two ratios are the source of leverage for every technique that follows.
+
+These are per-token rates, not cost per completed task. The [Haiku 5.5 launch](https://www.anthropic.com/claude-haiku-5-5) also halved Sonnet 5.5 cache-read pricing on October 7. Haiku 5.5 uses a newer tokenizer than Haiku 4.5, so compare actual token usage, prompt length, and retries rather than assuming the same task has the same token count.
 
 ---
 
@@ -86,7 +89,7 @@ Two things worth remembering: **a cache hit costs at most 10% of input**, and ev
 
 ### Misconception 1: Switching models mid-conversation only affects later replies?
 
-The cache is per model. Switch models mid-conversation and the entire history is reread by the new model at full price. Changing effort or thinking settings, or an MCP server dropping out and changing the tool definitions, also invalidates the cache from that point on. The [official docs](https://platform.claude.com/docs/en/build-with-claude/prompt-caching) are explicit: the cache is built in `tools → system → messages` order, and **a change early on invalidates everything after it**.
+The cache is per model. Switch models mid-conversation and the entire history is reread by the new model at full price. Changing thinking settings or tool definitions can also invalidate the cache. Effort changes depend on the model and connection: in Claude Code with an API key or a Claude subscription, Opus 5.5, Sonnet 5.5, Haiku 5.5, and Fable 5.1 keep the cache when effort changes ([conditions](https://code.claude.com/docs/en/prompt-caching#changing-effort-level)). The [official docs](https://platform.claude.com/docs/en/build-with-claude/prompt-caching) are explicit: the cache is built in `tools → system → messages` order, and **a change early on invalidates everything after it**.
 
 → More in part 2: [CACHE: Come Back After an Hour and That Turn Costs 80×](/en/blog/cache-session-habits/), in its MCP sidebar.
 
@@ -156,3 +159,5 @@ You don't have to believe my five misconceptions up front. Measure first, and th
 - [My Claude Code statusline script (GitHub Gist)](https://gist.github.com/akunzai/b1151ff86099c4a12935a71dda2bd380) — shows model, effort, context usage, and cache hit rate
 - [GitHub: akunzai/agent-skills](https://github.com/akunzai/agent-skills) — `tech-lead`, cheap-dev-workers, and other skills
 - [GitHub: akunzai/skills-manager](https://github.com/akunzai/skills-manager) — declarative skill management across agents
+- [Anthropic: Introducing Claude Haiku 5.5](https://www.anthropic.com/claude-haiku-5-5) — model positioning, tiered pricing, Sonnet cache-read reduction, and monthly API credits
+- [Claude Haiku 5.5: Overview](https://platform.claude.com/docs/en/models/haiku-5-5/overview) — prompt-length pricing tiers and tokenizer changes
