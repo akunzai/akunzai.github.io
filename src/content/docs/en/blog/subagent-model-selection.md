@@ -72,6 +72,8 @@ Effort selection also has cache implications: changing GPT-6.1 Sol effort throug
 2. **Pick a model**: for each slice, choose "the cheapest model and effort that can finish it." **Omitting the model parameter means inheriting the main model, which only high-judgment slices should do**; mechanical slices always get an explicit cheaper pick.
 3. **Isolate and accept**: parallel slices run in their own git worktrees; the main conversation only accepts the results, and review skills stay with it.
 
+For the model choice, [Haiku 5.5, released on October 7](https://www.anthropic.com/claude-haiku-5-5), adds a cheaper candidate for extraction, summaries, and narrowly scoped subagent work, with adjustable effort. Start with a bounded task and explicit acceptance criteria, then compare completed-task cost including retries. Prompts over 100K tokens use a higher price tier; a long inherited context can therefore change the economics. Anthropic still recommends Sonnet 5.5 or Opus 5.5 for complex agentic coding. The delegation counts above predate this release and do not measure Haiku 5.5 performance.
+
 ### An unexpected bonus: two brains checking each other
 
 `tech-lead` requires each brief to mark "facts I verified from source" separately from "my own guesses for the implementer to check." That design brought a benefit I didn't anticipate: **implementers correct the tech lead's assumptions.**
@@ -157,3 +159,4 @@ The `inherit` line is the number of times nobody decided and the main model was 
 - [akunzai/agent-skills: cheap-dev-workers](https://github.com/akunzai/agent-skills/tree/main/plugins/cheap-dev-workers) — permission-bounded cheap workers
 - [My Global Agent Instructions (GitHub Gist)](https://gist.github.com/akunzai/c6c90c01a07eba50d26514ce676eaa40) — includes `subagents.md` and the revised trigger
 - [AgentsView](https://github.com/kenn-io/agentsview) — local AI agent session browser and cost analytics
+- [Anthropic: Introducing Claude Haiku 5.5](https://www.anthropic.com/claude-haiku-5-5) — model positioning, tiered pricing, Sonnet cache-read reduction, and monthly API credits

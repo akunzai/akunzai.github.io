@@ -69,16 +69,19 @@ description: "「多用 Token」不是 KPI，產出才是。用我自己 120 天
 | **Output** | 回覆與 reasoning | 單價最高，難題才值得開大火 |
 | **Cache** | 命中時，重用開頭相同的內容 | 同一碗湯不要每天重熬 |
 
-以 Claude 為例（[官方定價](https://platform.claude.com/docs/en/about-claude/pricing)，2026-09-29 查證，單位為美元／每百萬 token）：
+以 Claude 為例（[官方定價](https://platform.claude.com/docs/en/about-claude/pricing)，2026-10-08 查證，單位為美元／每百萬 token）：
 
 | 模型 | 輸入 | 快取讀取 | 輸出 |
 |---|---|---|---|
 | Fable 5.1 | $10 | $0.25（2.5%） | $50 |
 | Opus 5.5 | $4 | $0.20（5%） | $20 |
-| Sonnet 5.5 | $2 | $0.20（10%） | $10 |
-| Haiku 4.5 | $1 | $0.10（10%） | $5 |
+| Sonnet 5.5 | $2 | $0.10（5%） | $10 |
+| Haiku 5.5（Prompt ≤ 100K tokens） | $0.10 | $0.01（10%） | $0.50 |
+| Haiku 5.5（Prompt > 100K tokens） | $0.50 | $0.05（10%） | $2.50 |
 
-兩件事值得記住：**快取命中至少打 1 折**，旗艦模型甚至更低；**Haiku 約是 Opus 5.5 的 1/4 價**。這兩個比例，就是後面所有技巧的槓桿來源。
+兩件事值得記住：**快取命中至少打 1 折**，旗艦模型甚至更低；**Haiku 5.5 的輸入／輸出單價，在 Prompt 不超過 100K tokens 時是 Opus 5.5 的 1/40，超過時是 1/8**。這兩個比例，就是後面所有技巧的槓桿來源。
+
+這些是每個 token 的單價，不是完成一項任務的成本。[Haiku 5.5 公告](https://www.anthropic.com/claude-haiku-5-5)也在 10 月 7 日將 Sonnet 5.5 的快取讀取價格減半。Haiku 5.5 使用與 Haiku 4.5 不同的新 tokenizer，評估時要比較實際 token 用量、Prompt 長度與重試次數，不能假設同一項任務的 token 數不變。
 
 ---
 
@@ -86,7 +89,7 @@ description: "「多用 Token」不是 KPI，產出才是。用我自己 120 天
 
 ### 誤解①：中途換模型，只影響後面的回答？
 
-快取以模型為單位。中途切換模型，整段歷史就得用新模型全價重讀一次。調整 effort 或 thinking 設定、MCP 掉線導致工具定義變動，也都會讓快取從變動點往後失效——[官方文件](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)寫得很清楚，快取依 `tools → system → messages` 的順序建立，**前面一變，後面全廢**。
+快取以模型為單位。中途切換模型，整段歷史就得用新模型全價重讀一次。調整 thinking 設定或工具定義，也可能讓快取失效。effort 則要看模型與連線方式：Claude Code 使用 API key 或 Claude 訂閱時，Opus 5.5、Sonnet 5.5、Haiku 5.5、Fable 5.1 中途調整 effort 可保留快取（[適用條件](https://code.claude.com/docs/en/prompt-caching#changing-effort-level)）。[官方文件](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)寫得很清楚，快取依 `tools → system → messages` 的順序建立，**前面一變，後面全廢**。
 
 → 詳見第 2 篇〈[CACHE：隔一小時再回來，那一回合貴了 80 倍](/zh-tw/blog/cache-session-habits/)〉的 MCP 側欄。
 
@@ -156,3 +159,5 @@ agent 交付後才由人工發現問題，退回重做的那一輪，才是最�
 - [我的 Claude Code statusline 腳本（GitHub Gist）](https://gist.github.com/akunzai/b1151ff86099c4a12935a71dda2bd380) — 顯示模型、effort、context 用量與快取命中率
 - [GitHub 專案：akunzai/agent-skills](https://github.com/akunzai/agent-skills) — `tech-lead`、cheap-dev-workers 等 skills
 - [GitHub 專案：akunzai/skills-manager](https://github.com/akunzai/skills-manager) — 跨 agent 的 skills 宣告式管理工具
+- [Anthropic：Introducing Claude Haiku 5.5](https://www.anthropic.com/claude-haiku-5-5) — 模型定位、分級定價、Sonnet 快取讀取降價與每月 API credit
+- [Claude Haiku 5.5：Overview](https://platform.claude.com/docs/en/models/haiku-5-5/overview) — Prompt 長度分級定價與 tokenizer 變更

@@ -102,15 +102,17 @@ Per [Claude's official pricing](https://platform.claude.com/docs/en/about-claude
 | Claude Fable 5.1 | $10 | $50 | $0.25 |
 | Claude Opus 5 | $5 | $25 | $0.50 |
 | **Claude Opus 5.5** | **$4** | **$20** | **$0.20** |
-| Claude Sonnet 5.5 | $2 | $10 | $0.20 |
+| Claude Sonnet 5.5 | $2 | $10 | $0.10 |
 
 (USD per million tokens)
 
-Cache reads dropped from $0.50 to $0.20, the same as Sonnet 5.5. In coding-agent work, cache reads are usually the bulk: of machine A's 6.4B tokens over these 30 days, 6.2B were cache reads. In other words, **on the line item that dominates, Opus 5.5 costs the same as Sonnet 5.5**.
+Opus cache reads dropped from $0.50 to $0.20. [On October 7](https://www.anthropic.com/claude-haiku-5-5), Sonnet 5.5 cache reads fell further to $0.10, so **Sonnet now costs half as much as Opus on cache reads**. In coding-agent work, cache reads are usually the bulk: of machine A's 6.4B tokens over these 30 days, 6.2B were cache reads. This strengthens the case for Sonnet on tasks it can finish reliably; it does not establish the same ratio for total task cost.
 
 My observation: for typical in-house software development, Opus is enough. Reaching for the most expensive model is like firing a cannon at a sparrow; unless the task is genuinely hard, I don't recommend it as the default. For which task gets which model, see [part 3](/en/blog/subagent-model-selection/).
 
 Since Sonnet 5.5 shipped, I switch by task: Sonnet 5.5 for well-scoped work whose result can be checked automatically (small projects, single-point edits, documents); Opus 5.5 stays the default for cross-module refactors, legacy-framework upgrades, and large projects with thin test coverage. On effort, both default to `medium` in Claude Code; Sonnet 5.5's levels are recalibrated, so don't carry over Sonnet 5 settings.
+
+**Update, 2026-10-08:** [The Haiku 5.5 announcement](https://www.anthropic.com/claude-haiku-5-5) also introduces monthly Claude Platform API credits, rolling out this week: $100 for Max 5x, $200 for Max 20x, and up to $500 pooled across Team users. These are separate from the Claude Code subscription usage analyzed above; I have not included them in those historical totals or subscription multiples. Confirm availability and terms for your account in the [Help Center](https://support.claude.com/en/articles/17154008-monthly-api-credits-for-max-and-team-plans) before counting them toward your budget. The September 30 benchmark costs above remain dated observations, not a recalculation using the new prices.
 
 ### ChatGPT (Codex): Less Quota Than It Seems, but GPT-6.1 Sol May Now Cover the Middle
 
@@ -213,3 +215,4 @@ Stop chasing Token Maxxing. Get the most value out of every token instead.
 - [GitHub Copilot: Plans](https://github.com/features/copilot/plans) — Copilot plan fees and AI credits
 - [Cursor: Pricing](https://cursor.com/pricing) — Cursor plans
 - [akunzai/agent-skills](https://github.com/akunzai/agent-skills) — the skills repository whose evals run on Copilot
+- [Anthropic: Introducing Claude Haiku 5.5](https://www.anthropic.com/claude-haiku-5-5) — model positioning, tiered pricing, Sonnet cache-read reduction, and monthly API credits

@@ -50,7 +50,7 @@ description: "我分析了 120 天、三萬多個對話回合：一般回合的�
 先看 Claude 的三個快取規則，後面的習慣就很好懂：
 
 1. **快取只認開頭。** 依照[官方文件](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)，快取依 `tools → system → messages` 的順序建立；前面任何一段變了，後面全部失效。
-2. **快取以模型為單位。** 換了模型，就是另一份快取，整段歷史得用新模型從頭寫入。調整 thinking 設定，也會讓訊息部分的快取失效；在 Opus 5.5、Sonnet 5.5、Fable 5.1 上，Claude Code 中途調整 effort 會保留快取（[文件](https://code.claude.com/docs/en/prompt-caching#changing-effort-level)）；其他 Claude 模型仍會重置。
+2. **快取以模型為單位。** 換了模型，就是另一份快取，整段歷史得用新模型從頭寫入。調整 thinking 設定，也會讓訊息部分的快取失效；在 Opus 5.5、Sonnet 5.5、Haiku 5.5、Fable 5.1 上，Claude Code 中途使用 API key 或 Claude 訂閱時，調整 effort 會保留快取（[文件](https://code.claude.com/docs/en/prompt-caching#changing-effort-level)）；其他 Claude 模型仍會重置。
 3. **快取有期限。** 5 分鐘或 1 小時，每次命中會重新計時。我實測 Claude Code 寫入的是 1 小時快取，寫入價是原價的 2 倍。
 
 換句話說：**只要開頭不變、在期限內，快取就會一直幫你打折；一旦變動或過期，就得付一次昂貴的寫入費。**
@@ -69,6 +69,8 @@ description: "我分析了 120 天、三萬多個對話回合：一般回合的�
 | 切回 medium 後第一筆 | medium | 2 | 234 | 56,191 | 99.58% |
 
 每次切換後的第一筆請求都沒有掉命中率，只寫入數百個新 token，和文件的說明一致。這只是單一 session、一輪的觀察。Codex 的文件沒有明確說改 effort 不影響快取，下一節看到的下降也就不意外。
+
+官方文件也將 Haiku 5.5 列入上述連線條件下可保留快取的模型。我在 2026-10-08 用同一個 Claude Code session、維持 Haiku 5.5，用 `/effort` 做了一輪 `medium → low → medium` 切換。`/usage` 顯示該 session 的 9 次請求都沒有快取 miss，每次切換只增加約 1k 個 cache 寫入 token。這只是單一 session 的觀察，不代表一般性的保證。
 
 ## Codex 的 GPT-6：effort 與快取期限
 
@@ -122,7 +124,7 @@ description: "我分析了 120 天、三萬多個對話回合：一般回合的�
 
 - **開工前先決定。** 任務本身的難度通常在開始時就看得出來。
 - **難的子任務，派 subagent，不要換主模型。** subagent 有自己獨立的 context 與快取，主對話的快取不受影響。怎麼派得便宜又派得對，是第 3 篇〈[MODEL：規則寫了，卻不在做決定的那一刻](/zh-tw/blog/subagent-model-selection/)〉的主題。
-- **effort 在較新的模型上是例外。** 在 Opus 5.5、Sonnet 5.5、Fable 5.1 上，調整 effort 會保留快取（[文件](https://code.claude.com/docs/en/prompt-caching#changing-effort-level)；[公告](https://claude.com/blog/claude-opus-5-5-built-for-coding-sessions-that-use-more-context)）。Bedrock、Google Cloud Agent Platform、Claude apps gateway 不適用，而且 [changelog](https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md) 將 Fable 5.1 的修正標在 v2.1.260。Opus 5.5 在 Claude Code v2.1.280、Sonnet 5.5 在 v2.1.284 才首次推出，都晚於該版本，所以用這兩個模型時版本通常不成問題。我自己實測過：在 Sonnet 5.5 上，effort 依序切換 medium → low → medium，statusline 的快取命中率沒有下降；在 Opus 5.5 上依序切換 low → medium → low，transcript 顯示每一輪仍從快取讀取整段歷史，只寫入數百個新 token（各為單一 session）。其他情況請照 [Anthropic 的建議](https://claude.com/blog/maximizing-the-value-of-your-claude-code-sessions)事先設定好。
+- **effort 在較新的模型上是例外。** 在 Opus 5.5、Sonnet 5.5、Haiku 5.5、Fable 5.1 上，使用 API key 或 Claude 訂閱時，調整 effort 會保留快取（[文件](https://code.claude.com/docs/en/prompt-caching#changing-effort-level)；[公告](https://claude.com/blog/claude-opus-5-5-built-for-coding-sessions-that-use-more-context)）。Bedrock、Google Cloud Agent Platform、Claude apps gateway、設定 `CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS` 或組織採用 HIPAA 設定時不適用，而且 [changelog](https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md) 將 Fable 5.1 的修正標在 v2.1.260。Opus 5.5 在 Claude Code v2.1.280、Sonnet 5.5 在 v2.1.284 才首次推出，都晚於該版本，所以用這兩個模型時版本通常不成問題。我自己實測過：在 Sonnet 5.5 上，effort 依序切換 medium → low → medium，statusline 的快取命中率沒有下降；在 Opus 5.5 上依序切換 low → medium → low，transcript 顯示每一輪仍從快取讀取整段歷史，只寫入數百個新 token（各為單一 session）。其他情況請照 [Anthropic 的建議](https://claude.com/blog/maximizing-the-value-of-your-claude-code-sessions)事先設定好。
 
 ## 習慣二：一個任務一串對話，別隔天接著聊
 
