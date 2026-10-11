@@ -8,4 +8,8 @@ overrides:
   lodash-es: "^4.18.0"
   undici: "^8.10.2"
   devalue: "^5.9.3"
+  # GHSA-238p-pmpm-9mq7 (CVE-2026-103923)
+  katex: "^0.18.2"
+  # GHSA-rj75-hqrm-r3gf (CVE-2026-104844)
+  postcss-selector-parser: "^7.1.6"
 
