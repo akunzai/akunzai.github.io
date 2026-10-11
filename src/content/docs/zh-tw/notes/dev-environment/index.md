@@ -64,3 +64,13 @@ sidebar:
 - Windows Terminal 字型、複製貼上與快速鍵
 - PowerShell 7 Profile 與永久 `PATH`
 - Scoop 與 mise 安裝
+
+### [Claude Code：Gist 與跨平台配置](./claude-code-configuration/)
+
+- 使用者與專案設定、Statusline 輔助指令稿與 Shell 捷徑
+- Permission modes 與明確 deny 規則的範圍
+
+### [Codex CLI：共用 Profile 與本機配置](./codex-cli-configuration/)
+
+- 在 macOS 與 Windows 安裝共用 Profile
+- 本機 Plugin 與 Marketplace、YOLO 行為及 Daemon 限制

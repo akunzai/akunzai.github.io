@@ -65,10 +65,9 @@ Profile 維持拆分：`Microsoft.PowerShell_profile.ps1` 放互動行為，`pro
 
 若要在長壽命的 Pane 內進行 Commit 簽署，可使用 [SSH 金鑰與安全](../ssh-keys-security/)所述的 Windows OpenSSH Agent 服務，讓所有 Pane 共用同一個 Agent。若服務尚未啟用，設定或啟動它需要系統管理員權限；尚未取得權限時，可先用私鑰 Passphrase 逐次簽署。
 
-> [!CAUTION]
-> 我的 Gist 包含 `cc.yolo`、`cd.yolo` 之類的捷徑，會以關閉權限確認的方式啟動 Agent。請只在可隨時丟棄的環境使用，並在複製前先閱讀系列[總覽](../)中的防護說明。
-
 參考 Gist：[PowerShell Profile](https://gist.github.com/akunzai/3af259df54dcdd6073293e6f8efe8dbf)。
+
+Harness 的設定與捷徑另見 [Claude Code 配置](../claude-code-configuration/)與 [Codex CLI 配置](../codex-cli-configuration/)。
 
 ---
 
