@@ -136,7 +136,7 @@ Restore also requires a current integration that reports a valid session referen
 
 ## Configuration Worth Keeping
 
-My [Herdr Gist](https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9) is small. It is shared across platforms, and `config.toml` is the file that matters (on macOS it lives at `~/.config/herdr/config.toml`). These are the parts I would carry to a new machine:
+My [Herdr settings Gist](https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9) contains the main `config.toml` and the recommended cache-hit plugin configuration. On macOS, the main config lives at `~/.config/herdr/config.toml`. These are the settings I would carry to a new machine:
 
 | Setting | Why |
 | :--- | :--- |
@@ -147,6 +147,33 @@ My [Herdr Gist](https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9
 | `[[keys.command]]` entries | Bind plugin actions to `prefix+...` keys |
 
 Prefix-free chords are most reliable on `ctrl+alt`, which terminals and desktops leave almost untouched. Check the [keyboard guide](https://herdr.dev/docs/keyboard/) before binding anything else.
+
+### Gist files and cache-hit display
+
+Gists have a flat layout. Copy each configuration file to its intended location:
+
+| Gist file | Target | Purpose |
+| :--- | :--- | :--- |
+| [`config.toml`](https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9#file-config-toml) | `~/.config/herdr/config.toml` on macOS | Main settings, keybindings, and Catppuccin colors for the sidebar's `$cache` token |
+| [`cache-hit.config.json`](https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9#file-cache-hit-config-json) | `config.json` in cache-hit's configuration directory | Recommended cache display options |
+| [`plugins.json`](https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9#file-plugins-json) | Reference only | Machine-specific installed-plugin snapshot; let Herdr generate it locally |
+
+After installing cache-hit, find its configuration directory:
+
+```sh
+herdr plugin config-dir cache-hit
+```
+
+Copy the Gist's `cache-hit.config.json` into that directory as **`config.json`**. The default target is `~/.config/herdr/plugins/config/cache-hit/config.json`; use the command's result for your machine.
+
+The suggested configuration applies these options to `agy`, `codex`, `claude`, and `opencode`:
+
+| Option | Value | Why |
+| :--- | :--- | :--- |
+| `show_percentage` | `true` | Show the cache hit rate for every supported Agent |
+| `show_read_tokens` | `false` | Hide the read/cached Token count to keep the sidebar compact |
+
+These JSON options control which values appear; the `$cache` rules in `config.toml` control their colors. Keep the current JSON in the Gist rather than duplicating it here. See the [upstream configuration reference](https://github.com/e-kotov/herdr-cache-hit/blob/main/USERGUIDE.md#configuration-reference) for other options.
 
 ### Plugins
 
@@ -258,3 +285,4 @@ So use the Gists as the latest implementation and these notes as the reasoning. 
 - [mise: Installing mise](https://mise.jdx.dev/installing-mise.html) — Homebrew and winget installation
 - [mise: Python](https://mise.jdx.dev/lang/python.html) — Selecting the latest stable Python
 - [mise: Shims](https://mise.jdx.dev/dev-tools/shims.html) — Making tools visible outside interactive shells
+- [Herdr settings Gist](https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9) — Main configuration, cache-hit display options, and plugin snapshot

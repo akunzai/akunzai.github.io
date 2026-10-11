@@ -134,7 +134,7 @@ herdr integration status
 
 ## 值得保留的設定
 
-我的 [Herdr Gist](https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9) 很精簡，各平台共用，重點是 `config.toml`（在 macOS 位於 `~/.config/herdr/config.toml`）。換新機器時我會帶走這些部分：
+我的 [Herdr 設定 Gist](https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9) 包含主設定 `config.toml` 與 cache-hit Plugin 的建議配置。主設定在 macOS 位於 `~/.config/herdr/config.toml`，換新機器時我會帶走這些部分：
 
 | 設定 | 原因 |
 | :--- | :--- |
@@ -145,6 +145,33 @@ herdr integration status
 | `[[keys.command]]` 項目 | 把 Plugin 動作綁到 `prefix+...` 快速鍵 |
 
 不用 Prefix 的組合鍵在 `ctrl+alt` 上最穩定，因為終端機與桌面環境幾乎不會佔用它。綁定其他組合前，請先查閱[鍵盤指南](https://herdr.dev/docs/keyboard/)。
+
+### Gist 檔案與 cache-hit 顯示設定
+
+Gist 沒有目錄層級，請把各設定檔複製到對應位置：
+
+| Gist 檔案 | 目標位置 | 用途 |
+| :--- | :--- | :--- |
+| [`config.toml`](https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9#file-config-toml) | macOS 的 `~/.config/herdr/config.toml` | 主設定、快速鍵與側邊欄 `$cache` 的 Catppuccin 配色 |
+| [`cache-hit.config.json`](https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9#file-cache-hit-config-json) | cache-hit 設定目錄中的 `config.json` | 建議的 cache 顯示選項 |
+| [`plugins.json`](https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9#file-plugins-json) | 僅供參考 | 包含機器專屬路徑的 Plugin 安裝快照，讓 Herdr 在本機產生即可 |
+
+安裝 cache-hit 後，查詢它的設定目錄：
+
+```sh
+herdr plugin config-dir cache-hit
+```
+
+將 Gist 的 `cache-hit.config.json` 複製到該目錄，並改名為 **`config.json`**。預設目標是 `~/.config/herdr/plugins/config/cache-hit/config.json`，實際位置請以指令結果為準。
+
+建議配置對 `agy`、`codex`、`claude` 與 `opencode` 都套用下列選項：
+
+| 選項 | 值 | 原因 |
+| :--- | :--- | :--- |
+| `show_percentage` | `true` | 顯示所有受支援 Agent 的 cache 命中率 |
+| `show_read_tokens` | `false` | 隱藏讀取／快取 Token 數，讓側邊欄更精簡 |
+
+這些 JSON 選項決定顯示哪些數值，`config.toml` 的 `$cache` 規則則決定配色。完整 JSON 保留在 Gist，避免在筆記中維護另一份副本；其他選項請參考[上游設定說明](https://github.com/e-kotov/herdr-cache-hit/blob/main/USERGUIDE.md#configuration-reference)。
 
 ### Plugin
 
@@ -256,3 +283,4 @@ skills add herdrdev/herdr --skill herdr
 - [mise：安裝 mise](https://mise.jdx.dev/installing-mise.html) — Homebrew 與 winget 安裝方式
 - [mise：Python](https://mise.jdx.dev/lang/python.html) — 選用最新穩定版 Python
 - [mise：Shims](https://mise.jdx.dev/dev-tools/shims.html) — 讓互動式 Shell 以外的行程找到工具
+- [Herdr 設定 Gist](https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9) — 主設定、cache-hit 顯示選項與 Plugin 快照
