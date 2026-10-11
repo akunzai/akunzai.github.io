@@ -156,10 +156,58 @@ Plugins are installed per machine and recorded in `plugins.json`. That file cont
 | :--- | :--- | :---: | :---: |
 | [herdr-sidebar](https://github.com/alexarthurs/herdr-sidebar) | File explorer and source control pane | ✓ | ✓ |
 | [herdr-hunk-diff](https://github.com/jhochenbaum/herdr-hunk-diff) | Review Agent diffs, send comments back | ✓ | ✓ |
-| [herdr-cache-hit](https://github.com/e-kotov/herdr-cache-hit) | Prompt-cache hit rate per Agent | ✓ | not listed |
-| [terminal-browser](https://github.com/zenbu-labs/terminal-browser) | Browser inside a pane | ✓ | not listed |
+| [herdr-cache-hit](https://github.com/e-kotov/herdr-cache-hit) | Prompt-cache hit rate per Agent | ✓ | ✓ (Git Bash) |
+| [terminal-browser](https://github.com/zenbu-labs/terminal-browser) | Browser inside a pane | ✓ | WSL only |
 
-The platform columns reflect each plugin's manifest. Herdr's Windows plugin support is still marked as preview, so expect gaps there.
+The platform columns reflect upstream manifests and installation requirements. Hunk provides prebuilt Windows binaries for x64; Windows ARM needs a custom hunk binary. terminal-browser requires WSL on Windows.
+
+### Plugin prerequisites
+
+cache-hit now supports native Windows Herdr through Git for Windows; WSL is not required. It needs Bash and `jq`. Install Python as well for OpenCode, view sorting, and session recovery; Python also improves Codex transcript selection after prompt edits. On macOS, the built-in Bash 3.2 works.
+
+Hunk needs Node.js 22.12+ and its bundled npm during plugin installation, and installs its own hunk binary. Go and Rust are only needed for source builds of cache-hit's AGY helper and herdr-sidebar, respectively; normal installation downloads release binaries.
+
+#### macOS
+
+```sh
+brew install git jq mise
+mise use -g python@latest
+mise use -g node@lts # Only if using hunk
+```
+
+If mise is already installed, omit it from the Homebrew command. Alternatively, use `brew install python` for Python or `mise use -g aqua:jqlang/jq@latest` for `jq`.
+
+#### Windows
+
+Run in PowerShell:
+
+```powershell
+winget install --id Git.Git --exact --source winget
+winget install --id jqlang.jq --exact --source winget
+winget install --id jdx.mise --exact --source winget
+```
+
+Open a new PowerShell window, then install the runtimes:
+
+```powershell
+mise use -g python@latest
+mise use -g node@lts # Only if using hunk
+```
+
+Add Git for Windows's `bin` directory (normally `C:\Program Files\Git\bin`; adjust for your installation) to your user `Path`. `Git\cmd` alone does not expose `sh.exe`. cache-hit enters through `sh` and then starts Git Bash, avoiding the WSL `bash.exe` alias.
+
+#### Make tools visible to Herdr
+
+For mise-managed tools, put its shims on the `PATH` inherited by Herdr: `~/.local/share/mise/shims` on macOS, or `%LOCALAPPDATA%\mise\shims` on Windows. Interactive shell activation alone does not configure GUI-launched processes. Restart the terminal and Herdr after updating `PATH`.
+
+On Windows, check from PowerShell that `sh` resolves to Git for Windows and that Git Bash can find the dependencies:
+
+```powershell
+where.exe sh
+sh -c 'bash --version; jq --version; python3 --version'
+```
+
+The Gist's `plugins.json` snapshot predates cache-hit's Windows support. Install plugins through Herdr to obtain their current manifests rather than copying that snapshot. The Gist's sidebar binding uses `herdr-sidebar.open-sidebar`; on Windows, change it to `herdr-sidebar.open-sidebar-windows`.
 
 ---
 
@@ -202,3 +250,11 @@ So use the Gists as the latest implementation and these notes as the reasoning. 
 - [Herdr: Install](https://herdr.dev/docs/install/) — Homebrew, mise, Nix, and direct installation, plus update behavior
 - [Herdr: Keyboard](https://herdr.dev/docs/keyboard/) — Prefix model, default keymap, and safe prefix-free chords
 - [Herdr: Agents and Integrations](https://herdr.dev/docs/agents/) — Supported Agents and `herdr integration install`
+- [cache-hit: Prerequisites and compatibility](https://github.com/e-kotov/herdr-cache-hit#prerequisites--compatibility) — Bash, jq, Python, and native Windows support
+- [cache-hit: Windows support PR](https://github.com/e-kotov/herdr-cache-hit/pull/5) — Git Bash entrypoint and Windows verification
+- [Hunk: Requirements](https://github.com/jhochenbaum/herdr-hunk-diff#requirements) — Node.js and Windows architecture requirements
+- [herdr-sidebar: Install and develop](https://github.com/alexarthurs/herdr-sidebar#install--develop) — Release binaries and Windows actions
+- [terminal-browser: Installation](https://github.com/zenbu-labs/terminal-browser#installation) — Windows requires WSL
+- [mise: Installing mise](https://mise.jdx.dev/installing-mise.html) — Homebrew and winget installation
+- [mise: Python](https://mise.jdx.dev/lang/python.html) — Selecting the latest stable Python
+- [mise: Shims](https://mise.jdx.dev/dev-tools/shims.html) — Making tools visible outside interactive shells

@@ -154,10 +154,58 @@ Plugin 是依機器各自安裝，並記錄在 `plugins.json` 中。該檔案包
 | :--- | :--- | :---: | :---: |
 | [herdr-sidebar](https://github.com/alexarthurs/herdr-sidebar) | 檔案總管與版本控制 Pane | ✓ | ✓ |
 | [herdr-hunk-diff](https://github.com/jhochenbaum/herdr-hunk-diff) | 檢視 Agent 的 diff 並把意見送回 Agent | ✓ | ✓ |
-| [herdr-cache-hit](https://github.com/e-kotov/herdr-cache-hit) | 各 Agent 的 Prompt cache 命中率 | ✓ | 未宣告 |
-| [terminal-browser](https://github.com/zenbu-labs/terminal-browser) | 在 Pane 內開啟瀏覽器 | ✓ | 未宣告 |
+| [herdr-cache-hit](https://github.com/e-kotov/herdr-cache-hit) | 各 Agent 的 Prompt cache 命中率 | ✓ | ✓（Git Bash） |
+| [terminal-browser](https://github.com/zenbu-labs/terminal-browser) | 在 Pane 內開啟瀏覽器 | ✓ | 僅 WSL |
 
-平台欄位依據各 Plugin 的 manifest。Herdr 對 Windows 的 Plugin 支援仍標示為 preview，請預期會有功能缺口。
+平台欄位依據上游 manifest 與安裝需求。Hunk 提供 Windows x64 的預先建置執行檔；Windows ARM 需要自行建置 hunk。terminal-browser 在 Windows 需要 WSL。
+
+### Plugin 所需工具
+
+cache-hit 現已透過 Git for Windows 支援原生 Windows Herdr，不需要 WSL。它需要 Bash 與 `jq`；也建議安裝 Python，供 OpenCode、檢視排序與 Session recovery 使用，並改善編輯 Prompt 後的 Codex transcript 選取。在 macOS，內建的 Bash 3.2 即可使用。
+
+Hunk 安裝時需要 Node.js 22.12+ 與隨附的 npm，Plugin 會自行安裝 hunk 執行檔。只有從原始程式碼建置 cache-hit 的 AGY helper 或 herdr-sidebar 時，才分別需要 Go 或 Rust；一般安裝會下載 release 執行檔。
+
+#### macOS
+
+```sh
+brew install git jq mise
+mise use -g python@latest
+mise use -g node@lts # Only if using hunk
+```
+
+若已安裝 mise，請從 Homebrew 指令中省略它。也可改用 `brew install python` 安裝 Python，或以 `mise use -g aqua:jqlang/jq@latest` 安裝 `jq`。
+
+#### Windows
+
+在 PowerShell 執行：
+
+```powershell
+winget install --id Git.Git --exact --source winget
+winget install --id jqlang.jq --exact --source winget
+winget install --id jdx.mise --exact --source winget
+```
+
+開啟新的 PowerShell 視窗，再安裝 Runtime：
+
+```powershell
+mise use -g python@latest
+mise use -g node@lts # Only if using hunk
+```
+
+把 Git for Windows 的 `bin` 目錄加入使用者 `Path`（通常是 `C:\Program Files\Git\bin`，請依安裝位置調整）。只有 `Git\cmd` 無法找到 `sh.exe`。cache-hit 先透過 `sh` 進入，再啟動 Git Bash，避免使用 WSL 的 `bash.exe` alias。
+
+#### 讓 Herdr 找得到工具
+
+使用 mise 管理工具時，請把它的 shims 加入 Herdr 繼承的 `PATH`：macOS 為 `~/.local/share/mise/shims`，Windows 為 `%LOCALAPPDATA%\mise\shims`。僅啟用互動式 Shell 的 mise activation，不會設定從 GUI 啟動的行程。更新 `PATH` 後，請重啟終端機與 Herdr。
+
+在 Windows，從 PowerShell 確認 `sh` 指向 Git for Windows，且 Git Bash 找得到所需工具：
+
+```powershell
+where.exe sh
+sh -c 'bash --version; jq --version; python3 --version'
+```
+
+Gist 的 `plugins.json` 快照早於 cache-hit 的 Windows 支援。請透過 Herdr 安裝 Plugin 取得目前的 manifest，不要複製該快照。Gist 的側邊欄綁定使用 `herdr-sidebar.open-sidebar`，Windows 需改為 `herdr-sidebar.open-sidebar-windows`。
 
 ---
 
@@ -200,3 +248,11 @@ skills add herdrdev/herdr --skill herdr
 - [Herdr：Install](https://herdr.dev/docs/install/) — Homebrew、mise、Nix 與直接安裝，以及更新行為
 - [Herdr：Keyboard](https://herdr.dev/docs/keyboard/) — Prefix 模型、預設鍵位與安全的免 Prefix 組合鍵
 - [Herdr：Agents 與 Integrations](https://herdr.dev/docs/agents/) — 支援的 Agent 與 `herdr integration install`
+- [cache-hit：所需工具與相容性](https://github.com/e-kotov/herdr-cache-hit#prerequisites--compatibility) — Bash、jq、Python 與原生 Windows 支援
+- [cache-hit：Windows 支援 PR](https://github.com/e-kotov/herdr-cache-hit/pull/5) — Git Bash 入口與 Windows 驗證
+- [Hunk：所需工具](https://github.com/jhochenbaum/herdr-hunk-diff#requirements) — Node.js 與 Windows 架構需求
+- [herdr-sidebar：安裝與開發](https://github.com/alexarthurs/herdr-sidebar#install--develop) — Release 執行檔與 Windows 動作
+- [terminal-browser：安裝](https://github.com/zenbu-labs/terminal-browser#installation) — Windows 需要 WSL
+- [mise：安裝 mise](https://mise.jdx.dev/installing-mise.html) — Homebrew 與 winget 安裝方式
+- [mise：Python](https://mise.jdx.dev/lang/python.html) — 選用最新穩定版 Python
+- [mise：Shims](https://mise.jdx.dev/dev-tools/shims.html) — 讓互動式 Shell 以外的行程找到工具
