@@ -66,3 +66,13 @@ This series is engineered for new teammates (and weary seniors cleaning up unatt
 - Windows Terminal font, copy/paste, and shortcuts
 - PowerShell 7 profile and persistent `PATH`
 - Scoop and mise installs
+
+### [Claude Code: Gists and Cross-Platform Configuration](./claude-code-configuration/)
+
+- User and project settings, the statusline helper, and shell shortcuts
+- Permission modes and the scope of explicit deny rules
+
+### [Codex CLI: Shared Profiles and Local Configuration](./codex-cli-configuration/)
+
+- Install the shared profile on macOS and Windows
+- Local plugins and marketplaces, YOLO behavior, and daemon limitations

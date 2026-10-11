@@ -90,6 +90,8 @@ GUI Git 工具不會讀取 `.zshenv`。若需要登入時同時載入固定的�
 
 參考 Gist：[Zsh Profile](https://gist.github.com/akunzai/616796de59282c8bfdae3005511c588e)（`.zshenv`、`.zprofile`、`.zshrc`）。
 
+Harness 的設定與捷徑另見 [Claude Code 配置](../claude-code-configuration/)與 [Codex CLI 配置](../codex-cli-configuration/)。
+
 ---
 
 ## Prompt：Starship

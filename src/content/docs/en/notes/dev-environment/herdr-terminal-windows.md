@@ -65,10 +65,9 @@ Keep the profile split: `Microsoft.PowerShell_profile.ps1` for interactive behav
 
 For commit signing inside long-lived panes, you can use the Windows OpenSSH Agent service described in [SSH Keys & Security](../ssh-keys-security/), so one agent serves every pane. Enabling or starting a disabled service requires administrator rights. Until access is available, enter the private key's passphrase for each signature.
 
-> [!CAUTION]
-> My Gist includes shortcuts such as `cc.yolo` and `cd.yolo` that start Agents with permission prompts disabled. Only use these inside a disposable environment, and read the series [overview](../) on guardrails before copying them.
-
 Reference Gist: [PowerShell profile](https://gist.github.com/akunzai/3af259df54dcdd6073293e6f8efe8dbf).
+
+Harness-specific settings and shortcuts are covered in [Claude Code configuration](../claude-code-configuration/) and [Codex CLI configuration](../codex-cli-configuration/).
 
 ---
 

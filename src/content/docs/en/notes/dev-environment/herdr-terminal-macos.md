@@ -90,6 +90,8 @@ GUI Git tools do not read `.zshenv`. For login-time key loading into both the fi
 
 Reference Gist: [Zsh profile](https://gist.github.com/akunzai/616796de59282c8bfdae3005511c588e) (`.zshenv`, `.zprofile`, `.zshrc`).
 
+Harness-specific settings and shortcuts are covered in [Claude Code configuration](../claude-code-configuration/) and [Codex CLI configuration](../codex-cli-configuration/).
+
 ---
 
 ## Prompt: Starship
