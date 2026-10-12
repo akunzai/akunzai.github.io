@@ -153,7 +153,7 @@ Gist 沒有目錄層級，請把各設定檔複製到對應位置：
 | Gist 檔案 | 目標位置 | 用途 |
 | :--- | :--- | :--- |
 | [`config.toml`](https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9#file-config-toml) | macOS 的 `~/.config/herdr/config.toml` | 主設定、快速鍵與側邊欄 `$cache` 的 Catppuccin 配色 |
-| [`cache-hit.config.json`](https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9#file-cache-hit-config-json) | cache-hit 設定目錄中的 `config.json` | 建議的 cache 顯示選項 |
+| [`config.json`](https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9#file-config-json) | cache-hit 設定目錄中的 `config.json` | 建議的 cache 顯示選項 |
 | [`plugins.json`](https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9#file-plugins-json) | 僅供參考 | 包含機器專屬路徑的 Plugin 安裝快照，讓 Herdr 在本機產生即可 |
 
 安裝 cache-hit 後，查詢它的設定目錄：
@@ -162,7 +162,7 @@ Gist 沒有目錄層級，請把各設定檔複製到對應位置：
 herdr plugin config-dir cache-hit
 ```
 
-將 Gist 的 `cache-hit.config.json` 複製到該目錄，並改名為 **`config.json`**。預設目標是 `~/.config/herdr/plugins/config/cache-hit/config.json`，實際位置請以指令結果為準。
+將 Gist 的 `config.json` 複製到該目錄即可（預設為 `~/.config/herdr/plugins/config/cache-hit/config.json`，實際位置以指令結果為準）。
 
 建議配置對 `agy`、`codex`、`claude` 與 `opencode` 都套用下列選項：
 

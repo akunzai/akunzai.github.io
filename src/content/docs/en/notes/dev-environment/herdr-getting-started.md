@@ -155,7 +155,7 @@ Gists have a flat layout. Copy each configuration file to its intended location:
 | Gist file | Target | Purpose |
 | :--- | :--- | :--- |
 | [`config.toml`](https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9#file-config-toml) | `~/.config/herdr/config.toml` on macOS | Main settings, keybindings, and Catppuccin colors for the sidebar's `$cache` token |
-| [`cache-hit.config.json`](https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9#file-cache-hit-config-json) | `config.json` in cache-hit's configuration directory | Recommended cache display options |
+| [`config.json`](https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9#file-config-json) | `config.json` in cache-hit's configuration directory | Recommended cache display options |
 | [`plugins.json`](https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9#file-plugins-json) | Reference only | Machine-specific installed-plugin snapshot; let Herdr generate it locally |
 
 After installing cache-hit, find its configuration directory:
@@ -164,7 +164,7 @@ After installing cache-hit, find its configuration directory:
 herdr plugin config-dir cache-hit
 ```
 
-Copy the Gist's `cache-hit.config.json` into that directory as **`config.json`**. The default target is `~/.config/herdr/plugins/config/cache-hit/config.json`; use the command's result for your machine.
+Copy `config.json` from the Gist directly into that directory (defaulting to `~/.config/herdr/plugins/config/cache-hit/config.json`; verify with the command above).
 
 The suggested configuration applies these options to `agy`, `codex`, `claude`, and `opencode`:
 
