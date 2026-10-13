@@ -188,6 +188,14 @@ Plugins are installed per machine and recorded in `plugins.json`. That file cont
 
 The platform columns reflect upstream manifests and installation requirements. Hunk provides prebuilt Windows binaries for x64; Windows ARM needs a custom hunk binary. terminal-browser requires WSL on Windows.
 
+### Sidebar waiting for a font install
+
+`Installing JetBrainsMono Nerd Font… / Trying winget…` is herdr-sidebar's first-run font setup, separate from installing the plugin. In the [reviewed implementation](https://github.com/alexarthurs/herdr-sidebar/blob/081ed133f3faa377438b51ce435fe8a87c439593/plugins/herdr-sidebar/src/fontsetup.rs), the Windows installer waits for winget without a timeout and captures its output instead of streaming it. A long wait alone cannot distinguish a slow download from a stuck installer.
+
+Focus the sidebar pane and press `Esc` to stop waiting and use emoji icons. **The background install continues.** Check the existing winget process and its logs before retrying; do not start a second install. Installing a font also does not select it in your terminal: choose `JetBrainsMono Nerd Font Mono` in the active terminal profile afterward. See the [Windows font setup](../herdr-terminal-windows/#use-a-nerd-font-and-the-mono-variant).
+
+For unattended first-launch checks, the reviewed sidebar supports `HERDR_SIDEBAR_FONT_PROMPT=off` and `HERDR_SIDEBAR_ICONS=emoji`. Set them in the environment inherited by Herdr before starting a new server; setting them only in an existing pane does not change the server's environment. Do not stop a working server just to apply them: save or finish pane work first.
+
 ### Plugin prerequisites
 
 cache-hit now supports native Windows Herdr through Git for Windows; WSL is not required. It needs Bash and `jq`. Install Python as well for OpenCode, view sorting, and session recovery; Python also improves Codex transcript selection after prompt edits. On macOS, the built-in Bash 3.2 works.
@@ -209,10 +217,12 @@ If mise is already installed, omit it from the Homebrew command. Alternatively, 
 Run in PowerShell:
 
 ```powershell
-winget install --id Git.Git --exact --source winget
-winget install --id jqlang.jq --exact --source winget
-winget install --id jdx.mise --exact --source winget
+winget install --id Git.Git --exact --source winget --silent --accept-source-agreements --accept-package-agreements --disable-interactivity
+winget install --id jqlang.jq --exact --source winget --silent --accept-source-agreements --accept-package-agreements --disable-interactivity
+winget install --id jdx.mise --exact --source winget --silent --accept-source-agreements --accept-package-agreements --disable-interactivity
 ```
+
+These flags accept source and package agreements and disable prompts; they do not impose a timeout or guarantee that an installer needs no elevation. For a stalled command, inspect the process and [WinGet logs](https://learn.microsoft.com/en-us/windows/package-manager/winget/install#log-files) before retrying.
 
 Open a new PowerShell window, then install the runtimes:
 
@@ -234,7 +244,7 @@ where.exe sh
 sh -c 'bash --version; jq --version; python3 --version'
 ```
 
-The Gist's `plugins.json` snapshot predates cache-hit's Windows support. Install plugins through Herdr to obtain their current manifests rather than copying that snapshot. The Gist's sidebar binding uses `herdr-sidebar.open-sidebar`; on Windows, change it to `herdr-sidebar.open-sidebar-windows`.
+Install plugins through Herdr to obtain their current manifests rather than copying the Gist's machine-specific `plugins.json` snapshot. The Gist's sidebar binding uses `herdr-sidebar.open-sidebar`; on Windows, change it to `herdr-sidebar.open-sidebar-windows`.
 
 ---
 
@@ -266,6 +276,42 @@ I considered embedding the Gists directly into these pages and decided not to:
 
 So use the Gists as the latest implementation and these notes as the reasoning. Gists are personal configurations, not compatibility specifications. If they differ from these notes, check the official documentation for your installed version before copying a setting.
 
+### Installation prompt for an Agent
+
+The Gist's [README](https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9#file-readme-md) provides installation steps and maps files to their destinations. Use it together with each plugin's upstream README. Copy this prompt into your Agent:
+
+```text
+Set up Herdr and the compatible recommended plugins from this note on this machine:
+https://akunzai.github.io/en/notes/dev-environment/herdr-getting-started/
+First read the current README.md and configuration files in this Gist:
+https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9
+Also read each selected plugin's upstream README and manifest for installation
+commands, prerequisites, supported OS/architecture, and minimum Herdr version.
+
+Detect the OS, architecture, existing tools, and installation sources. Reuse
+installed tools and install only missing prerequisites for compatible plugins.
+Report unsupported plugins; do not set up WSL solely for terminal-browser.
+Back up existing settings, merge relevant options, adapt paths and action IDs
+to this platform, and preserve unrelated settings. Do not copy plugins.json;
+install through Herdr to generate the local registry. Follow the current Gist
+README's installation steps and file mapping.
+
+Use non-interactive installation where supported. For winget, use an exact ID,
+an explicit source, silent mode, agreement flags, and --disable-interactivity.
+Give each installation command a finite wait budget. If it shows no progress
+for 120 seconds, capture its process state and logs and diagnose before retrying;
+this is a diagnostic threshold, not proof of failure. Do not run duplicate
+installers or wait indefinitely on an interactive TUI. If sidebar font setup
+is waiting, focus that pane and press Esc when pane control is available;
+otherwise report the required keypress. Esc leaves the background install running.
+Do not stop an active Herdr server without first arranging to save/finish its work.
+
+Verify installation separately from first launch: report tool versions, plugin
+registry entries, dependency visibility in Herdr's environment, and which plugins
+actually opened successfully. Report font installation and terminal font selection
+separately. List any manual steps, errors, logs, and checks you could not perform.
+```
+
 ---
 
 ## References
@@ -281,6 +327,8 @@ So use the Gists as the latest implementation and these notes as the reasoning. 
 - [cache-hit: Windows support PR](https://github.com/e-kotov/herdr-cache-hit/pull/5) — Git Bash entrypoint and Windows verification
 - [Hunk: Requirements](https://github.com/jhochenbaum/herdr-hunk-diff#requirements) — Node.js and Windows architecture requirements
 - [herdr-sidebar: Install and develop](https://github.com/alexarthurs/herdr-sidebar#install--develop) — Release binaries and Windows actions
+- [herdr-sidebar: First-run font setup](https://github.com/alexarthurs/herdr-sidebar/blob/081ed133f3faa377438b51ce435fe8a87c439593/plugins/herdr-sidebar/src/fontsetup.rs) — Reviewed winget wait and Esc behavior
+- [WinGet: Install](https://learn.microsoft.com/en-us/windows/package-manager/winget/install) — Non-interactive flags and installer logs
 - [terminal-browser: Installation](https://github.com/zenbu-labs/terminal-browser#installation) — Windows requires WSL
 - [mise: Installing mise](https://mise.jdx.dev/installing-mise.html) — Homebrew and winget installation
 - [mise: Python](https://mise.jdx.dev/lang/python.html) — Selecting the latest stable Python

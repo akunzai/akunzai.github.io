@@ -186,6 +186,14 @@ Plugin 是依機器各自安裝，並記錄在 `plugins.json` 中。該檔案包
 
 平台欄位依據上游 manifest 與安裝需求。Hunk 提供 Windows x64 的預先建置執行檔；Windows ARM 需要自行建置 hunk。terminal-browser 在 Windows 需要 WSL。
 
+### 側邊欄停在字型安裝畫面
+
+`Installing JetBrainsMono Nerd Font… / Trying winget…` 是 herdr-sidebar 首次啟動的字型設定，與 Plugin 安裝是不同步驟。[本次檢查的實作](https://github.com/alexarthurs/herdr-sidebar/blob/081ed133f3faa377438b51ce435fe8a87c439593/plugins/herdr-sidebar/src/fontsetup.rs)在 Windows 等待 winget 時沒有 timeout，並收集輸出而非即時顯示。僅憑等待時間，無法區分下載緩慢或安裝程序卡住。
+
+先將焦點移到側邊欄 Pane，按 `Esc` 停止等待，暫用 emoji 圖示。**背景安裝仍會繼續。** 重試前先檢查原本的 winget 行程與紀錄，不要再啟動另一份安裝。安裝字型也不會自動套用到終端機；完成後仍需在使用中的終端機 Profile 選擇 `JetBrainsMono Nerd Font Mono`。詳見 [Windows 字型設定](../herdr-terminal-windows/#使用-nerd-font且選-mono-變體)。
+
+若要讓 Agent 無人值守地檢查首次啟動，本次檢查的側邊欄支援 `HERDR_SIDEBAR_FONT_PROMPT=off` 與 `HERDR_SIDEBAR_ICONS=emoji`。啟動新的 server 前，先在啟動 Herdr 的 Shell 設定這兩個環境變數；只在既有 Pane 設定，不會改變 server 的環境。不要為了套用它們就停止正在工作的 server，應先儲存或完成 Pane 中的工作。
+
 ### Plugin 所需工具
 
 cache-hit 現已透過 Git for Windows 支援原生 Windows Herdr，不需要 WSL。它需要 Bash 與 `jq`；也建議安裝 Python，供 OpenCode、檢視排序與 Session recovery 使用，並改善編輯 Prompt 後的 Codex transcript 選取。在 macOS，內建的 Bash 3.2 即可使用。
@@ -207,10 +215,12 @@ mise use -g node@lts # Only if using hunk
 在 PowerShell 執行：
 
 ```powershell
-winget install --id Git.Git --exact --source winget
-winget install --id jqlang.jq --exact --source winget
-winget install --id jdx.mise --exact --source winget
+winget install --id Git.Git --exact --source winget --silent --accept-source-agreements --accept-package-agreements --disable-interactivity
+winget install --id jqlang.jq --exact --source winget --silent --accept-source-agreements --accept-package-agreements --disable-interactivity
+winget install --id jdx.mise --exact --source winget --silent --accept-source-agreements --accept-package-agreements --disable-interactivity
 ```
+
+這些旗標會接受來源與套件條款並停用互動提示，不會設定 timeout，也不保證安裝程序不需提權。指令停滯時，先檢查行程與 [WinGet 紀錄](https://learn.microsoft.com/en-us/windows/package-manager/winget/install#log-files)，再決定是否重試。
 
 開啟新的 PowerShell 視窗，再安裝 Runtime：
 
@@ -232,7 +242,7 @@ where.exe sh
 sh -c 'bash --version; jq --version; python3 --version'
 ```
 
-Gist 的 `plugins.json` 快照早於 cache-hit 的 Windows 支援。請透過 Herdr 安裝 Plugin 取得目前的 manifest，不要複製該快照。Gist 的側邊欄綁定使用 `herdr-sidebar.open-sidebar`，Windows 需改為 `herdr-sidebar.open-sidebar-windows`。
+請透過 Herdr 安裝 Plugin 取得目前的 manifest，不要複製 Gist 中包含機器專屬路徑的 `plugins.json` 快照。Gist 的側邊欄綁定使用 `herdr-sidebar.open-sidebar`，Windows 需改為 `herdr-sidebar.open-sidebar-windows`。
 
 ---
 
@@ -264,6 +274,37 @@ skills add herdrdev/herdr --skill herdr
 
 因此請把 Gist 視為最新的實作，把這些筆記視為背後的思路。Gist 是個人設定，不是相容性規格。若它與筆記不一致，請先查閱已安裝版本的官方文件，再複製設定。
 
+### 給 Agent 的安裝 Prompt
+
+Gist 的 [README](https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9#file-readme-md) 提供安裝步驟，以及檔案與目標位置的對應，應搭配各 Plugin 的上游 README。可以把以下 Prompt 貼給 Agent：
+
+```text
+請在這台機器安裝 Herdr，以及本篇筆記中相容的建議 Plugin：
+https://akunzai.github.io/zh-tw/notes/dev-environment/herdr-getting-started/
+先讀取這份 Gist 目前的 README.md 與設定檔：
+https://gist.github.com/akunzai/5fca04af65c7ce705be190135191e8e9
+也讀取所選 Plugin 的上游 README 與 manifest，確認安裝指令、所需工具、
+支援的作業系統與架構，以及 Herdr 最低版本。
+
+偵測作業系統、架構、現有工具與安裝來源。沿用已安裝的工具，只補上相容
+Plugin 缺少的必要工具。不支援的 Plugin 請回報，不要只為 terminal-browser
+另設 WSL。備份既有設定，合併相關選項，依平台調整路徑與 action ID，保留
+其他設定。不要複製 plugins.json，請透過 Herdr 安裝以產生本機清單。
+依目前 Gist README 的安裝步驟與檔案對應處理。
+
+支援時採用非互動安裝。winget 請指定精確 ID、來源、silent 模式、接受條款的
+旗標與 --disable-interactivity。每個安裝指令都要設定有限的等待時間。
+若 120 秒沒有進度，先擷取行程狀態與紀錄並診斷，再決定是否重試；這是
+診斷門檻，不代表安裝已失敗。不要重複啟動安裝，也不要無限等待互動式 TUI。
+若停在側邊欄字型安裝，能控制 Pane 時請聚焦該 Pane 並按 Esc；否則回報
+需要按鍵的人工步驟。Esc 不會停止背景安裝。停止使用中的 Herdr server 前，
+必須先安排儲存或完成其中的工作。
+
+分開驗證安裝與首次啟動：回報工具版本、Plugin 清單、Herdr 環境是否找得到
+所需工具，以及哪些 Plugin 已實際成功開啟。字型安裝與終端機字型選取也要
+分開回報。列出剩餘人工步驟、錯誤、紀錄位置與無法執行的檢查。
+```
+
 ---
 
 ## 參考資料
@@ -279,6 +320,8 @@ skills add herdrdev/herdr --skill herdr
 - [cache-hit：Windows 支援 PR](https://github.com/e-kotov/herdr-cache-hit/pull/5) — Git Bash 入口與 Windows 驗證
 - [Hunk：所需工具](https://github.com/jhochenbaum/herdr-hunk-diff#requirements) — Node.js 與 Windows 架構需求
 - [herdr-sidebar：安裝與開發](https://github.com/alexarthurs/herdr-sidebar#install--develop) — Release 執行檔與 Windows 動作
+- [herdr-sidebar：首次啟動的字型設定](https://github.com/alexarthurs/herdr-sidebar/blob/081ed133f3faa377438b51ce435fe8a87c439593/plugins/herdr-sidebar/src/fontsetup.rs) — 本次檢查的 winget 等待與 Esc 行為
+- [WinGet：Install](https://learn.microsoft.com/en-us/windows/package-manager/winget/install) — 非互動旗標與安裝紀錄
 - [terminal-browser：安裝](https://github.com/zenbu-labs/terminal-browser#installation) — Windows 需要 WSL
 - [mise：安裝 mise](https://mise.jdx.dev/installing-mise.html) — Homebrew 與 winget 安裝方式
 - [mise：Python](https://mise.jdx.dev/lang/python.html) — 選用最新穩定版 Python
