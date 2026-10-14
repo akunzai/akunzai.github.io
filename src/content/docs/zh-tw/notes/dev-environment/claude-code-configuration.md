@@ -78,13 +78,14 @@ alias cc='claude'
 alias cc.yolo='claude --dangerously-skip-permissions'
 ```
 
-PowerShell 的 `cc.yolo` 使用函式轉送參數：
+PowerShell 的 `cc` 與 `cc.yolo` 使用函式轉送參數：
 
 ```powershell
+function cc { claude @args }
 function cc.yolo { claude --dangerously-skip-permissions @args }
 ```
 
-PowerShell 的一般 Session 直接執行 `claude`。修改捷徑後，重新載入 Shell Profile 或開啟新終端機。
+兩個平台的一般 Session 都可執行 `cc`，也可直接執行 `claude`。修改捷徑後，重新載入 Shell Profile 或開啟新終端機。
 
 `cc.yolo` 選擇 `bypassPermissions`。[官方權限模式文件](https://code.claude.com/docs/en/permission-modes)明確說明，這個模式仍套用明確的 deny 規則；這與連 Sandbox 一起停用的 Codex `--yolo` 不同。不過，`Read(...)` 之類的工具規則，不是針對所有 Shell 指令的 OS 層檔案存取邊界；工具檢查與程序隔離必須分開理解。
 
@@ -92,7 +93,7 @@ PowerShell 的一般 Session 直接執行 `claude`。修改捷徑後，重新載
 
 ## 減少提示的建議配置
 
-一般 Session 維持 `permissions.defaultMode = "auto"`。另建 `~/.claude/sandbox.settings.json`，放入以下覆寫，再用 `cc --settings ~/.claude/sandbox.settings.json` 啟動；PowerShell 則直接用 `claude --settings`：
+一般 Session 維持 `permissions.defaultMode = "auto"`。另建 `~/.claude/sandbox.settings.json`，放入以下覆寫，再於任一平台用 `cc --settings ~/.claude/sandbox.settings.json` 啟動：
 
 ```json
 {
@@ -122,3 +123,8 @@ PowerShell 的一般 Session 直接執行 `claude`。修改捷徑後，重新載
 ## 切換 YOLO 會影響 Prompt cache 嗎？
 
 Claude Code 的[快取文件](https://code.claude.com/docs/en/prompt-caching#changing-permission-mode)明確說明，Permission mode 切換不改變 System prompt 或工具定義，因此單純換模式會保留快取；`opusplan` 切換模型的例外仍適用。這不代表新對話、快取到期、升級、換模型或更換工具／Plugin 都不影響快取。比較模式時，延續同一對話並維持其他設定；這裡沒有另外執行 YOLO 快取實驗。更多脈絡見[對話與快取筆記](/zh-tw/blog/cache-session-habits/)。
+
+## 參考資料
+
+- [PowerShell Profile](https://gist.github.com/akunzai/3af259df54dcdd6073293e6f8efe8dbf) — 個人 PowerShell 函式與跨平台捷徑
+- [Claude Code settings](https://code.claude.com/docs/en/settings) — 設定範圍與優先序

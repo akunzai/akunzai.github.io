@@ -57,7 +57,7 @@ Split responsibilities by when the file is read:
 | `~/.zprofile` | Login shells | Homebrew `shellenv` |
 | `~/.zshrc` | Interactive shells only | Prompt, completions, aliases, plugins |
 
-The pattern from my `.zshenv` Gist that does the heavy lifting:
+The following recommended version adapts my `.zshenv` Gist to give the Apple silicon Homebrew path explicit precedence:
 
 ```bash
 # Non-interactive zsh does not read ~/.zshrc; load the startup mise context here.
