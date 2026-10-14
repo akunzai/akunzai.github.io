@@ -57,7 +57,7 @@ Herdr 的 Prefix 是 `ctrl+b`，不用 Prefix 的組合鍵在 `ctrl+alt` 上最�
 | `~/.zprofile` | Login Shell | Homebrew `shellenv` |
 | `~/.zshrc` | 僅互動式 Shell | Prompt、自動補全、別名、外掛 |
 
-我的 `.zshenv` Gist 中，真正發揮作用的寫法：
+以下是依我的 `.zshenv` Gist 整理的建議寫法，明確讓 Apple silicon 的 Homebrew 路徑優先：
 
 ```bash
 # Non-interactive zsh does not read ~/.zshrc; load the startup mise context here.

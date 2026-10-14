@@ -58,8 +58,8 @@ Get-Path              # 編號清單，並標示不存在的項目
 Profile 維持拆分：`Microsoft.PowerShell_profile.ps1` 放互動行為，`profile.ps1` 放個人輔助函式。我的 Profile Gist 值得參考的部分：
 
 - PSReadLine 的歷史預測，以及 Emacs 風格的 `Ctrl+a/e/w` 按鍵，讓行編輯體驗與 macOS 一致。
-- `rgit`（對子目錄中的所有儲存庫執行 Git 指令）、`ln` 與 UNIX 風格的 `ls`，讓肌肉記憶與 Agent 產生的指令都能直接沿用。
-- `up`：一次更新 PowerShell 模組、Scoop 與 Winget；其中 `winget upgrade --all --silent` 可能更新受管理的軟體或要求提權。在受管理的裝置上，建議只更新可自行管理的使用者範圍工具，不要直接執行整個 `up`。
+- `rgit`（預設對目前目錄及一層子目錄中的儲存庫執行 Git 指令，只顯示有輸出或錯誤的結果；`-r` 遞迴搜尋、`-d N` 指定深度、`-v` 顯示所有儲存庫）、`ln` 與 UNIX 風格的 `ls`，讓肌肉記憶與 Agent 產生的指令都能直接沿用。
+- `up`：依工具是否已安裝，更新 PowerShell 模組、Scoop、Winget、.NET global tools、uv tools 與 skills；其中 `winget upgrade --all --silent` 可能更新受管理的軟體或要求提權。在受管理的裝置上，建議只更新可自行管理的使用者範圍工具，不要直接執行整個 `up`。
 
 `Add-Path` 預設修改使用者 `PATH`；若沒有管理員權限，不要指定 `-Scope Machine`。
 

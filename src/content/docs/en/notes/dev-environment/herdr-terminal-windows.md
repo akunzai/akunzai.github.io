@@ -58,8 +58,8 @@ Get-Path              # numbered list, marks entries that do not exist
 Keep the profile split: `Microsoft.PowerShell_profile.ps1` for interactive behavior and `profile.ps1` for personal helpers. Worth copying from my profile Gist:
 
 - PSReadLine with history-based inline prediction and Emacs-style `Ctrl+a/e/w` keys, so line editing matches macOS.
-- `rgit` (run a Git command across child repositories), `ln`, and a UNIX-style `ls`, so muscle memory and Agent-generated commands transfer.
-- `up`, which updates PowerShell modules, Scoop, and Winget in one go. Its `winget upgrade --all --silent` can touch managed software or request elevation. On a managed device, update only user-scope tools you are allowed to manage instead of running the whole `up` shortcut.
+- `rgit` (run a Git command in the current repository and repositories one subdirectory level down, showing only results with output or errors; use `-r` for recursion, `-d N` for depth, and `-v` to show all repositories), `ln`, and a UNIX-style `ls`, so muscle memory and Agent-generated commands transfer.
+- `up`, which updates PowerShell modules, Scoop, Winget, .NET global tools, uv tools, and skills when the corresponding tools are installed. Its `winget upgrade --all --silent` can touch managed software or request elevation. On a managed device, update only user-scope tools you are allowed to manage instead of running the whole `up` shortcut.
 
 `Add-Path` changes the User `PATH` by default. Without administrator rights, do not pass `-Scope Machine`.
 

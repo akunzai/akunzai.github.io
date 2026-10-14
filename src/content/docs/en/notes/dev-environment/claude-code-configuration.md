@@ -78,13 +78,14 @@ alias cc='claude'
 alias cc.yolo='claude --dangerously-skip-permissions'
 ```
 
-For PowerShell, `cc.yolo` is a function so it forwards arguments:
+For PowerShell, `cc` and `cc.yolo` are functions that forward arguments:
 
 ```powershell
+function cc { claude @args }
 function cc.yolo { claude --dangerously-skip-permissions @args }
 ```
 
-Use `claude` directly for normal PowerShell sessions. Reload the shell profile or open a new terminal after changing shortcuts.
+Use `cc` for normal sessions on either platform, or run `claude` directly. Reload the shell profile or open a new terminal after changing shortcuts.
 
 `cc.yolo` selects `bypassPermissions`. Claude Code's [permission-mode documentation](https://code.claude.com/docs/en/permission-modes) says explicit deny rules still apply in this mode. This differs from Codex's `--yolo`, which disables its sandbox too. A tool rule such as `Read(...)` is not a general OS-level file-access boundary for every shell command; distinguish tool checks from process isolation.
 
@@ -92,7 +93,7 @@ For unattended work that must reject actions needing approval, consider `claude 
 
 ## Recommended configuration for fewer prompts
 
-Keep `permissions.defaultMode = "auto"` for normal sessions. Add a separate `~/.claude/sandbox.settings.json` containing the following overlay, then start with `cc --settings ~/.claude/sandbox.settings.json` (or `claude --settings` in PowerShell):
+Keep `permissions.defaultMode = "auto"` for normal sessions. Add a separate `~/.claude/sandbox.settings.json` containing the following overlay, then start with `cc --settings ~/.claude/sandbox.settings.json` on either platform:
 
 ```json
 {
@@ -122,3 +123,8 @@ If you deliberately need bypass mode, `cc.yolo --settings ~/.claude/sandbox.sett
 ## Does switching YOLO affect prompt caching?
 
 Claude Code's [cache documentation](https://code.claude.com/docs/en/prompt-caching#changing-permission-mode) states that permission-mode changes do not alter the system prompt or tool definitions, so changing the mode alone keeps the cache. The `opusplan` model-switch exception still applies. This does not mean a fresh conversation, expired cache, upgrade, model change, or tool/plugin change is free. Resume the same conversation with otherwise stable settings when comparing modes; no new YOLO cache experiment was performed here. More context is in [the session and cache note](/en/blog/cache-session-habits/).
+
+## References
+
+- [PowerShell Profile](https://gist.github.com/akunzai/3af259df54dcdd6073293e6f8efe8dbf) — Personal PowerShell functions and cross-platform shortcuts
+- [Claude Code settings](https://code.claude.com/docs/en/settings) — Configuration scopes and precedence
